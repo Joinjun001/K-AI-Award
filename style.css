@@ -1373,5 +1373,150 @@ body {
     margin-left: -6px;
 }
 
+/* Welfare Feed Section (Home Tab) */
+.welfare-feed-section {
+    margin-bottom: 20px;
+    background-color: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(0,0,0,0.02);
+}
+
+.section-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.welfare-feed-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.live-indicator {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #EF4444;
+    background-color: #FEE2E2;
+    padding: 3px 8px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.live-indicator .dot {
+    width: 6px;
+    height: 6px;
+    background-color: #EF4444;
+    border-radius: 50%;
+    display: inline-block;
+    animation: blink 1.2s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+.welfare-feed-desc {
+    font-size: 0.8rem;
+    color: var(--text-sub);
+    margin-bottom: 16px;
+    line-height: 1.4;
+}
+
+/* Horizontal Scroll Container */
+.welfare-scroll-container {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Custom Scrollbar for container */
+.welfare-scroll-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.welfare-scroll-container::-webkit-scrollbar-track {
+    background: #F1F1F1;
+    border-radius: 10px;
+}
+
+.welfare-scroll-container::-webkit-scrollbar-thumb {
+    background: #C1C1C1;
+    border-radius: 10px;
+}
+
+.welfare-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #A8A8A8;
+}
+
+/* Scroll Card */
+.welfare-scroll-card {
+    flex: 0 0 280px; /* Fixed card width */
+    background-color: var(--bg-app);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    scroll-snap-align: start;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+    position: relative;
+    text-align: left;
+}
+
+.welfare-scroll-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.welfare-scroll-card h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.welfare-scroll-card .desc {
+    font-size: 0.76rem;
+    color: var(--text-sub);
+    line-height: 1.4;
+    height: 52px; /* Restrict lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.welfare-scroll-card .meta-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+    color: #718096;
+}
+
+.welfare-scroll-card .region-tag {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
 
 

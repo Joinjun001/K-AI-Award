@@ -26,6 +26,8 @@ const translations = {
         navProfile: "마이페이지",
         btnNext: "다음",
         btnStart: "다온 시작하기",
+        homeFeedTitle: "실시간 복지로 지원 혜택 피드",
+        homeFeedDesc: "전국의 다문화 가정을 위한 실시간 정부/지자체 복지 정책 목록입니다.",
         
         // Onboarding Translations
         obTitle0: "다문화 가정을 위한<br>따뜻한 AI 비서, 다온",
@@ -65,6 +67,8 @@ const translations = {
         navProfile: "Của tôi",
         btnNext: "Tiếp theo",
         btnStart: "Bắt đầu với Daon",
+        homeFeedTitle: "Bảng tin trợ cấp thời gian thực Bokjiro",
+        homeFeedDesc: "Danh sách chính sách phúc lợi chính phủ/địa phương thời gian thực dành cho các gia đình đa văn hóa.",
         
         // Onboarding Translations
         obTitle0: "Daon, Trợ lý AI ấm áp<br>cho các gia đình đa văn hóa",
@@ -104,6 +108,8 @@ const translations = {
         navProfile: "个人中心",
         btnNext: "下一步",
         btnStart: "开始多稳",
+        homeFeedTitle: "实时福利路政策推荐",
+        homeFeedDesc: "面向全国多文化家庭的实时政府及地方自治团体福利政策列表。",
         
         // Onboarding Translations
         obTitle0: "多稳 (Daon)，多文化家庭的<br>贴心 AI 秘书",
@@ -143,6 +149,8 @@ const translations = {
         navProfile: "My Page",
         btnNext: "Next",
         btnStart: "Start Daon",
+        homeFeedTitle: "Real-time Bokjiro Welfare Feed",
+        homeFeedDesc: "Real-time government & local municipality welfare policies list for multicultural families.",
         
         // Onboarding Translations
         obTitle0: "Daon, a Warm AI Assistant<br>for Multicultural Families",
@@ -344,6 +352,8 @@ function changeLanguage(langCode) {
         'nav-txt-helper': translations[langCode].navHelper,
         'nav-txt-alerts': translations[langCode].navAlerts,
         'nav-txt-profile': translations[langCode].navProfile,
+        'txt-home-feed-title': translations[langCode].homeFeedTitle,
+        'txt-home-feed-desc': translations[langCode].homeFeedDesc,
         
         // Onboarding wizard texts
         'txt-ob-title-0': translations[langCode].obTitle0,
@@ -378,6 +388,9 @@ function changeLanguage(langCode) {
     if (document.querySelectorAll('.benefit-card').length > 0) {
         renderMatchingBenefits();
     }
+    
+    // Update home welfare feed translations
+    renderHomeWelfareFeed();
 }
 
 // ==========================================
@@ -641,6 +654,80 @@ function renderMatchingBenefits() {
             </div>
         </div>
     `).join('');
+}
+
+// Render real-time welfare policies horizontally on the Home Dashboard
+function renderHomeWelfareFeed() {
+    const container = document.getElementById('home-welfare-scroll');
+    if (!container) return;
+    
+    container.innerHTML = mockWelfareDatabase.map(benefit => `
+        <div class="welfare-scroll-card" onclick="viewBenefitDetail('${benefit.id}')">
+            <span class="benefit-cat-tag">${benefit.category}</span>
+            <h4>${benefit.title}</h4>
+            <p class="desc">${benefit.desc[currentLanguage] || benefit.desc['ko']}</p>
+            <div class="meta-info">
+                <span class="region-tag">${benefit.region}</span>
+                <span>대상: 만 ${benefit.minAge}~${benefit.maxAge}세</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Navigate to benefits tab and auto-filter matching results
+function viewBenefitDetail(benefitId) {
+    const benefit = mockWelfareDatabase.find(b => b.id === benefitId);
+    if (!benefit) return;
+    
+    // Switch to tab-alerts
+    switchTab('tab-alerts');
+    
+    // Auto fill filter conditions to trigger this specific benefit
+    document.getElementById('prof-child-age').value = benefit.minAge;
+    
+    // Match regional conditions
+    if (benefit.region !== '전국') {
+        const regionSelector = document.getElementById('prof-region');
+        for (let option of regionSelector.options) {
+            if (option.value.includes(benefit.region)) {
+                regionSelector.value = option.value;
+                break;
+            }
+        }
+    }
+    
+    // Match income conditions
+    const incomeSelector = document.getElementById('prof-income');
+    if (benefit.maxIncome <= 50) {
+        incomeSelector.value = "50";
+    } else if (benefit.maxIncome <= 80) {
+        incomeSelector.value = "80";
+    } else if (benefit.maxIncome <= 120) {
+        incomeSelector.value = "120";
+    } else {
+        incomeSelector.value = "150";
+    }
+    
+    // Re-trigger calculation
+    simulateBenefitMatch(false);
+    
+    // Highlight the targeted matched benefit card with a premium visual animation
+    setTimeout(() => {
+        const benefitCards = document.querySelectorAll('.benefit-card');
+        benefitCards.forEach(card => {
+            const titleText = card.querySelector('h4').textContent;
+            if (titleText === benefit.title) {
+                card.style.borderColor = 'var(--secondary)';
+                card.style.boxShadow = '0 0 12px rgba(63, 162, 246, 0.4)';
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                setTimeout(() => {
+                    card.style.borderColor = '';
+                    card.style.boxShadow = '';
+                }, 2500);
+            }
+        });
+    }, 300);
 }
 
 // ==========================================
