@@ -97,8 +97,8 @@ const translations = {
         obDesc1: "사용하시는 모국어에 맞춰 모든 혜택 정보와 안내장이 자동 번역되어 제공됩니다.",
         obTitle2: "아이의 연령을 알려주세요",
         obDesc2: "다문화보육료, 입학축하금 등 아이 나이에 꼭 맞는 아동 맞춤 혜택을 매칭하는 데 사용됩니다.",
-        obTitle3: "가구의 소득 구간을 선택해 주세요",
-        obDesc3: "건강보험료나 중위소득 기준에 맞춘 정부 지원 혜택 대상 여부를 정밀 분석합니다.",
+        obTitle3: "가정의 월평균 소득을 입력해 주세요",
+        obDesc3: "정부 복지 혜택 매칭을 위해 가구 전체의 월평균 소득을 만 원 단위로 적어주세요.",
         obTitle4: "실시간 푸시 알림 동의",
         obDesc4: "새로운 복지 정책이 발표되거나 나에게 맞는 혜택이 복지로에 등록되면 모국어로 실시간 알림을 받아보세요.",
         btnObInc50: "소득 중위 50% 이하<br>(기초/차상위 가구 등)",
@@ -194,8 +194,8 @@ const translations = {
         obDesc1: "Tất cả thông tin trợ cấp và tài liệu dịch sẽ được hiển thị tự động bằng ngôn ngữ mẹ đẻ của bạn.",
         obTitle2: "Vui lòng cho biết tuổi của con bạn",
         obDesc2: "Thông tin này được dùng để đối chiếu các chương trình trợ cấp phù hợp như tiền học phí mẫu giáo, quà mừng nhập học v.v.",
-        obTitle3: "Vui lòng chọn mức thu nhập gia đình bạn",
-        obDesc3: "Phân tích chính xác xem gia đình bạn có đủ điều kiện nhận các gói hỗ trợ của chính phủ dựa trên bảo hiểm y tế hoặc thu nhập trung bình chuẩn hay không.",
+        obTitle3: "Vui lòng nhập thu nhập trung bình hàng tháng của gia đình bạn",
+        obDesc3: "Vui lòng viết tổng thu nhập trung bình hàng tháng của gia đình bạn theo đơn vị 10.000 KRW để đối chiếu phúc lợi chính phủ.",
         obTitle4: "Đồng ý nhận thông báo đẩy thời gian thực",
         obDesc4: "Nhận thông báo bằng tiếng mẹ đẻ ngay khi có chính sách phúc lợi mới được ban hành hoặc các khoản trợ cấp phù hợp được đăng ký trên Bokjiro.",
         btnObInc50: "Dưới 50% thu nhập trung bình chuẩn<br>(Hộ nghèo, cận nghèo v.v.)",
@@ -291,8 +291,8 @@ const translations = {
         obDesc1: "所有福利政策及翻译公文都将自动以您的母语提供。",
         obTitle2: "请输入您子女的年龄",
         obDesc2: "此信息将用于精准匹配符合您孩子年龄的福利政策，如多文化保育费、入学祝贺金等。",
-        obTitle3: "请选择您家庭的收入区间",
-        obDesc3: "精确分析您是否符合基于国民健康保险或基准中位数收入的政府扶持资格。",
+        obTitle3: "请输入家庭的月平均收入",
+        obDesc3: "请填写您家庭的月平均总收入（以万韩元为单位），以便进行政府福利匹配。",
         obTitle4: "同意实时后台推送通知",
         obDesc4: "当发布新福利政策，或在福利路注册了适合您的匹配福利时，以母语接收实时提醒通知。",
         btnObInc50: "中位数收入 50% 以下<br>(低保、次低收入家庭等)",
@@ -388,8 +388,8 @@ const translations = {
         obDesc1: "All welfare policies and translation reports will be served automatically in your mother tongue.",
         obTitle2: "Please enter your child's age",
         obDesc2: "This is used to match age-customized benefits such as multicultural childcare support and entrance allowances.",
-        obTitle3: "Please select your household income bracket",
-        obDesc3: "We analyze your eligibility for government assistance based on health insurance premiums or median income.",
+        obTitle3: "Please enter your family's monthly average income",
+        obDesc3: "Please write your family's monthly average income in units of 10,000 KRW for government benefits matching.",
         obTitle4: "Agree to receive real-time push alerts",
         obDesc4: "Get notified in your native language as soon as new welfare policies are announced or custom benefits are matched.",
         btnObInc50: "Under 50% of Median Income<br>(Basic Livelihood, Next-Lowest, etc.)",
@@ -1208,6 +1208,69 @@ function updateOnboardProgress() {
         fill.style.width = `${progressMilestones[onboardStep]}%`;
     }
 }
+
+
+// 2026 Median Income Calculator helper
+function getMedianIncomePercent(incomeVal, familyCount) {
+    // 2026 Korean Median Income 100% baseline table (in ten-thousand KRW)
+    const baseTable = {
+        1: 233,
+        2: 388,
+        3: 497,
+        4: 608,
+        5: 714,
+        6: 813
+    };
+    
+    const count = Math.min(6, Math.max(1, familyCount));
+    const base100 = baseTable[count];
+    
+    if (incomeVal <= base100 * 0.5) return 50;
+    if (incomeVal <= base100 * 0.8) return 80;
+    if (incomeVal <= base100 * 1.2) return 120;
+    return 150;
+}
+
+// Calculate real-time onboarding income guide
+function calculateOnboardIncomeGuide() {
+    const inputEl = document.getElementById('onboard-income-val');
+    const guideEl = document.getElementById('txt-ob-income-guide');
+    if (!inputEl || !guideEl) return;
+    
+    const val = parseInt(inputEl.value) || 0;
+    if (val <= 0) {
+        guideEl.textContent = "";
+        return;
+    }
+    
+    const familyCount = 2 + (onboardData.children ? onboardData.children.length : 1);
+    const percent = getMedianIncomePercent(val, familyCount);
+    
+    const lang = currentLanguage || 'ko';
+    
+    let text = "";
+    if (lang === 'vi') {
+        text = `(Tương đương mức dưới ${percent}% thu nhập trung bình của hộ gia đình ${familyCount} người)`;
+    } else if (lang === 'zh') {
+        text = `(相当于 ${familyCount}人家庭基准中位数收入 ${percent}% 以下水平)`;
+    } else if (lang === 'en') {
+        text = `(Equivalent to under ${percent}% of Median Income for a ${familyCount}-person household)`;
+    } else {
+        text = `(${familyCount}인 가구 기준 중위소득 ${percent}% 이하 수준입니다)`;
+    }
+    guideEl.textContent = text;
+}
+
+// Keep selectOnboardIncome function for compatibility / fallback
+function selectOnboardIncome(bracket) {
+    onboardData.income = bracket;
+    document.querySelectorAll('.income-opt-btn').forEach(btn => {
+        btn.classList.remove('selected');
+    });
+    const targetBtn = document.getElementById(`btn-ob-inc-${bracket}`);
+    if (targetBtn) targetBtn.classList.add('selected');
+}
+
 
 function nextOnboardStep() {
     const currentStepEl = document.getElementById(`onboard-step-${onboardStep}`);

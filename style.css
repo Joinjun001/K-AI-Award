@@ -1723,5 +1723,63 @@ body {
     color: var(--primary-dark);
 }
 
+/* Toss/Premium Style Income Direct Input */
+.onboard-income-input-container {
+    width: 100%;
+    max-width: 320px;
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-sizing: border-box;
+}
+
+.income-input-row {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid var(--border-color);
+    padding: 8px 0;
+    transition: border-color 0.2s;
+}
+
+.income-input-row:focus-within {
+    border-color: var(--secondary);
+}
+
+.income-input-row input {
+    border: none;
+    background: none;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text-main);
+    text-align: right;
+    width: 100%;
+    padding-right: 12px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+/* remove spin buttons */
+.income-input-row input::-webkit-outer-spin-button,
+.income-input-row input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.income-unit {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-sub);
+    white-space: nowrap;
+}
+
+.income-calc-guide {
+    font-size: 0.85rem;
+    color: var(--secondary);
+    text-align: center;
+    min-height: 20px;
+    font-weight: 500;
+}
+
 
 

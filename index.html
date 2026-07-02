@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=2.3">
+    <link rel="stylesheet" href="style.css?v=2.4">
 </head>
 <body>
     <!-- Real-time Web Push Simulation Toast Container -->
@@ -74,13 +74,14 @@
 
                     <!-- Step 4: Household Income Select -->
                     <div class="wizard-step" id="onboard-step-4">
-                        <h2 id="txt-ob-title-4">가구의 소득 수준은<br>어떻게 되시나요?</h2>
-                        <p class="step-guide" id="txt-ob-desc-4">기준 중위소득별로 국가 보조금 자격 요건을 진단합니다.</p>
-                        <div class="income-grid-options">
-                            <button id="btn-ob-inc-50" class="btn btn-outline income-opt-btn" onclick="selectOnboardIncome(50)">기준 중위소득 50% 이하</button>
-                            <button id="btn-ob-inc-80" class="btn btn-outline income-opt-btn" onclick="selectOnboardIncome(80)">기준 중위소득 80% 이하</button>
-                            <button id="btn-ob-inc-120" class="btn btn-outline income-opt-btn" onclick="selectOnboardIncome(120)">기준 중위소득 120% 이하</button>
-                            <button id="btn-ob-inc-150" class="btn btn-outline income-opt-btn" onclick="selectOnboardIncome(150)">기준 중위소득 150% 초과</button>
+                        <h2 id="txt-ob-title-4">가구의 월평균 소득을 입력해 주세요</h2>
+                        <p class="step-guide" id="txt-ob-desc-4">정부 복지 혜택 매칭을 위해 가구 전체의 월평균 소득을 만 원 단위로 적어주세요.</p>
+                        <div class="onboard-income-input-container">
+                            <div class="income-input-row">
+                                <input type="number" id="onboard-income-val" placeholder="예: 300" min="0" max="9999" oninput="calculateOnboardIncomeGuide()">
+                                <span class="income-unit" id="txt-ob-income-unit">만 원</span>
+                            </div>
+                            <p class="income-calc-guide" id="txt-ob-income-guide"></p>
                         </div>
                     </div>
                 </div>
@@ -260,13 +261,8 @@
                             <input type="number" id="prof-child-age" value="8" min="0" max="19">
                         </div>
                         <div class="form-group">
-                            <label for="prof-income"><i class="fa-solid fa-wallet"></i> <span id="txt-label-income">소득분위 (기준 중위소득 %)</span></label>
-                            <select id="prof-income">
-                                <option value="50">50% 이하 (기초/차상위 등)</option>
-                                <option value="80" selected>80% 이하 (교육지원금 등)</option>
-                                <option value="120">120% 이하 (다문화 보편지원 등)</option>
-                                <option value="150">150% 초과 (소득제한 초과)</option>
-                            </select>
+                            <label for="prof-income-val"><i class="fa-solid fa-wallet"></i> <span id="txt-label-income">가구 월 소득 (만 원)</span></label>
+                            <input type="number" id="prof-income-val" value="300" min="0" max="9999">
                         </div>
                         <div class="form-group">
                             <label for="prof-region"><i class="fa-solid fa-map-location-dot"></i> <span id="txt-label-region">거주 지역</span></label>
@@ -414,6 +410,6 @@
     </div>
 
     <!-- UI Interaction Scripts -->
-    <script src="app.js?v=2.3"></script>
+    <script src="app.js?v=2.4"></script>
 </body>
 </html>
