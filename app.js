@@ -192,8 +192,8 @@ const translations = {
         obDesc0: "Daon sẽ là người bạn đồng hành đáng tin cậy trong cuộc sống ở Hàn Quốc, hỗ trợ từ dịch thuật tài liệu khó đến việc tìm kiếm trợ cấp phù hợp nhất cho gia đình bạn.",
         obTitle1: "Vui lòng lựa chọn ngôn ngữ bạn muốn sử dụng",
         obDesc1: "Tất cả thông tin trợ cấp và tài liệu dịch sẽ được hiển thị tự động bằng ngôn ngữ mẹ đẻ của bạn.",
-        obTitle2: "Vui lòng cho biết tuổi của con bạn",
-        obDesc2: "Thông tin này được dùng để đối chiếu các chương trình trợ cấp phù hợp như tiền học phí mẫu giáo, quà mừng nhập học v.v.",
+        obTitle2: "Bạn có bao nhiêu con?",
+        obDesc2: "Hệ thống sẽ đối chiếu thông tin giáo dục và trợ cấp phù hợp với số lượng và độ tuổi của trẻ.",
         obTitle3: "Vui lòng nhập thu nhập trung bình hàng tháng của gia đình bạn",
         obDesc3: "Vui lòng viết tổng thu nhập trung bình hàng tháng của gia đình bạn theo đơn vị 10.000 KRW để đối chiếu phúc lợi chính phủ.",
         obTitle4: "Đồng ý nhận thông báo đẩy thời gian thực",
@@ -289,8 +289,8 @@ const translations = {
         obDesc0: "无论是难懂的政府公文翻译，还是为您家庭精确匹配福利政策，多稳都会是您在韩国生活中的坚实伴侣。",
         obTitle1: "请选择您使用起来最舒服的语言",
         obDesc1: "所有福利政策及翻译公文都将自动以您的母语提供。",
-        obTitle2: "请输入您子女的年龄",
-        obDesc2: "此信息将用于精准匹配符合您孩子年龄的福利政策，如多文化保育费、入学祝贺金等。",
+        obTitle2: "您有几个孩子？",
+        obDesc2: "系统将匹配适合孩子年龄的教育信息与抚养福利。",
         obTitle3: "请输入家庭的月平均收入",
         obDesc3: "请填写您家庭的月平均总收入（以万韩元为单位），以便进行政府福利匹配。",
         obTitle4: "同意实时后台推送通知",
@@ -386,8 +386,8 @@ const translations = {
         obDesc0: "Daon will be a reliable companion for your life in Korea, supporting you from translating complex public documents to matching customized welfare benefits.",
         obTitle1: "Please choose your preferred language",
         obDesc1: "All welfare policies and translation reports will be served automatically in your mother tongue.",
-        obTitle2: "Please enter your child's age",
-        obDesc2: "This is used to match age-customized benefits such as multicultural childcare support and entrance allowances.",
+        obTitle2: "How many children do you have?",
+        obDesc2: "We match childcare benefits and education info based on the number and age of your children.",
         obTitle3: "Please enter your family's monthly average income",
         obDesc3: "Please write your family's monthly average income in units of 10,000 KRW for government benefits matching.",
         obTitle4: "Agree to receive real-time push alerts",
@@ -1521,7 +1521,10 @@ function finishOnboarding() {
     // Synchronize filters
     document.getElementById('global-lang').value = onboardData.lang;
     document.getElementById('prof-child-age').value = primaryChildAge;
-    document.getElementById('prof-income').value = onboardData.income;
+    const incomeValEl = document.getElementById('prof-income-val');
+    if (incomeValEl) {
+        incomeValEl.value = onboardData.rawIncome || 300;
+    }
     
     // Trigger Match & translations
     changeLanguage(onboardData.lang);
@@ -1547,6 +1550,7 @@ function skipOnboarding() {
     onboardData.lang = 'ko';
     onboardData.children = [{ age: 8, gender: 'M' }];
     onboardData.income = 80;
+    onboardData.rawIncome = 300;
     finishOnboarding();
 }
 
