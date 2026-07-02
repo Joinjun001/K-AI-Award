@@ -979,11 +979,13 @@ function renderHomeWelfareFeed() {
             <p class="desc">${benefit.desc[lang] || benefit.desc['ko']}</p>
             <div class="meta-info">
                 <span class="region-tag">${getLocalizedRegion(benefit.region, lang)}</span>
-                <span>${translations[lang].metaTarget}: ${translations[lang].currentLanguage === 'vi' ? 'Từ' : (translations[lang].currentLanguage === 'zh' ? '满' : '')} ${benefit.minAge}~${benefit.maxAge}${translations[lang].metaAgeUnit}</span>
+                <span>${translations[lang].metaTarget}: ${currentLanguage === 'vi' ? 'Từ' : (currentLanguage === 'zh' ? '满' : '')} ${benefit.minAge}~${benefit.maxAge} ${translations[lang].metaAgeUnit}</span>
             </div>
         </div>
     `).join('');
-}\n\n// Navigate to benefits tab and auto-filter matching results
+}
+
+// Navigate to benefits tab and auto-filter matching results
 function viewBenefitDetail(benefitId) {
     const benefit = mockWelfareDatabase.find(b => b.id === benefitId);
     if (!benefit) return;
