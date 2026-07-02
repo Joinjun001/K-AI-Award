@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=2.7">
+    <link rel="stylesheet" href="style.css?v=2.8">
 </head>
 <body>
     <!-- Real-time Web Push Simulation Toast Container -->
@@ -51,31 +51,22 @@
                         </div>
                     </div>
                     
-                    <!-- Step 2: Children Count selection (Counter UI) -->
+                    <!-- Step 2: Children Input (Dynamic Card Add/Remove) -->
                     <div class="wizard-step" id="onboard-step-2">
-                        <h2 id="txt-ob-title-2">자녀는 몇 명<br>있으신가요?</h2>
-                        <p class="step-guide" id="txt-ob-desc-2">자녀 나이에 맞는 교육 정보와 보육 혜택을 매칭합니다.</p>
-                        <div class="onboard-counter-wrapper">
-                            <button type="button" class="btn-counter" onclick="adjustOnboardChildCount(-1)"><i class="fa-solid fa-minus"></i></button>
-                            <span id="onboard-child-count-display" class="counter-value">1</span>
-                            <span id="txt-ob-counter-unit" class="counter-unit">명</span>
-                            <button type="button" class="btn-counter" onclick="adjustOnboardChildCount(1)"><i class="fa-solid fa-plus"></i></button>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Children Details (Dynamically Generated) -->
-                    <div class="wizard-step" id="onboard-step-3">
-                        <h2 id="txt-ob-title-3">자녀의 상세 정보를<br>입력해 주세요</h2>
-                        <p class="step-guide" id="txt-ob-desc-3">각 아이의 나이와 성별을 선택해 주세요.</p>
+                        <h2 id="txt-ob-title-2">자녀의 정보를 입력해 주세요</h2>
+                        <p class="step-guide" id="txt-ob-desc-2">아이의 나이에 꼭 맞는 아동 맞춤 혜택을 매칭합니다.</p>
                         <div id="dynamic-children-inputs" class="dynamic-inputs-container">
                             <!-- Filled dynamically by JavaScript -->
                         </div>
+                        <button type="button" class="btn-add-child" onclick="addCustomOnboardChild()">
+                            <i class="fa-solid fa-plus"></i> <span id="txt-ob-add-child">자녀 추가하기</span>
+                        </button>
                     </div>
 
-                    <!-- Step 4: Household Income Select -->
-                    <div class="wizard-step" id="onboard-step-4">
-                        <h2 id="txt-ob-title-4">가구의 월평균 소득을 입력해 주세요</h2>
-                        <p class="step-guide" id="txt-ob-desc-4">정부 복지 혜택 매칭을 위해 가구 전체의 월평균 소득을 만 원 단위로 적어주세요.</p>
+                    <!-- Step 3: Household Income Select -->
+                    <div class="wizard-step" id="onboard-step-3">
+                        <h2 id="txt-ob-title-3">가구의 월평균 소득을 입력해 주세요</h2>
+                        <p class="step-guide" id="txt-ob-desc-3">정부 복지 혜택 매칭을 위해 가구 전체의 월평균 소득을 만 원 단위로 적어주세요.</p>
                         <div class="onboard-income-input-container">
                             <div class="income-input-row">
                                 <input type="number" id="onboard-income-val" placeholder="예: 300" min="0" max="9999" oninput="calculateOnboardIncomeGuide()">
@@ -410,6 +401,6 @@
     </div>
 
     <!-- UI Interaction Scripts -->
-    <script src="app.js?v=2.7"></script>
+    <script src="app.js?v=2.8"></script>
 </body>
 </html>

@@ -95,17 +95,12 @@ const translations = {
         obDesc0: "다온은 어려운 관공서 서류 번역부터 우리 가족 맞춤형 혜택 정보 매칭까지 한국 생활의 든든한 동반자가 되어 줍니다.",
         obTitle1: "가장 편안한 언어를 선택해 주세요",
         obDesc1: "사용하시는 모국어에 맞춰 모든 혜택 정보와 안내장이 자동 번역되어 제공됩니다.",
-        obTitle2: "아이의 연령을 알려주세요",
-        obDesc2: "다문화보육료, 입학축하금 등 아이 나이에 꼭 맞는 아동 맞춤 혜택을 매칭하는 데 사용됩니다.",
+        obTitle2: "자녀의 정보를 입력해 주세요",
+        obDesc2: "아이의 연령에 꼭 맞는 아동 맞춤 혜택을 매칭합니다.",
         obTitle3: "가정의 월평균 소득을 입력해 주세요",
         obDesc3: "정부 복지 혜택 매칭을 위해 가구 전체의 월평균 소득을 만 원 단위로 적어주세요.",
-        obTitle4: "실시간 푸시 알림 동의",
-        obDesc4: "새로운 복지 정책이 발표되거나 나에게 맞는 혜택이 복지로에 등록되면 모국어로 실시간 알림을 받아보세요.",
-        btnObInc50: "소득 중위 50% 이하<br>(기초/차상위 가구 등)",
-        btnObInc80: "소득 중위 80% 이하<br>(교육/주거지원 대상 등)",
-        btnObInc120: "소득 중위 120% 이하<br>(다문화 보편 혜택 등)",
-        btnObInc150: "소득 중위 150% 이상<br>(일반 맞춤형 혜택 등)",
-        counterUnit: "세"
+        obAddChild: "자녀 추가하기",
+        counterUnit: "명"
     },
     vi: {
         // Navigation
@@ -192,17 +187,12 @@ const translations = {
         obDesc0: "Daon sẽ là người bạn đồng hành đáng tin cậy trong cuộc sống ở Hàn Quốc, hỗ trợ từ dịch thuật tài liệu khó đến việc tìm kiếm trợ cấp phù hợp nhất cho gia đình bạn.",
         obTitle1: "Vui lòng lựa chọn ngôn ngữ bạn muốn sử dụng",
         obDesc1: "Tất cả thông tin trợ cấp và tài liệu dịch sẽ được hiển thị tự động bằng ngôn ngữ mẹ đẻ của bạn.",
-        obTitle2: "Bạn có bao nhiêu con?",
+        obTitle2: "Vui lòng nhập thông tin của con bạn",
         obDesc2: "Hệ thống sẽ đối chiếu thông tin giáo dục và trợ cấp phù hợp với số lượng và độ tuổi của trẻ.",
         obTitle3: "Vui lòng nhập thu nhập trung bình hàng tháng của gia đình bạn",
         obDesc3: "Vui lòng viết tổng thu nhập trung bình hàng tháng của gia đình bạn theo đơn vị 10.000 KRW để đối chiếu phúc lợi chính phủ.",
-        obTitle4: "Đồng ý nhận thông báo đẩy thời gian thực",
-        obDesc4: "Nhận thông báo bằng tiếng mẹ đẻ ngay khi có chính sách phúc lợi mới được ban hành hoặc các khoản trợ cấp phù hợp được đăng ký trên Bokjiro.",
-        btnObInc50: "Dưới 50% thu nhập trung bình chuẩn<br>(Hộ nghèo, cận nghèo v.v.)",
-        btnObInc80: "Dưới 80% thu nhập trung bình chuẩn<br>(Đối tượng nhận trợ cấp giáo dục/nhà ở v.v.)",
-        btnObInc120: "Dưới 120% thu nhập trung bình chuẩn<br>(Các ưu đãi đa văn hóa thông thường v.v.)",
-        btnObInc150: "Trên 150% thu nhập trung bình chuẩn<br>(Các hỗ trợ tùy chỉnh thông thường v.v.)",
-        counterUnit: "tuổi"
+        obAddChild: "Thêm con",
+        counterUnit: "trẻ"
     },
     zh: {
         // Navigation
@@ -212,13 +202,13 @@ const translations = {
         navProfile: "个人主页",
         
         // General Welcome Panel
-        welcomeTitle: "多稳 (Daon)，多文化家庭 of <br>贴心 AI 秘书",
-        welcomeDesc: "从翻译政府办事文件，到推荐最适合您家庭的福利通知，多稳与您的韩国生活一路相随。",
+        welcomeTitle: "多稳 (Daon)，多文化家庭的<br>贴心 AI 秘书",
+        welcomeDesc: "从翻译政府办事文件，到推荐最适合您家庭의福利通知，多稳与您的韩国生活一路相随。",
         statusBenefitLabel: "匹配的福利政策",
         statusDocLabel: "未读政府通知",
         
         // Tab Headers & Buttons
-        helperSubtitle: "您可以拍摄难以理解的政府通知、公文或输入文本。多稳 AI 将结合韩国文化背景，用母语为您通俗易懂地翻译和解读。",
+        helperSubtitle: "您可以拍摄难以理解 of 政府通知、公文或输入文本。多稳 AI 将结合韩国文化背景，用母语为您通俗易懂地翻译和解读。",
         btnPhoto: "拍摄照片/上传",
         btnAnalyze: "运行 Daon AI RAG 分析",
         alertsSubtitle: "当福利路注册了符合您家庭构成的新福利政策时，系统将以母语发送实时后台推送通知。",
@@ -289,17 +279,12 @@ const translations = {
         obDesc0: "无论是难懂的政府公文翻译，还是为您家庭精确匹配福利政策，多稳都会是您在韩国生活中的坚实伴侣。",
         obTitle1: "请选择您使用起来最舒服的语言",
         obDesc1: "所有福利政策及翻译公文都将自动以您的母语提供。",
-        obTitle2: "您有几个孩子？",
+        obTitle2: "请输入您子女的信息",
         obDesc2: "系统将匹配适合孩子年龄的教育信息与抚养福利。",
         obTitle3: "请输入家庭的月平均收入",
         obDesc3: "请填写您家庭的月平均总收入（以万韩元为单位），以便进行政府福利匹配。",
-        obTitle4: "同意实时后台推送通知",
-        obDesc4: "当发布新福利政策，或在福利路注册了适合您的匹配福利时，以母语接收实时提醒通知。",
-        btnObInc50: "中位数收入 50% 以下<br>(低保、次低收入家庭等)",
-        btnObInc80: "中位数收入 80% 以下<br>(教育、住房支援对象等)",
-        btnObInc120: "中位数收入 120% 以下<br>(普通多文化家庭优惠等)",
-        btnObInc150: "中位数收入 150% 以上<br>(普通定制型福利政策等)",
-        counterUnit: "岁"
+        obAddChild: "添加子女",
+        counterUnit: "名"
     },
     en: {
         // Navigation
@@ -386,19 +371,13 @@ const translations = {
         obDesc0: "Daon will be a reliable companion for your life in Korea, supporting you from translating complex public documents to matching customized welfare benefits.",
         obTitle1: "Please choose your preferred language",
         obDesc1: "All welfare policies and translation reports will be served automatically in your mother tongue.",
-        obTitle2: "How many children do you have?",
+        obTitle2: "Please enter your children's information",
         obDesc2: "We match childcare benefits and education info based on the number and age of your children.",
         obTitle3: "Please enter your family's monthly average income",
         obDesc3: "Please write your family's monthly average income in units of 10,000 KRW for government benefits matching.",
-        obTitle4: "Agree to receive real-time push alerts",
-        obDesc4: "Get notified in your native language as soon as new welfare policies are announced or custom benefits are matched.",
-        btnObInc50: "Under 50% of Median Income<br>(Basic Livelihood, Next-Lowest, etc.)",
-        btnObInc80: "Under 80% of Median Income<br>(Eligible for Education/Housing Support, etc.)",
-        btnObInc120: "Under 120% of Median Income<br>(General Multicultural Benefits, etc.)",
-        btnObInc150: "Over 150% of Median Income<br>(General Customized Benefits, etc.)",
-        counterUnit: "yrs"
-    }
-};// Mock RAG Knowledge Base (Vector Database emulation)
+        obAddChild: "Add Child",
+        counterUnit: "child"
+    }};// Mock RAG Knowledge Base (Vector Database emulation)
 const mockKnowledgeBase = [
     {
         keyword: "실내화",
@@ -610,6 +589,7 @@ function changeLanguage(langCode) {
         'btn-ob-inc-120': translations[langCode].btnObInc120,
         'btn-ob-inc-150': translations[langCode].btnObInc150,
         'txt-ob-counter-unit': translations[langCode].counterUnit,
+        'txt-ob-add-child': translations[langCode].obAddChild,
         
         // Newly added DOM text translations
         'txt-judge-title': translations[langCode].judgeTitle,
@@ -1194,13 +1174,13 @@ function playNotificationBeep() {
 let onboardStep = 0;
 let onboardData = {
     lang: null,        // Start with no selection
-    childCount: 1,     // Starts with 1 child by default in counter UI
-    children: [],
-    income: null       // Start with no selection
+    children: [{ age: 8, gender: 'M' }], // Default 1 child
+    income: null,      // Start with no selection
+    rawIncome: 300
 };
 
-// Wizard progress bar milestones
-const progressMilestones = [20, 40, 60, 80, 100];
+// Wizard progress bar milestones for 4 steps (0, 1, 2, 3)
+const progressMilestones = [25, 50, 75, 100];
 
 function updateOnboardProgress() {
     const fill = document.getElementById('onboard-progress-fill');
@@ -1209,10 +1189,8 @@ function updateOnboardProgress() {
     }
 }
 
-
 // 2026 Median Income Calculator helper
 function getMedianIncomePercent(incomeVal, familyCount) {
-    // 2026 Official Korean Median Income 100% baseline table (in ten-thousand KRW scale)
     const baseTable = {
         1: 256.4238,
         2: 419.9292,
@@ -1222,10 +1200,8 @@ function getMedianIncomePercent(incomeVal, familyCount) {
         6: 855.5952,
         7: 951.5150
     };
-    
     const count = Math.min(7, Math.max(1, familyCount));
     const base100 = baseTable[count];
-    
     if (incomeVal <= base100 * 0.5) return 50;
     if (incomeVal <= base100 * 0.8) return 80;
     if (incomeVal <= base100 * 1.2) return 120;
@@ -1245,8 +1221,6 @@ function calculateOnboardIncomeGuide() {
     }
     
     const familyCount = 2 + (onboardData.children ? onboardData.children.length : 1);
-    
-    // 2026 Official Median Income 100% baseline (in exact KRW)
     const baseTableExact = {
         1: 2564238,
         2: 4199292,
@@ -1260,12 +1234,8 @@ function calculateOnboardIncomeGuide() {
     const count = Math.min(7, Math.max(1, familyCount));
     const base100Exact = baseTableExact[count];
     const base100TenThousand = base100Exact / 10000;
-    
-    // Calculate exact percentage ratio
     const ratio = Math.round((val / base100TenThousand) * 100);
     const lang = currentLanguage || 'ko';
-    
-    // Format baseline income text to localized currency string (e.g. 5,359,036원)
     const formattedIncome = base100Exact.toLocaleString();
     
     let text = "";
@@ -1284,20 +1254,90 @@ function calculateOnboardIncomeGuide() {
 // Keep selectOnboardIncome function for compatibility / fallback
 function selectOnboardIncome(bracket) {
     onboardData.income = bracket;
-    document.querySelectorAll('.income-opt-btn').forEach(btn => {
-        btn.classList.remove('selected');
-    });
-    const targetBtn = document.getElementById(`btn-ob-inc-${bracket}`);
-    if (targetBtn) targetBtn.classList.add('selected');
 }
 
+// Render dynamic children input forms inside onboarding Step 2
+function renderOnboardChildrenInputs() {
+    const container = document.getElementById('dynamic-children-inputs');
+    if (!container) return;
+    
+    const lang = currentLanguage || 'ko';
+    
+    container.innerHTML = onboardData.children.map((child, index) => {
+        const isFirst = index === 0;
+        
+        return `
+        <div class="onboard-child-card" data-index="${index}">
+            <div class="onboard-child-card-header">
+                <span>
+                    <i class="fa-solid fa-child"></i> 
+                    \${lang === 'vi' ? 'Con thứ ' + (index + 1) : (lang === 'zh' ? '第 ' + (index + 1) + ' 个子女' : (lang === 'en' ? (index + 1) + 'th Child' : (index + 1) + '번째 자녀'))}
+                </span>
+                \${!isFirst ? `
+                    <button type="button" class="btn-delete-child" onclick="removeCustomOnboardChild(\${index})">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                ` : ''}
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 8px;">
+                <label>\${lang === 'vi' ? 'Tuổi của con' : (lang === 'zh' ? '子女年龄' : (lang === 'en' ? 'Child Age' : '자녀 나이'))}</label>
+                <div class="onboard-counter-wrapper" style="margin: 0; width: auto; max-width: 200px;">
+                    <button type="button" class="btn-counter" onclick="adjustCustomChildAge(\${index}, -1)"><i class="fa-solid fa-minus"></i></button>
+                    <span class="counter-value">\${child.age}</span>
+                    <span class="counter-unit">\${lang === 'vi' ? 'tuổi' : (lang === 'zh' ? '岁' : (lang === 'en' ? 'yrs' : '세'))}</span>
+                    <button type="button" class="btn-counter" onclick="adjustCustomChildAge(\${index}, 1)"><i class="fa-solid fa-plus"></i></button>
+                </div>
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 0;">
+                <label>\${lang === 'vi' ? 'Giới tính' : (lang === 'zh' ? '性别' : (lang === 'en' ? 'Gender' : '성별'))}</label>
+                <div class="gender-btn-group" style="display: flex; gap: 8px;">
+                    <button type="button" class="btn btn-outline gender-btn \${child.gender === 'M' ? 'selected' : ''}" style="flex:1; padding: 8px;" onclick="updateOnboardChildGender(\&quot;\${index}\&quot;, 'M')">
+                        <i class="fa-solid fa-mars"></i> \${lang === 'vi' ? 'Nam' : (lang === 'zh' ? '男' : (lang === 'en' ? 'Boy' : '남아'))}
+                    </button>
+                    <button type="button" class="btn btn-outline gender-btn \${child.gender === 'F' ? 'selected' : ''}" style="flex:1; padding: 8px;" onclick="updateOnboardChildGender(\&quot;\${index}\&quot;, 'F')">
+                        <i class="fa-solid fa-venus"></i> \${lang === 'vi' ? 'Nữ' : (lang === 'zh' ? '女' : (lang === 'en' ? 'Girl' : '여아'))}
+                    </button>
+                </div>
+            </div>
+        </div>
+        `;
+    }).join('');
+}
+
+function adjustCustomChildAge(index, amount) {
+    if (!onboardData.children[index]) return;
+    let currentAge = onboardData.children[index].age;
+    currentAge = Math.min(19, Math.max(0, currentAge + amount));
+    onboardData.children[index].age = currentAge;
+    renderOnboardChildrenInputs();
+}
+
+function updateOnboardChildGender(indexStr, gender) {
+    const index = parseInt(indexStr);
+    if (!onboardData.children[index]) return;
+    onboardData.children[index].gender = gender;
+    renderOnboardChildrenInputs();
+}
+
+function addCustomOnboardChild() {
+    onboardData.children.push({ age: 8, gender: 'M' });
+    renderOnboardChildrenInputs();
+}
+
+function removeCustomOnboardChild(index) {
+    if (index === 0) return; // Cannot remove first child
+    onboardData.children.splice(index, 1);
+    renderOnboardChildrenInputs();
+}
 
 function nextOnboardStep() {
-    const currentStepEl = document.getElementById(`onboard-step-${onboardStep}`);
-    const nextStepEl = document.getElementById(`onboard-step-${onboardStep + 1}`);
+    const currentStepEl = document.getElementById(`onboard-step-\${onboardStep}`);
+    const nextStepEl = document.getElementById(`onboard-step-\${onboardStep + 1}`);
     const nextBtn = document.getElementById('btn-onboarding-next');
     
-    // Step Validations (Manual Next Button Actions)
+    // Step Validations
     if (onboardStep === 1) {
         if (!onboardData.lang) {
             alert(currentLanguage === 'ko' ? '사용하실 언어를 선택해 주세요.' : 
@@ -1308,53 +1348,29 @@ function nextOnboardStep() {
     }
     
     if (onboardStep === 2) {
-        if (!onboardData.childCount || onboardData.childCount < 1) {
-            alert(currentLanguage === 'ko' ? '자녀의 수를 올바르게 지정해 주세요.' : 
-                  currentLanguage === 'vi' ? 'Vui lòng chỉ định số lượng con của bạn.' :
-                  currentLanguage === 'zh' ? '请正确指定您的孩子数量。' : 'Please specify the correct number of children.');
+        // Validate children list is non-empty and ages are valid
+        if (!onboardData.children || onboardData.children.length === 0) {
+            alert(currentLanguage === 'ko' ? '최소 1명 이상의 자녀 정보를 입력해야 합니다.' : 
+                  currentLanguage === 'vi' ? 'Vui lòng nhập thông tin của ít nhất một trẻ.' :
+                  currentLanguage === 'zh' ? '请至少输入一个孩子的信息。' : 'Please enter info for at least one child.');
             return;
         }
     }
     
     if (onboardStep === 3) {
-        // Validate children inputs are populated
-        const rows = document.querySelectorAll('.child-input-row');
-        let isValid = true;
-        
-        onboardData.children = [];
-        rows.forEach((row, idx) => {
-            const ageInput = row.querySelector('.child-age-input');
-            const ageVal = parseInt(ageInput.value);
-            const selectedGenderBtn = row.querySelector('.gender-btn.selected');
-            
-            if (isNaN(ageVal) || ageVal < 0 || ageVal > 19) {
-                alert(`${idx + 1}번째 자녀의 나이(0~19세)를 올바르게 입력해 주세요.`);
-                isValid = false;
-                return;
-            }
-            
-            if (!selectedGenderBtn) {
-                alert(`${idx + 1}번째 자녀의 성별을 선택해 주세요.`);
-                isValid = false;
-                return;
-            }
-            
-            onboardData.children.push({
-                age: ageVal,
-                gender: selectedGenderBtn.dataset.gender
-            });
-        });
-        
-        if (!isValid) return;
-    }
-    
-    if (onboardStep === 4) {
-        if (!onboardData.income) {
-            alert(currentLanguage === 'ko' ? '가구 소득 수준을 선택해 주세요.' : 
-                  currentLanguage === 'vi' ? 'Vui lòng chọn mức thu nhập hộ gia đình.' :
-                  currentLanguage === 'zh' ? '请选择家庭收入水平。' : 'Please select your household income level.');
+        // Read raw monthly income input
+        const incomeInput = document.getElementById('onboard-income-val');
+        const incomeVal = parseInt(incomeInput ? incomeInput.value : "") || 0;
+        if (incomeVal <= 0) {
+            const warningMsg = currentLanguage === 'vi' ? 'Vui lòng nhập thu nhập hàng tháng.' : (currentLanguage === 'zh' ? '请输入月收入。' : (currentLanguage === 'en' ? 'Please enter monthly income.' : '가구 월평균 소득을 입력해 주세요.'));
+            alert(warningMsg);
             return;
         }
+        // Save computed bracket
+        const familyCount = 2 + (onboardData.children ? onboardData.children.length : 1);
+        onboardData.income = getMedianIncomePercent(incomeVal, familyCount);
+        onboardData.rawIncome = incomeVal;
+        
         finishOnboarding();
         return;
     }
@@ -1372,18 +1388,17 @@ function nextOnboardStep() {
     updateOnboardProgress();
     
     // Special Actions per step
-    if (onboardStep === 3) {
-        generateOnboardChildForms();
+    if (onboardStep === 2) {
+        renderOnboardChildrenInputs();
     }
     
     // Footer Button Text controller
-    if (onboardStep === 4) {
+    if (onboardStep === 3) {
         nextBtn.textContent = translations[currentLanguage].btnStart || "다온 시작하기";
     } else {
         nextBtn.textContent = translations[currentLanguage].btnNext || "다음";
     }
 }
-
 // Select Native Language Option (Step 1)
 function selectOnboardLanguage(langCode) {
     onboardData.lang = langCode;
