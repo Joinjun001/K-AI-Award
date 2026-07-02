@@ -32,15 +32,27 @@ def parse_age(target_text):
     if not target_text:
         return min_age, max_age
     
-    # Try to extract numbers
-    numbers = [int(n) for n in re.findall(r'\d+', target_text)]
-    if len(numbers) >= 2:
-        min_age, max_age = min(numbers), max(numbers)
-    elif len(numbers) == 1:
-        if "미만" in target_text or "이하" in target_text:
-            min_age, max_age = 0, numbers[0]
-        elif "이상" in target_text:
-            min_age, max_age = numbers[0], 19
+    # 1. "만 X ~ Y세" 또는 "만 X세 ~ Y세" 또는 "만X~Y세"
+    range_match = re.search(r'(?:만\s*)?(\d+)\s*(?:세)?\s*(?:~|-)\s*(?:만\s*)?(\d+)\s*세', target_text)
+    if range_match:
+        return int(range_match.group(1)), int(range_match.group(2))
+    
+    # 2. "만 X세 미만/이하"
+    under_match = re.search(r'(?:만\s*)?(\d+)\s*세\s*(?:미만|이하)', target_text)
+    if under_match:
+        return 0, int(under_match.group(1))
+    
+    # 3. "만 X세 이상"
+    over_match = re.search(r'(?:만\s*)?(\d+)\s*세\s*이상', target_text)
+    if over_match:
+        return int(over_match.group(1)), 18
+        
+    # 4. 단일 "만 X세"
+    single_match = re.search(r'(?:만\s*)?(\d+)\s*세', target_text)
+    if single_match:
+        age = int(single_match.group(1))
+        return max(0, age - 1), min(18, age + 1)
+        
     return min_age, max_age
 
 # Parse Income condition from text
@@ -48,12 +60,20 @@ def parse_income(target_text):
     if not target_text:
         return 150 # default보편 지원
     
+    # Check if income is completely ignored/universal
+    universal_keywords = ["상관없이", "상관 없이", "제한 없음", "제한없음", "소득 무관", "소득무관", "기준 없음", "모든 유아", "모든 아동"]
+    if any(phrase in target_text for phrase in universal_keywords):
+        return 150
+    
     # Extract median income percentage (e.g. 50%, 80%, 100%, 120%, 150%)
-    match = re.search(r'(\d+)%', target_text)
-    if match:
-        return int(match.group(1))
+    percent_match = re.search(r'(\d+)\s*%', target_text)
+    if percent_match:
+        return int(percent_match.group(1))
     
     if "기초" in target_text or "차상위" in target_text or "소득하위" in target_text:
+        # If it also supports general cases, fallback to universal
+        if "일반" in target_text or "기타" in target_text or "모든" in target_text:
+            return 150
         return 50
     return 150
 
