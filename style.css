@@ -1694,5 +1694,34 @@ body {
     to { transform: translateY(0); opacity: 1; }
 }
 
+/* Explicit Source URL styling inside modal */
+.modal-source-info {
+    font-size: 0.8rem;
+    color: var(--text-sub);
+    margin-top: 16px;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    word-break: break-all;
+}
+
+.source-label {
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.source-url-text {
+    color: var(--secondary);
+    text-decoration: underline;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.source-url-text:hover {
+    color: var(--primary-dark);
+}
+
 
 

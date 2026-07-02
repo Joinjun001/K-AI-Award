@@ -33,6 +33,7 @@ const translations = {
         modalRegionLabel: "거주 지역",
         modalEligTitle: "상세 지원 조건",
         modalLinkLabel: "공식 홈페이지 신청 바로가기",
+        modalSourceLabel: "출처: 복지로 및 공식 기관",
         
         // Onboarding Translations
         obTitle0: "다문화 가정을 위한<br>따뜻한 AI 비서, 다온",
@@ -79,6 +80,7 @@ const translations = {
         modalRegionLabel: "Khu vực cư trú",
         modalEligTitle: "Điều kiện hỗ trợ chi tiết",
         modalLinkLabel: "Đến trang đăng ký chính thức",
+        modalSourceLabel: "Nguồn: Bokjiro & Cơ quan chính thức",
         
         // Onboarding Translations
         obTitle0: "Daon, Trợ lý AI ấm áp<br>cho các gia đình đa văn hóa",
@@ -125,6 +127,7 @@ const translations = {
         modalRegionLabel: "居住地区",
         modalEligTitle: "详细资助条件",
         modalLinkLabel: "前往官方申请网站",
+        modalSourceLabel: "来源: 福利路及官方机构",
         
         // Onboarding Translations
         obTitle0: "多稳 (Daon)，多文化家庭的<br>贴心 AI 秘书",
@@ -171,6 +174,7 @@ const translations = {
         modalRegionLabel: "Residential Area",
         modalEligTitle: "Detailed Eligibility",
         modalLinkLabel: "Apply on Official Website",
+        modalSourceLabel: "Source: Bokjiro & Official Agencies",
         
         // Onboarding Translations
         obTitle0: "Daon, a Warm AI Assistant<br>for Multicultural Families",
@@ -369,6 +373,7 @@ function changeLanguage(langCode) {
         'txt-modal-region-label': translations[langCode].modalRegionLabel,
         'txt-modal-elig-title': translations[langCode].modalEligTitle,
         'txt-modal-link-label': translations[langCode].modalLinkLabel,
+        'txt-modal-source-label': translations[langCode].modalSourceLabel,
         
         // Onboarding wizard texts
         'txt-ob-title-0': translations[langCode].obTitle0,
@@ -751,11 +756,19 @@ function viewBenefitDetail(benefitId) {
     
     // Action Link
     const linkEl = document.getElementById('modal-benefit-link');
+    const sourceUrlEl = document.getElementById('modal-benefit-source-url');
+    const sourceWrapperEl = document.getElementById('modal-benefit-source-wrapper');
+    
     if (benefit.sourceUrl) {
         linkEl.href = benefit.sourceUrl;
         linkEl.style.display = 'flex';
+        
+        sourceUrlEl.href = benefit.sourceUrl;
+        sourceUrlEl.textContent = benefit.sourceUrl;
+        sourceWrapperEl.style.display = 'flex';
     } else {
         linkEl.style.display = 'none';
+        sourceWrapperEl.style.display = 'none';
     }
     
     // Open modal
