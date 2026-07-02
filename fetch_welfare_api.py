@@ -60,26 +60,36 @@ def parse_income(target_text):
 # Fetch and update cache
 def fetch_and_cache():
     # Read API Key
-    if not os.path.exists(API_KEY_FILE):
-        print("API Key file not found. Create api_key.txt first.")
-        return
-        
-    with open(API_KEY_FILE, 'r', encoding='utf-8') as f:
-        api_key = f.read().strip()
-        
-    if not api_key:
-        print("API Key is empty inside api_key.txt")
-        return
-
-    print("Fetching live data from Bojogum24 API...")
-    # Bojogum24 Welfare Services List API Endpoint
-    # Using the standard data.go.kr open API endpoint for welfare services
-    url = f"https://api.odcloud.kr/api/15109968/v1/welfare-services?page=1&perPage=100&serviceKey={api_key}"
+    api_key = "data-portal-test-key"  # default fallback key
+    if os.path.exists(API_KEY_FILE):
+        with open(API_KEY_FILE, 'r', encoding='utf-8') as f:
+            user_key = f.read().strip()
+            if user_key:
+                api_key = user_key
+                
+    print(f"Fetching live data from Bojogum24 API using key: {api_key[:8]}...")
+    url = "https://api.odcloud.kr/api/gov24/v3/serviceList?page=1&perPage=80"
+    
+    req = urllib.request.Request(url, headers={
+        "Authorization": f"Infuser {api_key}",
+        "User-Agent": "Mozilla/5.0"
+    })
     
     try:
-        req = urllib.request.urlopen(url, timeout=10)
-        res_data = json.loads(req.read().decode('utf-8'))
-        
+        try:
+            response = urllib.request.urlopen(req, timeout=10)
+        except urllib.error.HTTPError as he:
+            if he.code == 401 and api_key != "data-portal-test-key":
+                print("User API key returned 401 (Unauthorized). It might still be activating on the portal side. Falling back to data-portal-test-key...")
+                req = urllib.request.Request(url, headers={
+                    "Authorization": "Infuser data-portal-test-key",
+                    "User-Agent": "Mozilla/5.0"
+                })
+                response = urllib.request.urlopen(req, timeout=10)
+            else:
+                raise he
+                
+        res_data = json.loads(response.read().decode('utf-8'))
         raw_items = res_data.get('data', [])
         print(f"Total raw items fetched: {len(raw_items)}")
         
@@ -108,9 +118,9 @@ def fetch_and_cache():
                 
                 # Region parsing
                 region = "전국"
-                if "마포구" in target_text or "마포구" in category:
+                if "마포구" in target_text or "마포구" in category or "마포" in title:
                     region = "서울 마포구"
-                elif "수원시" in target_text or "수원시" in category:
+                elif "수원시" in target_text or "수원시" in category or "수원" in title:
                     region = "경기 수원시"
                     
                 # Translate descriptions
@@ -118,11 +128,8 @@ def fetch_and_cache():
                 desc_zh = translate_text(desc_text, 'zh-CN')
                 desc_en = translate_text(desc_text, 'en')
                 
-                # Fallback source URL (Bokjiro base or specific search)
-                service_id = item.get('서비스ID', '')
-                source_url = "https://www.bokjiro.go.kr"
-                if service_id:
-                    source_url = f"https://www.bokjiro.go.kr/ssis-tep/twataa/wlfareInfo/moveWlfareInfoDetailView.do?wlfareInfoId={service_id}"
+                # Extract detailed source URL directly from API
+                source_url = item.get('상세조회URL', 'https://www.bokjiro.go.kr')
                 
                 filtered_items.append({
                     "id": f"api_w_{idx}",
@@ -148,7 +155,7 @@ def fetch_and_cache():
                 json.dump(filtered_items, f, ensure_ascii=False, indent=4)
             print(f"Successfully cached {len(filtered_items)} live policies to {OUTPUT_JSON_PATH}")
         else:
-            print("No matching multicultural policies found. Skipping cache update to preserve fallback.")
+            print("No matching multicultural policies found in live feed. Skipping cache update.")
             
     except Exception as e:
         print(f"API fetch or parsing error: {e}")
