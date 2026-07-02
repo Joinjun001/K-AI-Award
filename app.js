@@ -445,10 +445,14 @@ const fallbackWelfareDatabase = [
     }
 ];
 
-// Fetch real welfare data from JSON file
+// Fetch real welfare data from API or JSON file fallback
 async function loadRealWelfareData() {
     try {
-        const response = await fetch('welfare_data.json');
+        let response = await fetch('/api/welfare');
+        if (!response.ok) {
+            console.warn("FastAPI DB fetch failed, falling back to static welfare_data.json");
+            response = await fetch('welfare_data.json');
+        }
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -768,7 +772,44 @@ function runDocumentRAG() {
     }, 600);
 }
 
+function renderAnalysisResult(data) {
+    const contentBox = document.getElementById('result-body-content');
+    const langTag = document.getElementById('result-lang-tag');
+    
+    // Map lang code to UI label
+    const langLabels = { ko: '한국어', vi: 'Tiếng Việt', zh: '中文', en: 'English' };
+    langTag.textContent = langLabels[currentLanguage];
+    
+    let outputHTML = "";
+    
+    // Core Summaries
+    outputHTML += data.schedule || "";
+    outputHTML += data.materials || "";
+    outputHTML += data.submissions || "";
+    
+    // Full Translation
+    if (data.full_translation) {
+        outputHTML += `
+            <div style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.05); border-left: 4px solid var(--accent-color); border-radius: 4px;">
+                <h4 style="margin-top: 0;"><i class="fa-solid fa-language"></i> 전체 번역본 (Full Translation)</h4>
+                <p style="white-space: pre-wrap; line-height: 1.6; font-size: 0.95rem;">${data.full_translation}</p>
+            </div>
+        `;
+    }
+    
+    // Culture notes
+    if (data.cultural_notes) {
+        outputHTML += data.cultural_notes;
+    }
+    
+    contentBox.innerHTML = outputHTML;
+}
+
 function updateRAGOutputText() {
+    if (latestAnalysisResult) {
+        renderAnalysisResult(latestAnalysisResult);
+        return;
+    }
     const contentBox = document.getElementById('result-body-content');
     const langTag = document.getElementById('result-lang-tag');
     

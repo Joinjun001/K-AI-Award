@@ -4,10 +4,11 @@ import time
 import urllib.request
 import urllib.parse
 import re
+import psycopg2
 
 # Configurations
-API_KEY_FILE = '/home/injun/daon-app/api_key.txt'
-OUTPUT_JSON_PATH = '/home/injun/daon-app/welfare_data.json'
+API_KEY_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'api_key.txt')
+OUTPUT_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'welfare_data.json')
 INTERVAL_SECONDS = 1800  # 30 minutes
 
 # Free Google Translate API Stub (No Key Required)
@@ -76,6 +77,62 @@ def parse_income(target_text):
             return 150
         return 50
     return 150
+
+def save_to_db(items):
+    try:
+        conn = psycopg2.connect(
+            host='127.0.0.1',
+            port=5432,
+            user='daon_user',
+            password='your_strong_password',
+            dbname='daondb'
+        )
+        cur = conn.cursor()
+        
+        upsert_query = """
+        INSERT INTO welfare_benefits (
+            id, title, category, min_age, max_age, max_income, region,
+            desc_ko, desc_vi, desc_zh, desc_en, eligibility, source_url, updated_at
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP)
+        ON CONFLICT (id) DO UPDATE SET
+            title = EXCLUDED.title,
+            category = EXCLUDED.category,
+            min_age = EXCLUDED.min_age,
+            max_age = EXCLUDED.max_age,
+            max_income = EXCLUDED.max_income,
+            region = EXCLUDED.region,
+            desc_ko = EXCLUDED.desc_ko,
+            desc_vi = EXCLUDED.desc_vi,
+            desc_zh = EXCLUDED.desc_zh,
+            desc_en = EXCLUDED.desc_en,
+            eligibility = EXCLUDED.eligibility,
+            source_url = EXCLUDED.source_url,
+            updated_at = CURRENT_TIMESTAMP;
+        """
+        
+        for item in items:
+            cur.execute(upsert_query, (
+                item["id"],
+                item["title"],
+                item["category"],
+                item["minAge"],
+                item["maxAge"],
+                item["maxIncome"],
+                item["region"],
+                item["desc"]["ko"],
+                item["desc"]["vi"],
+                item["desc"]["zh"],
+                item["desc"]["en"],
+                item["eligibility"],
+                item["sourceUrl"]
+            ))
+            
+        conn.commit()
+        print(f"Successfully upserted {len(items)} items to PostgreSQL DB.")
+        cur.close()
+        conn.close()
+    except Exception as e:
+        print(f"Error saving to PostgreSQL DB: {e}")
 
 # Fetch and update cache
 def fetch_and_cache():
@@ -174,6 +231,7 @@ def fetch_and_cache():
             with open(OUTPUT_JSON_PATH, 'w', encoding='utf-8') as f:
                 json.dump(filtered_items, f, ensure_ascii=False, indent=4)
             print(f"Successfully cached {len(filtered_items)} live policies to {OUTPUT_JSON_PATH}")
+            save_to_db(filtered_items)
         else:
             print("No matching multicultural policies found in live feed. Skipping cache update.")
             

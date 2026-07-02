@@ -1,0 +1,13 @@
+# Secrets & Environment configs
+.env
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local logs
+*.log
+fetch.log
+daon-welfare-sync.service
