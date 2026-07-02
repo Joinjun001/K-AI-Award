@@ -661,11 +661,13 @@ function renderHomeWelfareFeed() {
     const container = document.getElementById('home-welfare-scroll');
     if (!container) return;
     
+    const lang = translations[currentLanguage] ? currentLanguage : 'ko';
+    
     container.innerHTML = mockWelfareDatabase.map(benefit => `
         <div class="welfare-scroll-card" onclick="viewBenefitDetail('${benefit.id}')">
             <span class="benefit-cat-tag">${benefit.category}</span>
             <h4>${benefit.title}</h4>
-            <p class="desc">${benefit.desc[currentLanguage] || benefit.desc['ko']}</p>
+            <p class="desc">${benefit.desc[lang] || benefit.desc['ko']}</p>
             <div class="meta-info">
                 <span class="region-tag">${benefit.region}</span>
                 <span>대상: 만 ${benefit.minAge}~${benefit.maxAge}세</span>
@@ -1216,6 +1218,7 @@ window.addEventListener('DOMContentLoaded', () => {
         // Initial load setup
         changeLanguage(savedLang);
         simulateBenefitMatch(false);
+        renderHomeWelfareFeed();
         
         // Onboarding Check
         const hasOnboarded = localStorage.getItem('daon_onboarded');
