@@ -1518,5 +1518,49 @@ body {
     font-weight: 600;
 }
 
+/* Source link elements */
+.scroll-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.scroll-card-header .benefit-cat-tag {
+    margin-bottom: 0;
+}
+
+.feed-source-link {
+    color: var(--text-sub);
+    font-size: 0.8rem;
+    transition: color 0.2s;
+    padding: 2px 4px;
+}
+
+.feed-source-link:hover {
+    color: var(--secondary);
+}
+
+.benefit-actions {
+    margin-top: 14px;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 12px;
+}
+
+.btn-source-go {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.btn-source-go:hover {
+    color: var(--primary-dark);
+}
+
 
 

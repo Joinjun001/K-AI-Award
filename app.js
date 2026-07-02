@@ -642,6 +642,14 @@ function renderMatchingBenefits() {
             <div class="benefit-eligibility">
                 <strong>대상 조건:</strong> ${benefit.eligibility}
             </div>
+            ${benefit.sourceUrl ? `
+                <div class="benefit-actions">
+                    <a href="${benefit.sourceUrl}" target="_blank" class="btn-source-go">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> 복지로/공식 출처 원문 확인하기
+                    </a>
+                </div>
+            ` : ''
+            }
         </div>
     `).join('');
 }
@@ -655,7 +663,14 @@ function renderHomeWelfareFeed() {
     
     container.innerHTML = mockWelfareDatabase.map(benefit => `
         <div class="welfare-scroll-card" onclick="viewBenefitDetail('${benefit.id}')">
-            <span class="benefit-cat-tag">${benefit.category}</span>
+            <div class="scroll-card-header">
+                <span class="benefit-cat-tag">${benefit.category}</span>
+                ${benefit.sourceUrl ? `
+                    <a href="${benefit.sourceUrl}" target="_blank" class="feed-source-link" onclick="event.stopPropagation();">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>` : ''
+                }
+            </div>
             <h4>${benefit.title}</h4>
             <p class="desc">${benefit.desc[lang] || benefit.desc['ko']}</p>
             <div class="meta-info">
