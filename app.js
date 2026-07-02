@@ -1212,17 +1212,18 @@ function updateOnboardProgress() {
 
 // 2026 Median Income Calculator helper
 function getMedianIncomePercent(incomeVal, familyCount) {
-    // 2026 Korean Median Income 100% baseline table (in ten-thousand KRW)
+    // 2026 Official Korean Median Income 100% baseline table (in ten-thousand KRW scale)
     const baseTable = {
-        1: 233,
-        2: 388,
-        3: 497,
-        4: 608,
-        5: 714,
-        6: 813
+        1: 256.4238,
+        2: 419.9292,
+        3: 535.9036,
+        4: 649.4738,
+        5: 755.6719,
+        6: 855.5952,
+        7: 951.5150
     };
     
-    const count = Math.min(6, Math.max(1, familyCount));
+    const count = Math.min(7, Math.max(1, familyCount));
     const base100 = baseTable[count];
     
     if (incomeVal <= base100 * 0.5) return 50;
@@ -1245,32 +1246,37 @@ function calculateOnboardIncomeGuide() {
     
     const familyCount = 2 + (onboardData.children ? onboardData.children.length : 1);
     
-    // 2026 Korean Median Income 100% baseline table (in ten-thousand KRW)
-    const baseTable = {
-        1: 233,
-        2: 388,
-        3: 497,
-        4: 608,
-        5: 714,
-        6: 813
+    // 2026 Official Median Income 100% baseline (in exact KRW)
+    const baseTableExact = {
+        1: 2564238,
+        2: 4199292,
+        3: 5359036,
+        4: 6494738,
+        5: 7556719,
+        6: 8555952,
+        7: 9515150
     };
     
-    const count = Math.min(6, Math.max(1, familyCount));
-    const base100 = baseTable[count];
+    const count = Math.min(7, Math.max(1, familyCount));
+    const base100Exact = baseTableExact[count];
+    const base100TenThousand = base100Exact / 10000;
     
     // Calculate exact percentage ratio
-    const ratio = Math.round((val / base100) * 100);
+    const ratio = Math.round((val / base100TenThousand) * 100);
     const lang = currentLanguage || 'ko';
+    
+    // Format baseline income text to localized currency string (e.g. 5,359,036원)
+    const formattedIncome = base100Exact.toLocaleString();
     
     let text = "";
     if (lang === 'vi') {
-        text = `Mức thu nhập trung bình 100% của hộ gia đình ${count} người là ${base100} vạn KRW, và thu nhập của bạn tương đương khoảng ${ratio}%.`;
+        text = `Mức thu nhập trung bình 100% của hộ gia đình ${count} người là ${formattedIncome} KRW, và thu nhập của bạn tương đương khoảng ${ratio}%.`;
     } else if (lang === 'zh') {
-        text = `${count}人家庭的100%基准中位数收入为 ${base100}万韩元，您输入的收入约为 ${ratio}% 水平。`;
+        text = `${count}人家庭的100%基准中位数收入为 ${formattedIncome}韩元，您输入的收入约为 ${ratio}% 水平。`;
     } else if (lang === 'en') {
-        text = `The 100% median income for a ${count}-person household is ${base100}0,000 KRW, and your entered income is approximately ${ratio}%.`;
+        text = `The 100% median income for a ${count}-person household is ${formattedIncome} KRW, and your entered income is approximately ${ratio}%.`;
     } else {
-        text = `${count}인 가구의 100% 기준 중위소득은 ${base100}만 원이며, 입력하신 소득은 약 ${ratio}% 수준입니다.`;
+        text = `${count}인 가구의 100% 기준 중위소득은 ${formattedIncome}원이며, 입력하신 소득은 약 ${ratio}% 수준입니다.`;
     }
     guideEl.textContent = text;
 }
