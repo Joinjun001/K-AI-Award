@@ -209,11 +209,14 @@ const mockKnowledgeBase = [
     }
 ];
 
-// Mock Welfare Benefits Database (Bokjiro / Gov API emulation)
-const mockWelfareDatabase = [
+// Global Welfare Benefits Database
+let mockWelfareDatabase = [];
+
+// Fallback hardcoded welfare benefits in case fetch fails
+const fallbackWelfareDatabase = [
     {
         id: "w1",
-        title: "다문화가정 자녀 입학준비금 지원",
+        title: "다문화가정 자녀 입학준비금 지원 (오프라인)",
         category: "교육지원",
         minAge: 7,
         maxAge: 8,
@@ -229,7 +232,7 @@ const mockWelfareDatabase = [
     },
     {
         id: "w2",
-        title: "다문화 아동 발달/바우처 지원 사업",
+        title: "다문화 아동 발달/바우처 지원 사업 (오프라인)",
         category: "양육/돌봄",
         minAge: 2,
         maxAge: 12,
@@ -242,42 +245,29 @@ const mockWelfareDatabase = [
             en: "Issues voucher cards and provides visiting specialty teacher services for language development and basic learning tutoring for children aged 2-12."
         },
         eligibility: "소득 기준 중위 120% 이하, 만 2~12세 자녀를 둔 다문화 가정 (전국)"
-    },
-    {
-        id: "w3",
-        title: "다문화 가족 모국어 교육 교재 무료 배부",
-        category: "문화/교육",
-        minAge: 3,
-        maxAge: 15,
-        maxIncome: 150,
-        region: "경기 수원시",
-        desc: {
-            ko: "부모와 자녀 간의 원활한 소통을 위해 이중언어(베트남어, 중국어 등) 동화책 및 교재를 무상 지원합니다.",
-            vi: "Cung cấp miễn phí truyện tranh và sách giáo khoa song ngữ (tiếng Việt, tiếng Trung, v.v.) để hỗ trợ giao tiếp giữa cha mẹ và con cái.",
-            zh: "免费提供双语（越南语、中文等）绘本及教材，促进父母与子女之间的顺畅交流。",
-            en: "Free provision of bilingual (Vietnamese, Chinese, etc.) fairy tale books and textbooks to facilitate parent-child communication."
-        },
-        eligibility: "소득 기준 중위 150% 이하, 만 3~15세 자녀를 둔 수원시 거주 다문화 가정"
-    },
-    {
-        id: "w4",
-        title: "저소득 다문화가정 자녀 컴퓨터 보급 및 통신비 지원",
-        category: "생활/경제",
-        minAge: 6,
-        maxAge: 18,
-        maxIncome: 50,
-        region: "전국",
-        desc: {
-            ko: "교육 격차 해소를 위해 가구당 교육용 PC 1대 무상 보급 및 매달 교육용 인터넷 요금을 지원합니다.",
-            vi: "Cấp miễn phí 1 máy tính PC dùng cho học tập mỗi hộ gia đình và hỗ trợ cước internet học tập hàng tháng để xóa bỏ khoảng cách giáo dục.",
-            zh: "为消除教育差距，每户免费普及1台教学电脑，并每月资助教育用网络宽带费用。",
-            en: "Provides 1 free educational PC per household and supports monthly internet service fees to bridge the educational gap."
-        },
-        eligibility: "소득 기준 중위 50% 이하(기초/차상위 등), 만 6~18세 자녀를 둔 다문화 가정 (전국)"
     }
 ];
 
-// Presets for Demo Simulation Buttons
+// Fetch real welfare data from JSON file
+async function loadRealWelfareData() {
+    try {
+        const response = await fetch('welfare_data.json');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        if (data && data.length > 0) {
+            mockWelfareDatabase = data;
+            console.log("Real welfare data loaded successfully. Total policies:", data.length);
+        } else {
+            mockWelfareDatabase = fallbackWelfareDatabase;
+        }
+    } catch (error) {
+        console.warn("Using offline welfare fallback dataset due to:", error);
+        mockWelfareDatabase = fallbackWelfareDatabase;
+    }
+}
+
 const mockNoticeTemplates = {
     school: `[주간학습안내장 - 마포초등학교 1학년 2반]
 일정: 5월 12일 (수) 봄 소풍 예정 (도시락 지참)
@@ -1185,8 +1175,11 @@ function resetOnboarding() {
 }
 
 // Initialize on page load
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
     try {
+        // Load real welfare data first
+        await loadRealWelfareData();
+
         // 1. Force Reset Onboarding via URL parameter (?reset=true)
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('reset') === 'true') {

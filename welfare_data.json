@@ -1,0 +1,130 @@
+[
+    {
+        "id": "real_w1",
+        "title": "다문화보육료 지원 사업",
+        "category": "보육/양육",
+        "minAge": 0,
+        "maxAge": 5,
+        "maxIncome": 150,
+        "region": "전국",
+        "desc": {
+            "ko": "대한민국 국적의 만 0~5세 다문화가정 자녀가 어린이집 이용 시, 소득 수준과 관계없이 보육료 전액을 국가에서 지원합니다.",
+            "vi": "Nhà nước hỗ trợ toàn bộ học phí nhà trẻ cho con em gia đình đa văn hóa từ 0-5 tuổi có quốc tịch Hàn Quốc, không phân biệt mức thu nhập.",
+            "zh": "韩国国籍的0-5岁多文化家庭子女在使用托儿所时，国家将全额资助保育费，无收入限制。",
+            "en": "The government supports the full cost of daycare center fees for multicultural family children aged 0-5 with Korean nationality, regardless of income level."
+        },
+        "eligibility": "대한민국 국적의 어린이집을 이용하는 만 0~5세 다문화 가정 자녀 (소득제한 없음)"
+    },
+    {
+        "id": "real_w2",
+        "title": "다문화가족 자녀 교육활동비 지원",
+        "category": "교육지원",
+        "minAge": 7,
+        "maxAge": 18,
+        "maxIncome": 100,
+        "region": "전국",
+        "desc": {
+            "ko": "저소득 다문화가족 자녀(초·중·고)의 학업 격차 해소를 위해 초등 연 40만원, 중등 연 50만원, 고등 연 60만원의 교육 활동비를 카드 바우처로 지원합니다.",
+            "vi": "Hỗ trợ học phí hoạt động giáo dục bằng thẻ voucher (Tiểu học 400.000 KRW/năm, Trung học 500.000 KRW/năm, Phổ thông 600.000 KRW/năm) cho học sinh nghèo gia đình đa văn hóa.",
+            "zh": "为缓解低收入多文化家庭子女（小/中/高）的学业差距，以卡片代金券形式提供教育活动费：小学年40万、初中年50万、高中年60万韩元。",
+            "en": "Supports educational activity expenses via card vouchers (Elementary: 400k KRW/yr, Middle: 500k KRW/yr, High: 600k KRW/yr) to bridge learning gaps for low-income multicultural family children."
+        },
+        "eligibility": "기준 중위소득 100% 이하의 다문화가족 초·중·고등학생 자녀 (만 7~18세)"
+    },
+    {
+        "id": "real_w3",
+        "title": "첫만남이용권 바우처 지급",
+        "category": "출산/임신",
+        "minAge": 0,
+        "maxAge": 1,
+        "maxIncome": 150,
+        "region": "전국",
+        "desc": {
+            "ko": "출생 아동에게 아동 양육에 따른 경제적 부담을 경감하기 위해 첫째아 200만 원, 둘째아 이상 300만 원의 국민행복카드 바우처를 지급합니다.",
+            "vi": "Cấp thẻ voucher Kookmin Haengbok trị giá 2.000.000 KRW cho con thứ nhất, và 3.000.000 KRW từ con thứ hai để giảm bớt gánh nặng kinh tế khi sinh con.",
+            "zh": "为减轻育儿经济负担，向新生儿发放国民幸福卡代金券：第一胎200万韩元，第二胎及以上300万韩元。",
+            "en": "Provides National Happiness Card vouchers (2 million KRW for the first child, 3 million KRW for the second child and beyond) to reduce the economic burden of child-rearing."
+        },
+        "eligibility": "출생 신고되어 정상적으로 주민등록번호를 부여받은 모든 아동 (소득제한 없음)"
+    },
+    {
+        "id": "real_w4",
+        "title": "정부 부모급여 지원 제도",
+        "category": "보육/양육",
+        "minAge": 0,
+        "maxAge": 1,
+        "maxIncome": 150,
+        "region": "전국",
+        "desc": {
+            "ko": "영아기 집중 돌봄을 지원하기 위해 만 0세(0~11개월) 아동에게는 매월 100만 원, 만 1세(12~23개월) 아동에게는 매월 50만 원을 현금 또는 바우처로 지급합니다.",
+            "vi": "Hỗ trợ chăm sóc trẻ sơ sinh, chi trả hàng tháng 1.000.000 KRW cho bé dưới 1 tuổi (0-11 tháng) và 500.000 KRW cho bé 1 tuổi (12-23 tháng) bằng tiền mặt hoặc voucher.",
+            "zh": "为支持婴儿期集中看护，向0岁（0-11个月）儿童每月发放100万韩元，向1岁（12-23个月）儿童每月发放50万韩元现金或代金券。",
+            "en": "Provides parent pay monthly (1 million KRW for age 0 [0-11 months], 500k KRW for age 1 [12-23 months]) via cash or vouchers to support intensive infant care."
+        },
+        "eligibility": "대한민국에 거주하며 주민등록번호를 부여받은 만 0~1세 영아 (소득제한 없음)"
+    },
+    {
+        "id": "real_w5",
+        "title": "정부 아동수당 지원 사업",
+        "category": "보육/양육",
+        "minAge": 0,
+        "maxAge": 7,
+        "maxIncome": 150,
+        "region": "전국",
+        "desc": {
+            "ko": "아동의 건강한 성장 환경 조성을 위해 소득 수준과 관계없이 만 8세 미만(0~95개월)의 모든 아동에게 매월 10만 원을 현금으로 지급합니다.",
+            "vi": "Nhằm tạo môi trường phát triển lành mạnh cho trẻ, chi trả 100.000 KRW tiền mặt hàng tháng cho tất cả trẻ em dưới 8 tuổi (0-95 tháng), không phân biệt mức thu nhập.",
+            "zh": "为营造儿童健康成长环境，无收入限制，向所有未满8岁（0-95个月）的儿童每月发放10万韩元现金。",
+            "en": "Provides a monthly cash allowance of 100,000 KRW for all children under 8 years old (0-95 months) regardless of income level to support healthy growth."
+        },
+        "eligibility": "주민등록번호를 부여받은 국외 체류하지 않는 만 8세 미만 모든 아동 (소득제한 없음)"
+    },
+    {
+        "id": "real_w6",
+        "title": "다문화가족 자녀 언어발달 지원",
+        "category": "돌봄/상담",
+        "minAge": 2,
+        "maxAge": 12,
+        "maxIncome": 150,
+        "region": "전국",
+        "desc": {
+            "ko": "다문화가족 자녀의 언어 장벽 해소를 위해 다문화가족지원센터의 전문 언어발달지도사가 아동을 대상으로 체계적인 언어 평가 및 언어 치료 교육을 무상 제공합니다.",
+            "vi": "Hỗ trợ giáo viên phát triển ngôn ngữ chuyên nghiệp của Trung tâm hỗ trợ gia đình đa văn hóa đánh giá và dạy trị liệu ngôn ngữ miễn phí cho trẻ em để xóa bỏ rào cản ngôn ngữ.",
+            "zh": "为解决多文化家庭子女的语言障碍，多文化家庭支援中心专业语言发育指导老师将免费提供系统的语言评估与语言治疗教育。",
+            "en": "Provides free systematic language evaluation and language therapy education by specialized language development teachers at Multicultural Family Support Centers."
+        },
+        "eligibility": "언어발달 지연 우려가 있는 만 12세 이하의 다문화가족 자녀 (소득제한 없음)"
+    },
+    {
+        "id": "real_w7",
+        "title": "마포구 다문화가족 자녀 방문학습 지원",
+        "category": "교육지원",
+        "minAge": 4,
+        "maxAge": 11,
+        "maxIncome": 120,
+        "region": "서울 마포구",
+        "desc": {
+            "ko": "마포구 거주 저소득 다문화가정 자녀의 한글 획득 및 기초 학습력 제고를 위해 전문 학습지 교사가 매주 가정을 방문하여 1:1 맞춤 교육을 지원합니다.",
+            "vi": "Hỗ trợ giáo viên hướng dẫn học tập đến nhà dạy 1:1 hàng tuần cho con em gia đình đa văn hóa có thu nhập thấp sống tại Mapo-gu để học tiếng Hàn và củng cố lực học cơ bản.",
+            "zh": "为提高居住在麻浦区的低收入多文化家庭子女的韩文习得与基础学习能力，专业辅导老师每周上门进行1对1定制化教学支持。",
+            "en": "Provides 1:1 visiting tutoring services weekly by professional worksheet instructors to improve Korean acquisition and basic learning skills for multicultural children in Mapo-gu."
+        },
+        "eligibility": "마포구 거주 기준 중위소득 120% 이하의 다문화가족 자녀 (만 4~11세)"
+    },
+    {
+        "id": "real_w8",
+        "title": "마포구 다문화자녀 초등학교 입학축하금",
+        "category": "교육지원",
+        "minAge": 7,
+        "maxAge": 8,
+        "maxIncome": 100,
+        "region": "서울 마포구",
+        "desc": {
+            "ko": "마포구에 거주하고 올해 초등학교에 갓 입학하는 다문화가정 신입생 자녀에게 입학 축하금 10만 원을 마포사랑상품권 또는 계좌 이체로 지원합니다.",
+            "vi": "Hỗ trợ 100.000 KRW tiền mừng nhập học bằng Thẻ 상품권 Mapo Sarang hoặc chuyển khoản cho con em gia đình đa văn hóa chuẩn bị vào lớp 1 tại Mapo-gu.",
+            "zh": "向居住在麻浦区且今年新入学小学的多文化家庭新生子女资助10万韩元入学祝贺金，以麻浦爱心商品券或转账形式发放。",
+            "en": "Supports a 100,000 KRW school entrance celebration allowance via Mapo Sarang Gift Certificates or bank transfer for multicultural family children entering elementary school in Mapo-gu."
+        },
+        "eligibility": "마포구 거주 기준 중위소득 100% 이하, 올해 초등학교 입학 예정인 다문화 가정 자녀"
+    }
+]
