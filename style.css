@@ -1562,5 +1562,137 @@ body {
     color: var(--primary-dark);
 }
 
+/* Toss/Premium Style Modal Dialog */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 1100;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Bottom sheet layout on mobile */
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.hidden {
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 480px;
+    background-color: var(--bg-card);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.1);
+    max-height: 80vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-sizing: border-box;
+}
+
+@media (min-width: 480px) {
+    .modal-overlay {
+        align-items: center; /* Centered modal on desktop view */
+    }
+    .modal-content {
+        border-radius: 24px;
+        width: 90%;
+        max-height: 700px;
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--text-sub);
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+}
+
+.modal-body h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 8px;
+}
+
+.modal-desc {
+    font-size: 0.9rem;
+    color: #4A5568;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.modal-info-box {
+    background-color: var(--bg-app);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+}
+
+.info-label {
+    color: var(--text-sub);
+    font-weight: 500;
+}
+
+.info-value {
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.modal-eligibility-detail {
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.modal-eligibility-detail h5 {
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+
+.modal-eligibility-detail p {
+    color: #4A5568;
+}
+
+/* slide-up animation */
+.anim-slide-up {
+    animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
 
 

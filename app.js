@@ -28,6 +28,11 @@ const translations = {
         btnStart: "다온 시작하기",
         homeFeedTitle: "실시간 복지로 지원 혜택 피드",
         homeFeedDesc: "전국의 다문화 가정을 위한 실시간 정부/지자체 복지 정책 목록입니다.",
+        modalAgeLabel: "대상 연령",
+        modalIncomeLabel: "소득 기준",
+        modalRegionLabel: "거주 지역",
+        modalEligTitle: "상세 지원 조건",
+        modalLinkLabel: "공식 홈페이지 신청 바로가기",
         
         // Onboarding Translations
         obTitle0: "다문화 가정을 위한<br>따뜻한 AI 비서, 다온",
@@ -69,6 +74,11 @@ const translations = {
         btnStart: "Bắt đầu với Daon",
         homeFeedTitle: "Bảng tin trợ cấp thời gian thực Bokjiro",
         homeFeedDesc: "Danh sách chính sách phúc lợi chính phủ/địa phương thời gian thực dành cho các gia đình đa văn hóa.",
+        modalAgeLabel: "Độ tuổi đối tượng",
+        modalIncomeLabel: "Tiêu chuẩn thu nhập",
+        modalRegionLabel: "Khu vực cư trú",
+        modalEligTitle: "Điều kiện hỗ trợ chi tiết",
+        modalLinkLabel: "Đến trang đăng ký chính thức",
         
         // Onboarding Translations
         obTitle0: "Daon, Trợ lý AI ấm áp<br>cho các gia đình đa văn hóa",
@@ -110,6 +120,11 @@ const translations = {
         btnStart: "开始多稳",
         homeFeedTitle: "实时福利路政策推荐",
         homeFeedDesc: "面向全国多文化家庭的实时政府及地方自治团体福利政策列表。",
+        modalAgeLabel: "目标年龄",
+        modalIncomeLabel: "收入标准",
+        modalRegionLabel: "居住地区",
+        modalEligTitle: "详细资助条件",
+        modalLinkLabel: "前往官方申请网站",
         
         // Onboarding Translations
         obTitle0: "多稳 (Daon)，多文化家庭的<br>贴心 AI 秘书",
@@ -151,6 +166,11 @@ const translations = {
         btnStart: "Start Daon",
         homeFeedTitle: "Real-time Bokjiro Welfare Feed",
         homeFeedDesc: "Real-time government & local municipality welfare policies list for multicultural families.",
+        modalAgeLabel: "Target Age",
+        modalIncomeLabel: "Income Criteria",
+        modalRegionLabel: "Residential Area",
+        modalEligTitle: "Detailed Eligibility",
+        modalLinkLabel: "Apply on Official Website",
         
         // Onboarding Translations
         obTitle0: "Daon, a Warm AI Assistant<br>for Multicultural Families",
@@ -344,6 +364,11 @@ function changeLanguage(langCode) {
         'nav-txt-profile': translations[langCode].navProfile,
         'txt-home-feed-title': translations[langCode].homeFeedTitle,
         'txt-home-feed-desc': translations[langCode].homeFeedDesc,
+        'txt-modal-age-label': translations[langCode].modalAgeLabel,
+        'txt-modal-income-label': translations[langCode].modalIncomeLabel,
+        'txt-modal-region-label': translations[langCode].modalRegionLabel,
+        'txt-modal-elig-title': translations[langCode].modalEligTitle,
+        'txt-modal-link-label': translations[langCode].modalLinkLabel,
         
         // Onboarding wizard texts
         'txt-ob-title-0': translations[langCode].obTitle0,
@@ -686,55 +711,62 @@ function viewBenefitDetail(benefitId) {
     const benefit = mockWelfareDatabase.find(b => b.id === benefitId);
     if (!benefit) return;
     
-    // Switch to tab-alerts
-    switchTab('tab-alerts');
+    const modal = document.getElementById('benefit-detail-modal');
+    if (!modal) return;
     
-    // Auto fill filter conditions to trigger this specific benefit
-    document.getElementById('prof-child-age').value = benefit.minAge;
+    const lang = translations[currentLanguage] ? currentLanguage : 'ko';
     
-    // Match regional conditions
-    if (benefit.region !== '전국') {
-        const regionSelector = document.getElementById('prof-region');
-        for (let option of regionSelector.options) {
-            if (option.value.includes(benefit.region)) {
-                regionSelector.value = option.value;
-                break;
-            }
-        }
+    // Populate modal content
+    document.getElementById('modal-benefit-cat').textContent = benefit.category;
+    document.getElementById('modal-benefit-title').textContent = benefit.title;
+    document.getElementById('modal-benefit-desc').textContent = benefit.desc[lang] || benefit.desc['ko'];
+    
+    // Target Age text format
+    let ageText = "";
+    if (lang === 'vi') ageText = `Từ ${benefit.minAge} đến ${benefit.maxAge} tuổi`;
+    else if (lang === 'zh') ageText = `满 ${benefit.minAge}岁 ~ ${benefit.maxAge}岁`;
+    else if (lang === 'en') ageText = `${benefit.minAge} - ${benefit.maxAge} years old`;
+    else ageText = `만 ${benefit.minAge}세 ~ ${benefit.maxAge}세`;
+    document.getElementById('modal-benefit-age').textContent = ageText;
+    
+    // Income text format
+    let incomeText = "";
+    if (lang === 'vi') incomeText = `Dưới ${benefit.maxIncome}% thu nhập trung bình chuẩn`;
+    else if (lang === 'zh') incomeText = `中位数收入 ${benefit.maxIncome}% 以下`;
+    else if (lang === 'en') incomeText = `Under ${benefit.maxIncome}% of Median Income`;
+    else incomeText = `기준 중위소득 ${benefit.maxIncome}% 이하`;
+    document.getElementById('modal-benefit-income').textContent = incomeText;
+    
+    // Region text format
+    let regionText = benefit.region;
+    if (benefit.region === '전국') {
+        if (lang === 'vi') regionText = "Toàn quốc";
+        else if (lang === 'zh') regionText = "全国";
+        else if (lang === 'en') regionText = "Nationwide";
     }
+    document.getElementById('modal-benefit-region').textContent = regionText;
     
-    // Match income conditions
-    const incomeSelector = document.getElementById('prof-income');
-    if (benefit.maxIncome <= 50) {
-        incomeSelector.value = "50";
-    } else if (benefit.maxIncome <= 80) {
-        incomeSelector.value = "80";
-    } else if (benefit.maxIncome <= 120) {
-        incomeSelector.value = "120";
+    // Eligibility text format
+    document.getElementById('modal-benefit-eligibility').textContent = benefit.eligibility;
+    
+    // Action Link
+    const linkEl = document.getElementById('modal-benefit-link');
+    if (benefit.sourceUrl) {
+        linkEl.href = benefit.sourceUrl;
+        linkEl.style.display = 'flex';
     } else {
-        incomeSelector.value = "150";
+        linkEl.style.display = 'none';
     }
     
-    // Re-trigger calculation
-    simulateBenefitMatch(false);
-    
-    // Highlight the targeted matched benefit card with a premium visual animation
-    setTimeout(() => {
-        const benefitCards = document.querySelectorAll('.benefit-card');
-        benefitCards.forEach(card => {
-            const titleText = card.querySelector('h4').textContent;
-            if (titleText === benefit.title) {
-                card.style.borderColor = 'var(--secondary)';
-                card.style.boxShadow = '0 0 12px rgba(63, 162, 246, 0.4)';
-                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                
-                setTimeout(() => {
-                    card.style.borderColor = '';
-                    card.style.boxShadow = '';
-                }, 2500);
-            }
-        });
-    }, 300);
+    // Open modal
+    modal.classList.remove('hidden');
+}
+
+function closeWelfareModal(event = null) {
+    const modal = document.getElementById('benefit-detail-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
 }
 
 // ==========================================

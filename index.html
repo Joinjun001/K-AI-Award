@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=1.9">
+    <link rel="stylesheet" href="style.css?v=2.0">
 </head>
 <body>
     <!-- Real-time Web Push Simulation Toast Container -->
@@ -366,7 +366,46 @@
         </nav>
     </div>
 
+    <!-- Premium Benefit Detail Modal (Toss style) -->
+    <div id="benefit-detail-modal" class="modal-overlay hidden" onclick="closeWelfareModal(event)">
+        <div class="modal-content anim-slide-up" onclick="event.stopPropagation();">
+            <div class="modal-header">
+                <span id="modal-benefit-cat" class="benefit-cat-tag">교육지원</span>
+                <button class="modal-close-btn" onclick="closeWelfareModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3 id="modal-benefit-title">다문화가정 자녀 입학준비금 지원</h3>
+                <p id="modal-benefit-desc" class="modal-desc">초등학교에 입학하는 다문화가정 자녀에게 책가방, 도서, 학용품 구입비 10만 원을 지원합니다.</p>
+                
+                <div class="modal-info-box">
+                    <div class="info-item">
+                        <span class="info-label" id="txt-modal-age-label">대상 연령</span>
+                        <span id="modal-benefit-age" class="info-value">만 7세 ~ 8세</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label" id="txt-modal-income-label">소득 기준</span>
+                        <span id="modal-benefit-income" class="info-value">중위소득 100% 이하</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label" id="txt-modal-region-label">거주 지역</span>
+                        <span id="modal-benefit-region" class="info-value">서울 마포구</span>
+                    </div>
+                </div>
+                
+                <div class="modal-eligibility-detail">
+                    <h5 id="txt-modal-elig-title">상세 지원 조건</h5>
+                    <p id="modal-benefit-eligibility">마포구 거주 기준 중위소득 100% 이하, 올해 초등학교 입학 예정인 다문화 가정 자녀</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a id="modal-benefit-link" href="#" target="_blank" class="btn btn-primary btn-full">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> <span id="txt-modal-link-label">공식 홈페이지 신청 바로가기</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- UI Interaction Scripts -->
-    <script src="app.js?v=1.9"></script>
+    <script src="app.js?v=2.0"></script>
 </body>
 </html>
