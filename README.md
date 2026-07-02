@@ -34,54 +34,44 @@
 ```mermaid
 graph TD
     %% Frontend
-    subgraph Client [Client Side - PWA Web App]
-        FE[React / Vite SPA]
-        FCM_SDK[Firebase SDK - Web Push]
+    subgraph Client [Client Side - Static App]
+        FE[Vanilla HTML / CSS / JS]
     end
 
     %% Backend Service
     subgraph Backend [Backend API Service]
+        PROXY[Nginx Reverse Proxy]
         API[FastAPI Server]
-        CELERY[Celery Worker - Async & Batch Task]
-        REDIS[Redis - Celery Broker & Cache]
     end
 
-    %% Storage
-    subgraph DataStore [Storage Layer]
-        DB[(PostgreSQL - Relational DB)]
-        VDB[(Pinecone / pgvector - Vector DB)]
+    %% Storage & Daemon
+    subgraph Storage [Storage & Daemon]
+        DB[(PostgreSQL Relational DB)]
+        DAEMON[Welfare Sync Daemon]
     end
 
     %% External Services
     subgraph External [External APIs]
-        OCR[Naver CLOVA OCR]
-        LLM[OpenAI GPT-4o-mini / Gemini API]
-        FCM[Firebase Cloud Messaging]
+        GEMINI[Google Gemini 2.5 API]
         GOV[공공데이터포털 - 보조금24 API]
     end
 
     %% Connections
-    FE -->|HTTPS Requests| API
-    FE -->|Register Token| FCM_SDK
-    API --> DB
-    API --> REDIS
-    CELERY --> REDIS
-    CELERY --> DB
-    CELERY --> VDB
-    CELERY --> GOV
-    CELERY --> FCM
-
-    %% RAG & AI Flow
-    API -->|OCR Request| OCR
-    API -->|Similarity Search| VDB
-    API -->|Augmented Query| LLM
+    FE -->|HTTP Requests| PROXY
+    PROXY -->|/| FE
+    PROXY -->|/api/| API
+    API -->|Read| DB
+    API -->|Analyze Request| GEMINI
+    DAEMON -->|Fetch| GOV
+    DAEMON -->|Translate| GEMINI
+    DAEMON -->|Write/Update| DB
 ```
 
-* **Client**: React (Vite) + Tailwind CSS + Vanilla JS (PWA 지원으로 모바일 친화적인 앱 UX 제공)
-* **Server**: FastAPI (비동기 엔드포인트 구현 및 AI SDK 친화적 백엔드)
-* **Database**: PostgreSQL (RDB) + pgvector (RAG용 벡터 임베딩 저장 및 유사도 검색)
-* **Queue & Scheduler**: Celery + Redis (복지 혜택 수집 배치 스케줄러 구현)
-* **External AI API**: OpenAI GPT-4o-mini / Gemini 1.5 Flash (번역 및 맞춤 해설 생성)
+* **Client**: Vanilla HTML5 + CSS3 + Vanilla JS (SPA 구조로 Nginx로 정적 서빙)
+* **Server**: FastAPI (Nginx 리버스 프록시 연동 및 Gemini API 텍스트/이미지 통합 분석 엔드포인트 구현)
+* **Database**: PostgreSQL (RDB - 다국어 복지 혜택 데이터를 테이블에 캐싱하여 조회 속도 극대화)
+* **Daemon**: Background Python Sync Daemon (Systemd 서비스로 등록되어 주기적으로 공공데이터를 갱신 및 DB에 Upsert)
+* **External AI API**: Google Gemini 2.5 API (OCR 텍스트 추출, 다국어 번역, RAG 요약 및 한국 문화 해설을 원스톱 일괄 처리)
 
 ---
 
