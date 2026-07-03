@@ -1852,7 +1852,7 @@ async function fetchAdminWelfareList() {
     
     tbody.innerHTML = `
         <tr>
-            <td colspan="8" style="text-align: center; padding: 30px; color: var(--text-secondary);">
+            <td colspan="14" style="text-align: center; padding: 30px; color: var(--text-secondary);">
                 <i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px;"></i>데이터를 불러오는 중입니다...
             </td>
         </tr>
@@ -1868,7 +1868,7 @@ async function fetchAdminWelfareList() {
         if (list.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="8" style="text-align: center; padding: 30px; color: var(--text-secondary);">
+                    <td colspan="14" style="text-align: center; padding: 30px; color: var(--text-secondary);">
                         조회된 데이터가 없습니다.
                     </td>
                 </tr>
@@ -1879,13 +1879,19 @@ async function fetchAdminWelfareList() {
         let html = "";
         list.forEach(item => {
             html += `
-                <tr style="border-bottom: 1px solid var(--border-color);">
+                <tr style="border-bottom: 1px solid var(--border-color); white-space: nowrap;">
                     <td style="padding: 14px 16px; font-weight: 500; color: var(--text-secondary); font-family: monospace;">${item.id}</td>
-                    <td style="padding: 14px 16px; font-weight: 600; color: var(--text-primary);">${item.title}</td>
+                    <td style="padding: 14px 16px; font-weight: 600; color: var(--text-primary); max-width: 200px; overflow: hidden; text-overflow: ellipsis;" title="${item.title || ''}">${item.title || ''}</td>
                     <td style="padding: 14px 16px;"><span style="background-color: rgba(49, 130, 246, 0.08); color: var(--toss-blue); padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">${item.category}</span></td>
-                    <td style="padding: 14px 16px; text-align: center;">만 ${item.minAge}세 ~ ${item.maxAge}세</td>
+                    <td style="padding: 14px 16px; text-align: center;">만 ${item.minAge}세</td>
+                    <td style="padding: 14px 16px; text-align: center;">만 ${item.maxAge}세</td>
                     <td style="padding: 14px 16px; text-align: center;">중위소득 ${item.maxIncome}%</td>
                     <td style="padding: 14px 16px;"><i class="fa-solid fa-location-dot" style="color: var(--toss-blue); margin-right: 4px;"></i>${item.region}</td>
+                    <td style="padding: 14px 16px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; cursor: help;" title="${item.desc?.ko || ''}">${item.desc?.ko || '-'}</td>
+                    <td style="padding: 14px 16px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; cursor: help;" title="${item.desc?.vi || ''}">${item.desc?.vi || '-'}</td>
+                    <td style="padding: 14px 16px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; cursor: help;" title="${item.desc?.zh || ''}">${item.desc?.zh || '-'}</td>
+                    <td style="padding: 14px 16px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; cursor: help;" title="${item.desc?.en || ''}">${item.desc?.en || '-'}</td>
+                    <td style="padding: 14px 16px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; cursor: help;" title="${item.eligibility || ''}">${item.eligibility || '-'}</td>
                     <td style="padding: 14px 16px; text-align: center;">
                         ${item.sourceUrl ? `<a href="${item.sourceUrl}" target="_blank" style="color: var(--toss-blue); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 12px;"></i> 바로가기</a>` : '-'}
                     </td>
@@ -1898,7 +1904,7 @@ async function fetchAdminWelfareList() {
         console.error("Fetch admin welfare list error:", err);
         tbody.innerHTML = `
             <tr>
-                <td colspan="8" style="text-align: center; padding: 30px; color: var(--toss-red); font-weight: 500;">
+                <td colspan="14" style="text-align: center; padding: 30px; color: var(--toss-red); font-weight: 500;">
                     <i class="fa-solid fa-circle-exclamation" style="margin-right: 8px;"></i>데이터 로딩 오류: 권한이 없거나 서버와의 통신에 실패했습니다.
                 </td>
             </tr>
