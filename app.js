@@ -487,6 +487,38 @@ const mockNoticeTemplates = {
 // 3. TAB CONTROLLER & NAVIGATION
 // ==========================================
 function switchTab(tabId, navElement = null) {
+    if (tabId === 'tab-alerts') {
+        const hasOnboarded = localStorage.getItem('daon_onboarded');
+        if (hasOnboarded !== 'true') {
+            const overlay = document.getElementById('onboarding-overlay');
+            if (overlay) {
+                onboardStep = 0;
+                
+                // Reset wizard active layers
+                document.querySelectorAll('.wizard-step').forEach((step, idx) => {
+                    step.classList.remove('exit');
+                    if (idx === 0) {
+                        step.classList.add('active');
+                    } else {
+                        step.classList.remove('active');
+                    }
+                });
+                
+                // Reset selection indicators
+                document.querySelectorAll('.lang-opt-btn, .income-opt-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                
+                updateOnboardProgress();
+                
+                overlay.style.display = 'flex';
+                setTimeout(() => {
+                    overlay.classList.remove('fade-out');
+                }, 50);
+            }
+        }
+    }
+
     // Hide all tabs
     document.querySelectorAll('.tab-content').forEach(tab => {
         tab.classList.remove('active');
@@ -919,9 +951,25 @@ function copyResultText() {
 // 6. WELFARE ALGORITHM & MATCHING SIMULATION
 // ==========================================
 function simulateBenefitMatch(showToast = true) {
-    activeProfile.childAge = parseInt(document.getElementById('prof-child-age').value) || 8;
-    activeProfile.incomeBracket = parseInt(document.getElementById('prof-income').value) || 80;
-    activeProfile.region = document.getElementById('prof-region').value;
+    const childAgeEl = document.getElementById('prof-child-age');
+    activeProfile.childAge = childAgeEl ? (parseInt(childAgeEl.value) || 0) : 8;
+    
+    const incomeValEl = document.getElementById('prof-income-val');
+    const incomeVal = incomeValEl ? (parseInt(incomeValEl.value) || 300) : 300;
+    
+    // 만원 단위 소득을 중위소득 % 비율로 변환 (4인 가구 기준 540만원 기준 가볍게 연산)
+    let incomePercent = 150;
+    if (incomeVal <= 270) {
+        incomePercent = 50;
+    } else if (incomeVal <= 430) {
+        incomePercent = 80;
+    } else if (incomeVal <= 650) {
+        incomePercent = 120;
+    }
+    activeProfile.incomeBracket = incomePercent;
+    
+    const regionEl = document.getElementById('prof-region');
+    activeProfile.region = regionEl ? regionEl.value : '전국';
     
     if (showToast) {
         triggerToast("매칭 완료", "가구원 프로필을 바탕으로 복지 데이터를 매칭했습니다.");
@@ -1153,8 +1201,12 @@ function openBenefitFromToast() {
     // Switch to active matching tab
     switchTab('tab-alerts');
     // Pre-fill profile to guarantee matching the child allowance / voucher
-    document.getElementById('prof-child-age').value = 8;
-    document.getElementById('prof-income').value = 80;
+    const childAgeEl = document.getElementById('prof-child-age');
+    if (childAgeEl) childAgeEl.value = 8;
+    
+    const incomeValEl = document.getElementById('prof-income-val');
+    if (incomeValEl) incomeValEl.value = 350; // 중위소득 80% 근사치인 350만원 셋팅
+    
     simulateBenefitMatch();
     
     // Reset notification badge
@@ -1312,33 +1364,33 @@ function renderOnboardChildrenInputs() {
             <div class="onboard-child-card-header">
                 <span>
                     <i class="fa-solid fa-child"></i> 
-                    \${lang === 'vi' ? 'Con thứ ' + (index + 1) : (lang === 'zh' ? '第 ' + (index + 1) + ' 个子女' : (lang === 'en' ? (index + 1) + 'th Child' : (index + 1) + '번째 자녀'))}
+                    ${lang === 'vi' ? 'Con thứ ' + (index + 1) : (lang === 'zh' ? '第 ' + (index + 1) + ' 个子女' : (lang === 'en' ? (index + 1) + 'th Child' : (index + 1) + '번째 자녀'))}
                 </span>
-                \${!isFirst ? `
-                    <button type="button" class="btn-delete-child" onclick="removeCustomOnboardChild(\${index})">
+                ${!isFirst ? `
+                    <button type="button" class="btn-delete-child" onclick="removeCustomOnboardChild(${index})">
                         <i class="fa-solid fa-trash-can"></i>
                     </button>
                 ` : ''}
             </div>
             
             <div class="form-group" style="margin-bottom: 8px;">
-                <label>\${lang === 'vi' ? 'Tuổi của con' : (lang === 'zh' ? '子女年龄' : (lang === 'en' ? 'Child Age' : '자녀 나이'))}</label>
+                <label>${lang === 'vi' ? 'Tuổi của con' : (lang === 'zh' ? '子女年龄' : (lang === 'en' ? 'Child Age' : '자녀 나이'))}</label>
                 <div class="onboard-counter-wrapper" style="margin: 0; width: auto; max-width: 200px;">
-                    <button type="button" class="btn-counter" onclick="adjustCustomChildAge(\${index}, -1)"><i class="fa-solid fa-minus"></i></button>
-                    <span class="counter-value">\${child.age}</span>
-                    <span class="counter-unit">\${lang === 'vi' ? 'tuổi' : (lang === 'zh' ? '岁' : (lang === 'en' ? 'yrs' : '세'))}</span>
-                    <button type="button" class="btn-counter" onclick="adjustCustomChildAge(\${index}, 1)"><i class="fa-solid fa-plus"></i></button>
+                    <button type="button" class="btn-counter" onclick="adjustCustomChildAge(${index}, -1)"><i class="fa-solid fa-minus"></i></button>
+                    <span class="counter-value">${child.age}</span>
+                    <span class="counter-unit">${lang === 'vi' ? 'tuổi' : (lang === 'zh' ? '岁' : (lang === 'en' ? 'yrs' : '세'))}</span>
+                    <button type="button" class="btn-counter" onclick="adjustCustomChildAge(${index}, 1)"><i class="fa-solid fa-plus"></i></button>
                 </div>
             </div>
             
             <div class="form-group" style="margin-bottom: 0;">
-                <label>\${lang === 'vi' ? 'Giới tính' : (lang === 'zh' ? '性别' : (lang === 'en' ? 'Gender' : '성별'))}</label>
+                <label>${lang === 'vi' ? 'Giới tính' : (lang === 'zh' ? '性别' : (lang === 'en' ? 'Gender' : '성별'))}</label>
                 <div class="gender-btn-group" style="display: flex; gap: 8px;">
-                    <button type="button" class="btn btn-outline gender-btn \${child.gender === 'M' ? 'selected' : ''}" style="flex:1; padding: 8px;" onclick="updateOnboardChildGender(\&quot;\${index}\&quot;, 'M')">
-                        <i class="fa-solid fa-mars"></i> \${lang === 'vi' ? 'Nam' : (lang === 'zh' ? '男' : (lang === 'en' ? 'Boy' : '남아'))}
+                    <button type="button" class="btn btn-outline gender-btn ${child.gender === 'M' ? 'selected' : ''}" style="flex:1; padding: 8px;" onclick="updateOnboardChildGender(${index}, 'M')">
+                        <i class="fa-solid fa-mars"></i> ${lang === 'vi' ? 'Nam' : (lang === 'zh' ? '男' : (lang === 'en' ? 'Boy' : '남아'))}
                     </button>
-                    <button type="button" class="btn btn-outline gender-btn \${child.gender === 'F' ? 'selected' : ''}" style="flex:1; padding: 8px;" onclick="updateOnboardChildGender(\&quot;\${index}\&quot;, 'F')">
-                        <i class="fa-solid fa-venus"></i> \${lang === 'vi' ? 'Nữ' : (lang === 'zh' ? '女' : (lang === 'en' ? 'Girl' : '여아'))}
+                    <button type="button" class="btn btn-outline gender-btn ${child.gender === 'F' ? 'selected' : ''}" style="flex:1; padding: 8px;" onclick="updateOnboardChildGender(${index}, 'F')">
+                        <i class="fa-solid fa-venus"></i> ${lang === 'vi' ? 'Nữ' : (lang === 'zh' ? '女' : (lang === 'en' ? 'Girl' : '여아'))}
                     </button>
                 </div>
             </div>
@@ -1374,8 +1426,8 @@ function removeCustomOnboardChild(index) {
 }
 
 function nextOnboardStep() {
-    const currentStepEl = document.getElementById(`onboard-step-\${onboardStep}`);
-    const nextStepEl = document.getElementById(`onboard-step-\${onboardStep + 1}`);
+    const currentStepEl = document.getElementById(`onboard-step-${onboardStep}`);
+    const nextStepEl = document.getElementById(`onboard-step-${onboardStep + 1}`);
     const nextBtn = document.getElementById('btn-onboarding-next');
     
     // Step Validations
@@ -1591,6 +1643,7 @@ function finishOnboarding() {
     localStorage.setItem('daon_lang', onboardData.lang);
     localStorage.setItem('daon_child_age', primaryChildAge);
     localStorage.setItem('daon_income', onboardData.income);
+    localStorage.setItem('daon_raw_income', onboardData.rawIncome || 300);
     localStorage.setItem('daon_children', JSON.stringify(onboardData.children)); // Stringify child details
     
     overlay.classList.add('fade-out');
@@ -1671,6 +1724,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         const savedLang = localStorage.getItem('daon_lang') || 'ko';
         const savedAge = parseInt(localStorage.getItem('daon_child_age')) || 8;
         const savedIncome = parseInt(localStorage.getItem('daon_income')) || 80;
+        const savedRawIncome = parseInt(localStorage.getItem('daon_raw_income')) || 300;
         
         currentLanguage = savedLang;
         activeProfile.childAge = savedAge;
@@ -1682,8 +1736,8 @@ window.addEventListener('DOMContentLoaded', async () => {
         const profChildAgeEl = document.getElementById('prof-child-age');
         if (profChildAgeEl) profChildAgeEl.value = savedAge;
         
-        const profIncomeEl = document.getElementById('prof-income');
-        if (profIncomeEl) profIncomeEl.value = savedIncome;
+        const profIncomeValEl = document.getElementById('prof-income-val');
+        if (profIncomeValEl) profIncomeValEl.value = savedRawIncome;
         
         // Initial load setup
         changeLanguage(savedLang);
@@ -1691,18 +1745,161 @@ window.addEventListener('DOMContentLoaded', async () => {
         renderHomeWelfareFeed();
         
         // Onboarding Check
-        const hasOnboarded = localStorage.getItem('daon_onboarded');
         const overlay = document.getElementById('onboarding-overlay');
         if (overlay) {
-            if (hasOnboarded === 'true') {
-                overlay.style.display = 'none';
-                overlay.classList.add('fade-out');
-            } else {
-                // Show onboarding starting state
-                updateOnboardProgress();
-            }
+            overlay.style.display = 'none';
+            overlay.classList.add('fade-out');
         }
     } catch (err) {
         console.error("Daon load initialization error:", err);
     }
 });
+
+// ==========================================
+// 6. ADMIN DASHBOARD & LOGIN CONTROLLER
+// ==========================================
+let adminToken = "";
+
+function openAdminLoginModal() {
+    const modal = document.getElementById("admin-login-modal");
+    if (modal) {
+        modal.classList.remove("hidden");
+        document.getElementById("admin-username").value = "";
+        document.getElementById("admin-password").value = "";
+        const errEl = document.getElementById("admin-login-error");
+        if (errEl) {
+            errEl.classList.add("hidden");
+            errEl.innerText = "";
+        }
+    }
+}
+
+function closeAdminLoginModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    const modal = document.getElementById("admin-login-modal");
+    if (modal) {
+        modal.classList.add("hidden");
+    }
+}
+
+async function submitAdminLogin() {
+    const usernameEl = document.getElementById("admin-username");
+    const passwordEl = document.getElementById("admin-password");
+    const errorEl = document.getElementById("admin-login-error");
+    
+    if (!usernameEl || !passwordEl) return;
+    
+    const username = usernameEl.value.trim();
+    const password = passwordEl.value;
+    
+    if (!username || !password) {
+        if (errorEl) {
+            errorEl.innerText = "아이디와 비밀번호를 모두 입력해 주세요.";
+            errorEl.classList.remove("hidden");
+        }
+        return;
+    }
+    
+    try {
+        const response = await fetch("/api/admin/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username, password })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.status === "success") {
+            adminToken = data.token;
+            closeAdminLoginModal();
+            openAdminDashboardModal();
+            await fetchAdminWelfareList();
+        } else {
+            if (errorEl) {
+                errorEl.innerText = data.detail || "로그인 정보가 일치하지 않습니다.";
+                errorEl.classList.remove("hidden");
+            }
+        }
+    } catch (err) {
+        console.error("Admin login error:", err);
+        if (errorEl) {
+            errorEl.innerText = "서버 연결에 실패했습니다.";
+            errorEl.classList.remove("hidden");
+        }
+    }
+}
+
+function openAdminDashboardModal() {
+    const modal = document.getElementById("admin-dashboard-modal");
+    if (modal) {
+        modal.classList.remove("hidden");
+    }
+}
+
+function closeAdminDashboardModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    const modal = document.getElementById("admin-dashboard-modal");
+    if (modal) {
+        modal.classList.add("hidden");
+    }
+}
+
+async function fetchAdminWelfareList() {
+    const tbody = document.getElementById("admin-welfare-tbody");
+    if (!tbody) return;
+    
+    tbody.innerHTML = `
+        <tr>
+            <td colspan="7" style="text-align: center; padding: 30px; color: var(--text-secondary);">
+                <i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px;"></i>데이터를 불러오는 중입니다...
+            </td>
+        </tr>
+    `;
+    
+    try {
+        const response = await fetch(`/api/admin/welfare?token=${adminToken}`);
+        if (!response.ok) {
+            throw new Error("Unauthorized or server error");
+        }
+        
+        const list = await response.json();
+        if (list.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 30px; color: var(--text-secondary);">
+                        조회된 데이터가 없습니다.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        let html = "";
+        list.forEach(item => {
+            html += `
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 14px 16px; font-weight: 500; color: var(--text-secondary); font-family: monospace;">${item.id}</td>
+                    <td style="padding: 14px 16px; font-weight: 600; color: var(--text-primary);">${item.title}</td>
+                    <td style="padding: 14px 16px;"><span style="background-color: rgba(49, 130, 246, 0.08); color: var(--toss-blue); padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">${item.category}</span></td>
+                    <td style="padding: 14px 16px; text-align: center;">만 ${item.minAge}세 ~ ${item.maxAge}세</td>
+                    <td style="padding: 14px 16px; text-align: center;">중위소득 ${item.maxIncome}%</td>
+                    <td style="padding: 14px 16px;"><i class="fa-solid fa-location-dot" style="color: var(--toss-blue); margin-right: 4px;"></i>${item.region}</td>
+                    <td style="padding: 14px 16px; color: var(--text-secondary); font-size: 13px;">${item.updatedAt || '-'}</td>
+                </tr>
+            `;
+        });
+        tbody.innerHTML = html;
+    } catch (err) {
+        console.error("Fetch admin welfare list error:", err);
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align: center; padding: 30px; color: var(--toss-red); font-weight: 500;">
+                    <i class="fa-solid fa-circle-exclamation" style="margin-right: 8px;"></i>데이터 로딩 오류: 권한이 없거나 서버와의 통신에 실패했습니다.
+                </td>
+            </tr>
+        `;
+    }
+}
+

@@ -9,7 +9,17 @@ import psycopg2
 # Configurations
 API_KEY_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'api_key.txt')
 OUTPUT_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'welfare_data.json')
+ENV_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
 INTERVAL_SECONDS = 1800  # 30 minutes
+
+def load_env():
+    if os.path.exists(ENV_FILE):
+        with open(ENV_FILE, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    key, val = line.split('=', 1)
+                    os.environ[key.strip()] = val.strip()
 
 # Free Google Translate API Stub (No Key Required)
 def translate_text(text, target_lang):
@@ -136,53 +146,64 @@ def save_to_db(items):
 
 # Fetch and update cache
 def fetch_and_cache():
+    # Load env variables from .env
+    load_env()
+    
     # Read API Key
-    api_key = "data-portal-test-key"  # default fallback key
-    if os.path.exists(API_KEY_FILE):
+    api_key = os.getenv("DATA_PORTAL_API_KEY", "")
+    if not api_key and os.path.exists(API_KEY_FILE):
         with open(API_KEY_FILE, 'r', encoding='utf-8') as f:
             user_key = f.read().strip()
             if user_key:
                 api_key = user_key
                 
-    print(f"Fetching live data from Bojogum24 API using key: {api_key[:8]}...")
-    url = "https://api.odcloud.kr/api/gov24/v3/serviceList?page=1&perPage=80"
+    if not api_key:
+        api_key = "data-portal-test-key"  # default fallback key
+                
+    print(f"Fetching live data from Bokjiro Central Ministry Welfare API using key: {api_key[:8]}...")
+    url = f"http://apis.data.go.kr/B554287/NationalWelfareInformationsV001/NationalWelfarelistV001?serviceKey={api_key}&pageNo=1&numOfRows=100"
     
     req = urllib.request.Request(url, headers={
-        "Authorization": f"Infuser {api_key}",
         "User-Agent": "Mozilla/5.0"
     })
     
     try:
         try:
-            response = urllib.request.urlopen(req, timeout=10)
+            response = urllib.request.urlopen(req, timeout=15)
+            xml_content = response.read()
         except urllib.error.HTTPError as he:
-            if he.code == 401 and api_key != "data-portal-test-key":
-                print("User API key returned 401 (Unauthorized). It might still be activating on the portal side. Falling back to data-portal-test-key...")
-                req = urllib.request.Request(url, headers={
-                    "Authorization": "Infuser data-portal-test-key",
-                    "User-Agent": "Mozilla/5.0"
-                })
-                response = urllib.request.urlopen(req, timeout=10)
+            if api_key != "data-portal-test-key":
+                print("User API key returned HTTPError. Falling back to data-portal-test-key...")
+                fallback_url = f"http://apis.data.go.kr/B554287/NationalWelfareInformationsV001/NationalWelfarelistV001?serviceKey=data-portal-test-key&pageNo=1&numOfRows=100"
+                req_fallback = urllib.request.Request(fallback_url, headers={"User-Agent": "Mozilla/5.0"})
+                response = urllib.request.urlopen(req_fallback, timeout=15)
+                xml_content = response.read()
             else:
                 raise he
                 
-        res_data = json.loads(response.read().decode('utf-8'))
-        raw_items = res_data.get('data', [])
-        print(f"Total raw items fetched: {len(raw_items)}")
+        import xml.etree.ElementTree as ET
+        root = ET.fromstring(xml_content)
+        items = root.findall('.//item')
+        print(f"Total raw items fetched from XML API: {len(items)}")
         
         # Filter for multicultural/children/welfare categories
         filtered_items = []
-        for idx, item in enumerate(raw_items):
-            title = item.get('서비스명', '')
-            desc_text = item.get('지원내용', '')
-            target_text = item.get('지원대상', '')
-            category = item.get('부서명', '복지')
+        for idx, item in enumerate(items):
+            title = item.find('servNm').text if item.find('servNm') is not None else ''
+            desc_text = item.find('servDgst').text if item.find('servDgst') is not None else ''
+            target_text = item.find('tgTrgDetailDesc').text if item.find('tgTrgDetailDesc') is not None else ''
+            category = item.find('jurMnofNm').text if item.find('jurMnofNm') is not None else '복지'
             
             # Keywords matching multicultural, child, family support
             match_keywords = ["다문화", "외국인", "보육", "아동", "출산", "양육", "가족", "소아", "임산부", "영유아"]
-            is_matched = any(kw in title or kw in desc_text or kw in target_text for kw in match_keywords)
             
-            if is_matched:
+            # Exclude business/corporate/industrial/farming/fishery policies that are not family welfare
+            exclude_keywords = ["법인", "기업", "사업자", "어업", "농업", "농가", "임업", "경영체", "합작", "경영자금", "벤처", "스타트업", "소상공인"]
+            
+            is_matched = any(kw in title or kw in desc_text or kw in target_text for kw in match_keywords)
+            is_excluded = any(kw in title or kw in target_text for kw in exclude_keywords)
+            
+            if is_matched and not is_excluded:
                 # Limit policies to maximum 15 items to avoid excessive translation overhead
                 if len(filtered_items) >= 15:
                     break
@@ -206,12 +227,12 @@ def fetch_and_cache():
                 desc_en = translate_text(desc_text, 'en')
                 
                 # Extract detailed source URL directly from API
-                source_url = item.get('상세조회URL', 'https://www.bokjiro.go.kr')
+                source_url = item.find('servDtlLink').text if item.find('servDtlLink') is not None else 'https://www.bokjiro.go.kr'
                 
                 filtered_items.append({
                     "id": f"api_w_{idx}",
                     "title": title,
-                    "category": item.get('지원유형', '기타'),
+                    "category": category,
                     "minAge": min_age,
                     "maxAge": max_age,
                     "maxIncome": max_income,

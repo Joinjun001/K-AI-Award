@@ -197,3 +197,86 @@ async def analyze_document(
             "full_translation": "Gemini API 호출에 실패하였습니다. 설정 및 네트워크 상태를 확인하세요.",
             "cultural_notes": "<h4>💡 참고 사항</h4><p>한국 학교 문화 설명을 불러올 수 없습니다.</p>"
         }
+
+import hashlib
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
+@app.post("/api/admin/login")
+def admin_login(data: UserLogin):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    try:
+        pw_hash = hashlib.sha256(data.password.encode('utf-8')).hexdigest()
+        cur.execute(
+            "SELECT username, role FROM user_account WHERE username = %s AND password_hash = %s;",
+            (data.username, pw_hash)
+        )
+        row = cur.fetchone()
+        if not row:
+            raise HTTPException(status_code=401, detail="Invalid username or password.")
+        
+        username, role = row[0], row[1]
+        if role != 'admin':
+            raise HTTPException(status_code=403, detail="Access denied. Admin role required.")
+            
+        return {
+            "status": "success",
+            "username": username,
+            "role": role,
+            "token": "admin-session-token-daon-2026"
+        }
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        logger.error(f"Login error: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error during login.")
+    finally:
+        cur.close()
+        conn.close()
+
+@app.get("/api/admin/welfare")
+def get_admin_welfare_benefits(token: str = None):
+    if token != "admin-session-token-daon-2026":
+        raise HTTPException(status_code=401, detail="Unauthorized dashboard access.")
+        
+    conn = get_db_connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT id, title, category, min_age, max_age, max_income, region,
+                   desc_ko, desc_vi, desc_zh, desc_en, eligibility, source_url, updated_at
+            FROM welfare_benefits
+            ORDER BY updated_at DESC;
+        """)
+        rows = cur.fetchall()
+        benefits = []
+        for r in rows:
+            benefits.append({
+                "id": r[0],
+                "title": r[1],
+                "category": r[2],
+                "minAge": r[3],
+                "maxAge": r[4],
+                "maxIncome": r[5],
+                "region": r[6],
+                "desc": {
+                    "ko": r[7],
+                    "vi": r[8],
+                    "zh": r[9],
+                    "en": r[10]
+                },
+                "eligibility": r[11],
+                "sourceUrl": r[12],
+                "updatedAt": r[13].strftime("%Y-%m-%d %H:%M:%S") if r[13] else ""
+            })
+        return benefits
+    except Exception as e:
+        logger.error(f"Error fetching admin welfare benefits: {e}")
+        raise HTTPException(status_code=500, detail="Error fetching welfare benefits.")
+    finally:
+        cur.close()
+        conn.close()
+

@@ -1,4 +1,5 @@
 import psycopg2
+import hashlib
 
 def init_db():
     conn = psycopg2.connect(
@@ -30,11 +31,37 @@ def init_db():
     );
     """
     cur.execute(create_table_query)
+    
+    # Create table user_account
+    create_user_table_query = """
+    CREATE TABLE IF NOT EXISTS user_account (
+        username VARCHAR(50) PRIMARY KEY,
+        password_hash VARCHAR(255) NOT NULL,
+        role VARCHAR(20) DEFAULT 'user',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    """
+    cur.execute(create_user_table_query)
+    
+    # Create default admin account if not exists
+    admin_username = 'admin'
+    admin_password = 'admin123'
+    admin_pw_hash = hashlib.sha256(admin_password.encode('utf-8')).hexdigest()
+    
+    cur.execute("SELECT username FROM user_account WHERE username = %s;", (admin_username,))
+    if not cur.fetchone():
+        cur.execute(
+            "INSERT INTO user_account (username, password_hash, role) VALUES (%s, %s, %s);",
+            (admin_username, admin_pw_hash, 'admin')
+        )
+        print("Default admin user created successfully.")
+    
     conn.commit()
-    print("Database table 'welfare_benefits' created/verified successfully.")
+    print("Database initialization complete.")
     
     cur.close()
     conn.close()
 
 if __name__ == '__main__':
     init_db()
+

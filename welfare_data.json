@@ -15,22 +15,5 @@
         },
         "eligibility": "○ 지원대상 : 국공립 및 사립유치원에 다니는 3~5세 유아\r\n  \r\n   - '23년 1~2월생으로 유치원 입학을 희망하여 3세반에 취원한 유아도 지원 대상\r\n   -  취학대상 아동('19.1.1~12.31.출생...",
         "sourceUrl": "https://www.gov.kr/portal/rcvfvrSvc/dtlEx/000000465790"
-    },
-    {
-        "id": "api_w_8",
-        "title": "원양어업 경영자금 지원",
-        "category": "현금",
-        "minAge": 0,
-        "maxAge": 18,
-        "maxIncome": 150,
-        "region": "전국",
-        "desc": {
-            "ko": "○ 어업경영자금 융자(수협은행)",
-            "vi": "○ Cho vay quỹ hoạt động thủy sản (Ngân hàng Suhyup)",
-            "zh": "○ 渔业运营基金贷款（水协银行）",
-            "en": "○ Fishery operation fund loan (Suhyup Bank)"
-        },
-        "eligibility": "1.「원양어업발전법」제6조제1항에 따른 원양어업허가를 받은 자\r\n2.「원양어업발전법」제6조제7항에 따른 외국인과 합작하여 설립한 해외현지법인으로 원양어업 신고를  한 자",
-        "sourceUrl": "https://www.gov.kr/portal/rcvfvrSvc/dtlEx/119200000016"
     }
 ]
