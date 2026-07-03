@@ -1852,7 +1852,7 @@ async function fetchAdminWelfareList() {
     
     tbody.innerHTML = `
         <tr>
-            <td colspan="7" style="text-align: center; padding: 30px; color: var(--text-secondary);">
+            <td colspan="8" style="text-align: center; padding: 30px; color: var(--text-secondary);">
                 <i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px;"></i>데이터를 불러오는 중입니다...
             </td>
         </tr>
@@ -1868,7 +1868,7 @@ async function fetchAdminWelfareList() {
         if (list.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="7" style="text-align: center; padding: 30px; color: var(--text-secondary);">
+                    <td colspan="8" style="text-align: center; padding: 30px; color: var(--text-secondary);">
                         조회된 데이터가 없습니다.
                     </td>
                 </tr>
@@ -1886,6 +1886,9 @@ async function fetchAdminWelfareList() {
                     <td style="padding: 14px 16px; text-align: center;">만 ${item.minAge}세 ~ ${item.maxAge}세</td>
                     <td style="padding: 14px 16px; text-align: center;">중위소득 ${item.maxIncome}%</td>
                     <td style="padding: 14px 16px;"><i class="fa-solid fa-location-dot" style="color: var(--toss-blue); margin-right: 4px;"></i>${item.region}</td>
+                    <td style="padding: 14px 16px; text-align: center;">
+                        ${item.sourceUrl ? `<a href="${item.sourceUrl}" target="_blank" style="color: var(--toss-blue); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 12px;"></i> 바로가기</a>` : '-'}
+                    </td>
                     <td style="padding: 14px 16px; color: var(--text-secondary); font-size: 13px;">${item.updatedAt || '-'}</td>
                 </tr>
             `;
@@ -1895,7 +1898,7 @@ async function fetchAdminWelfareList() {
         console.error("Fetch admin welfare list error:", err);
         tbody.innerHTML = `
             <tr>
-                <td colspan="7" style="text-align: center; padding: 30px; color: var(--toss-red); font-weight: 500;">
+                <td colspan="8" style="text-align: center; padding: 30px; color: var(--toss-red); font-weight: 500;">
                     <i class="fa-solid fa-circle-exclamation" style="margin-right: 8px;"></i>데이터 로딩 오류: 권한이 없거나 서버와의 통신에 실패했습니다.
                 </td>
             </tr>
