@@ -161,7 +161,7 @@ def fetch_and_cache():
         api_key = "data-portal-test-key"  # default fallback key
                 
     print(f"Fetching live data from Bokjiro Central Ministry Welfare API using key: {api_key[:8]}...")
-    url = f"http://apis.data.go.kr/B554287/NationalWelfareInformationsV001/NationalWelfarelistV001?serviceKey={api_key}&pageNo=1&numOfRows=100"
+    url = f"http://apis.data.go.kr/B554287/NationalWelfareInformationsV001/NationalWelfarelistV001?serviceKey={api_key}&pageNo=1&numOfRows=100&callTp=L&srchKeyCode=001"
     
     req = urllib.request.Request(url, headers={
         "User-Agent": "Mozilla/5.0"
@@ -174,7 +174,7 @@ def fetch_and_cache():
         except urllib.error.HTTPError as he:
             if api_key != "data-portal-test-key":
                 print("User API key returned HTTPError. Falling back to data-portal-test-key...")
-                fallback_url = f"http://apis.data.go.kr/B554287/NationalWelfareInformationsV001/NationalWelfarelistV001?serviceKey=data-portal-test-key&pageNo=1&numOfRows=100"
+                fallback_url = f"http://apis.data.go.kr/B554287/NationalWelfareInformationsV001/NationalWelfarelistV001?serviceKey=data-portal-test-key&pageNo=1&numOfRows=100&callTp=L&srchKeyCode=001"
                 req_fallback = urllib.request.Request(fallback_url, headers={"User-Agent": "Mozilla/5.0"})
                 response = urllib.request.urlopen(req_fallback, timeout=15)
                 xml_content = response.read()
@@ -183,7 +183,7 @@ def fetch_and_cache():
                 
         import xml.etree.ElementTree as ET
         root = ET.fromstring(xml_content)
-        items = root.findall('.//item')
+        items = root.findall('.//servList')
         print(f"Total raw items fetched from XML API: {len(items)}")
         
         # Filter for multicultural/children/welfare categories
@@ -257,6 +257,8 @@ def fetch_and_cache():
             print("No matching multicultural policies found in live feed. Skipping cache update.")
             
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         print(f"API fetch or parsing error: {e}")
 
 # Daemon main loop
