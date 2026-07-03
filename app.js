@@ -487,38 +487,6 @@ const mockNoticeTemplates = {
 // 3. TAB CONTROLLER & NAVIGATION
 // ==========================================
 function switchTab(tabId, navElement = null) {
-    if (tabId === 'tab-alerts') {
-        const hasOnboarded = localStorage.getItem('daon_onboarded');
-        if (hasOnboarded !== 'true') {
-            const overlay = document.getElementById('onboarding-overlay');
-            if (overlay) {
-                onboardStep = 0;
-                
-                // Reset wizard active layers
-                document.querySelectorAll('.wizard-step').forEach((step, idx) => {
-                    step.classList.remove('exit');
-                    if (idx === 0) {
-                        step.classList.add('active');
-                    } else {
-                        step.classList.remove('active');
-                    }
-                });
-                
-                // Reset selection indicators
-                document.querySelectorAll('.lang-opt-btn, .income-opt-btn').forEach(btn => {
-                    btn.classList.remove('selected');
-                });
-                
-                updateOnboardProgress();
-                
-                overlay.style.display = 'flex';
-                setTimeout(() => {
-                    overlay.classList.remove('fade-out');
-                }, 50);
-            }
-        }
-    }
-
     // Hide all tabs
     document.querySelectorAll('.tab-content').forEach(tab => {
         tab.classList.remove('active');
@@ -951,57 +919,24 @@ function copyResultText() {
 // 6. WELFARE ALGORITHM & MATCHING SIMULATION
 // ==========================================
 function simulateBenefitMatch(showToast = true) {
-    const childAgeEl = document.getElementById('prof-child-age');
-    activeProfile.childAge = childAgeEl ? (parseInt(childAgeEl.value) || 0) : 8;
-    
-    const incomeValEl = document.getElementById('prof-income-val');
-    const incomeVal = incomeValEl ? (parseInt(incomeValEl.value) || 300) : 300;
-    
-    // 만원 단위 소득을 중위소득 % 비율로 변환 (4인 가구 기준 540만원 기준 가볍게 연산)
-    let incomePercent = 150;
-    if (incomeVal <= 270) {
-        incomePercent = 50;
-    } else if (incomeVal <= 430) {
-        incomePercent = 80;
-    } else if (incomeVal <= 650) {
-        incomePercent = 120;
-    }
-    activeProfile.incomeBracket = incomePercent;
-    
-    const regionEl = document.getElementById('prof-region');
-    activeProfile.region = regionEl ? regionEl.value : '전국';
-    
-    if (showToast) {
-        triggerToast("매칭 완료", "가구원 프로필을 바탕으로 복지 데이터를 매칭했습니다.");
-    }
     renderMatchingBenefits();
 }
 
 function renderMatchingBenefits() {
     const container = document.getElementById('matching-benefits-list');
+    if (!container) return;
     
-    // Filter logic using user profile inputs
-    const matched = mockWelfareDatabase.filter(benefit => {
-        // 1. Age condition
-        const ageMatch = activeProfile.childAge >= benefit.minAge && activeProfile.childAge <= benefit.maxAge;
-        // 2. Income condition
-        const incomeMatch = activeProfile.incomeBracket <= benefit.maxIncome;
-        // 3. Regional condition (either '전국' or exact match)
-        const regionMatch = benefit.region === "전국" || activeProfile.region.includes(benefit.region);
-        
-        return ageMatch && incomeMatch && regionMatch;
-    });
-    
+    const matched = mockWelfareDatabase;
     const lang = translations[currentLanguage] ? currentLanguage : 'ko';
     
     // Update main dashboard status card
-    document.getElementById('txt-status-benefit-val').textContent = matched.length + " " + (lang === 'ko' ? '건 매칭됨' : (lang === 'vi' ? 'trợ cấp khớp' : (lang === 'zh' ? '项已匹配' : 'matched')));
+    document.getElementById('txt-status-benefit-val').textContent = matched.length + " " + (lang === 'ko' ? '건 지원 가능' : (lang === 'vi' ? 'trợ cấp' : (lang === 'zh' ? '项 서비스' : 'benefits')));
     
     if (matched.length === 0) {
         container.innerHTML = `
             <div class="no-data">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-                <p>${translations[lang].noMatchMessage}</p>
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <p>혜택 데이터를 불러오고 있습니다...</p>
             </div>
         `;
         return;
@@ -1013,7 +948,7 @@ function renderMatchingBenefits() {
             <h4>${benefit.title}</h4>
             <p class="benefit-desc">${benefit.desc[currentLanguage] || benefit.desc['ko']}</p>
             <div class="benefit-eligibility">
-                <strong>${translations[lang].metaConditionLabel}:</strong> ${benefit.eligibility}
+                <strong>상세 조건:</strong> ${benefit.eligibility}
             </div>
             ${benefit.sourceUrl ? `
                 <div class="benefit-actions">

@@ -19,69 +19,6 @@
     <div id="toast-container" class="toast-container"></div>
 
     <div class="app-container">
-        <!-- Onboarding Overlay (Toss style step-by-step interactive wizard) -->
-        <div id="onboarding-overlay" class="onboarding-overlay" style="display: none;">
-            <div class="onboarding-container">
-                <!-- Top Progress Bar (Toss style) -->
-                <div class="onboard-progress-bar">
-                    <div id="onboard-progress-fill" class="progress-fill" style="width: 20%;"></div>
-                </div>
-                
-                <div class="onboarding-skip" onclick="skipOnboarding()">건너뛰기</div>
-                
-                <div class="onboarding-wizard" id="onboarding-wizard">
-                    <!-- Step 0: Welcome -->
-                    <div class="wizard-step active" id="onboard-step-0">
-                        <div class="onboarding-graphic">
-                            <i class="fa-solid fa-hands-holding-child anim-float"></i>
-                        </div>
-                        <h2 id="txt-ob-title-0">다문화 가정을 위한<br>따뜻한 AI 비서, 다온</h2>
-                        <p id="txt-ob-desc-0">우리 자녀들의 즐거운 학교생활과 지원 혜택을 다온이 맞춤형으로 챙겨 드릴게요.</p>
-                    </div>
-                    
-                    <!-- Step 1: Language selection -->
-                    <div class="wizard-step" id="onboard-step-1">
-                        <h2 id="txt-ob-title-1">어떤 언어를<br>사용하시나요?</h2>
-                        <p class="step-guide" id="txt-ob-desc-1">선택하시는 모국어로 모든 안내가 즉시 번역됩니다.</p>
-                        <div class="language-grid-options">
-                            <button class="btn btn-outline lang-opt-btn" onclick="selectOnboardLanguage('ko')">한국어 (Korean)</button>
-                            <button class="btn btn-outline lang-opt-btn" onclick="selectOnboardLanguage('vi')">Tiếng Việt (Vietnamese)</button>
-                            <button class="btn btn-outline lang-opt-btn" onclick="selectOnboardLanguage('zh')">中文 (Chinese)</button>
-                            <button class="btn btn-outline lang-opt-btn" onclick="selectOnboardLanguage('en')">English (English)</button>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 2: Children Input (Dynamic Card Add/Remove) -->
-                    <div class="wizard-step" id="onboard-step-2">
-                        <h2 id="txt-ob-title-2">자녀의 정보를 입력해 주세요</h2>
-                        <p class="step-guide" id="txt-ob-desc-2">아이의 나이에 꼭 맞는 아동 맞춤 혜택을 매칭합니다.</p>
-                        <div id="dynamic-children-inputs" class="dynamic-inputs-container">
-                            <!-- Filled dynamically by JavaScript -->
-                        </div>
-                        <button type="button" class="btn-add-child" onclick="addCustomOnboardChild()">
-                            <i class="fa-solid fa-plus"></i> <span id="txt-ob-add-child">자녀 추가하기</span>
-                        </button>
-                    </div>
-
-                    <!-- Step 3: Household Income Select -->
-                    <div class="wizard-step" id="onboard-step-3">
-                        <h2 id="txt-ob-title-3">가구의 월평균 소득을 입력해 주세요</h2>
-                        <p class="step-guide" id="txt-ob-desc-3">정부 복지 혜택 매칭을 위해 가구 전체의 월평균 소득을 만 원 단위로 적어주세요.</p>
-                        <div class="onboard-income-input-container">
-                            <div class="income-input-row">
-                                <input type="number" id="onboard-income-val" placeholder="예: 300" min="0" max="9999" oninput="calculateOnboardIncomeGuide()">
-                                <span class="income-unit" id="txt-ob-income-unit">만 원</span>
-                            </div>
-                            <p class="income-calc-guide" id="txt-ob-income-guide"></p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="onboarding-footer">
-                    <button id="btn-onboarding-next" class="btn btn-primary btn-full" onclick="nextOnboardStep()">다온 시작하기</button>
-                </div>
-            </div>
-        </div>
         <!-- Sidebar/Navbar Header -->
         <header class="app-header">
             <div class="logo-area">
@@ -233,44 +170,15 @@
                 </div>
             </section>
 
-            <!-- TAB 3: PERSONALIZED WELFARE & ALERTS -->
             <section id="tab-alerts" class="tab-content">
                 <div class="section-title">
                     <h2><i class="fa-solid fa-bell"></i> <span id="txt-alerts-title">나의 맞춤 혜택 & 알림</span></h2>
-                    <p id="txt-alerts-subtitle">가족 구성 정보에 부합하는 새로운 지원 혜택이 복지로에 등록되면 모국어로 실시간 알림을 보냅니다.</p>
+                    <p id="txt-alerts-subtitle">다문화 가정을 위한 실시간 맞춤 혜택 목록 및 알림 보관함입니다.</p>
                 </div>
 
                 <div class="alerts-layout">
-                    <!-- Left: Profile Configuration -->
-                    <div class="card profile-card">
-                        <h3><i class="fa-solid fa-user-gear"></i> <span id="txt-profile-setting-title">가구 정보 설정 (Profile)</span></h3>
-                        <p class="profile-help" id="txt-profile-setting-desc">정확한 복지 혜택 매칭을 위해 아래 필터를 입력해 주세요.</p>
-                        
-                        <div class="form-group">
-                            <label for="prof-child-age"><i class="fa-solid fa-child"></i> <span id="txt-label-child-age">자녀 나이 (세)</span></label>
-                            <input type="number" id="prof-child-age" value="8" min="0" max="19">
-                        </div>
-                        <div class="form-group">
-                            <label for="prof-income-val"><i class="fa-solid fa-wallet"></i> <span id="txt-label-income">가구 월 소득 (만 원)</span></label>
-                            <input type="number" id="prof-income-val" value="300" min="0" max="9999">
-                        </div>
-                        <div class="form-group">
-                            <label for="prof-region"><i class="fa-solid fa-map-location-dot"></i> <span id="txt-label-region">거주 지역</span></label>
-                            <select id="prof-region">
-                                <option value="서울 마포구" selected>서울특별시 마포구</option>
-                                <option value="경기 수원시">경기도 수원시</option>
-                                <option value="인천 남동구">인천광역시 남동구</option>
-                                <option value="부산 해운대구">부산광역시 해운대구</option>
-                            </select>
-                        </div>
-                        
-                        <button class="btn btn-secondary btn-full" onclick="simulateBenefitMatch()" id="btn-simulate-match">
-                            <i class="fa-solid fa-arrows-spin"></i> 맞춤 혜택 매칭 시뮬레이션
-                        </button>
-                    </div>
-
-                    <!-- Right: Match List and Notifications -->
-                    <div class="alerts-results">
+                    <!-- Match List and Notifications (Full Width) -->
+                    <div class="alerts-results" style="width: 100%;">
                         <!-- Simulated Push Trigger Button -->
                         <div class="card simulation-trigger-card">
                             <h4><i class="fa-solid fa-circle-play"></i> <span id="txt-push-title">실시간 가상 신규 혜택 등록 알림</span></h4>
@@ -290,8 +198,8 @@
                             <h3><i class="fa-solid fa-gift"></i> <span id="txt-matched-benefits-title">매칭된 맞춤 혜택 목록</span></h3>
                             <div id="matching-benefits-list" class="benefits-list">
                                 <div class="no-data">
-                                    <i class="fa-solid fa-circle-question"></i>
-                                    <p>가구 정보 설정 후 '맞춤 혜택 매칭 시뮬레이션' 버튼을 클릭해 주세요.</p>
+                                    <i class="fa-solid fa-spinner fa-spin"></i>
+                                    <p>혜택 데이터를 불러오고 있습니다...</p>
                                 </div>
                             </div>
                         </div>
@@ -312,10 +220,6 @@
                     <p>daon_family@example.com</p>
                     <hr class="divider">
                     <div class="settings-list">
-                        <div class="setting-item" onclick="resetOnboarding()">
-                            <span id="txt-setting-guide"><i class="fa-solid fa-circle-info"></i> 온보딩 가이드 다시 보기</span>
-                            <i class="fa-solid fa-angle-right"></i>
-                        </div>
                         <div class="setting-item admin-item" onclick="openAdminLoginModal()" style="border-left: 3px solid var(--toss-blue);">
                             <span style="font-weight: 600; color: var(--toss-blue);"><i class="fa-solid fa-user-shield"></i> 관리자 대시보드 (조회)</span>
                             <i class="fa-solid fa-angle-right" style="color: var(--toss-blue);"></i>
@@ -474,6 +378,6 @@
     </div>
 
     <!-- UI Interaction Scripts -->
-    <script src="app.js?v=3.5"></script>
+    <script src="app.js?v=3.6"></script>
 </body>
 </html>
