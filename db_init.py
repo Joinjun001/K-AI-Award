@@ -11,22 +11,39 @@ def init_db():
     )
     cur = conn.cursor()
     
-    # Create table welfare_benefits
+    # Create table welfare_benefits (drop and recreate to ensure schema alignment)
+    cur.execute("DROP TABLE IF EXISTS welfare_benefits;")
     create_table_query = """
-    CREATE TABLE IF NOT EXISTS welfare_benefits (
+    CREATE TABLE welfare_benefits (
         id VARCHAR(50) PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
         category VARCHAR(100),
-        min_age INTEGER DEFAULT 0,
-        max_age INTEGER DEFAULT 18,
-        max_income INTEGER DEFAULT 150,
-        region VARCHAR(100),
+        region VARCHAR(100) DEFAULT '전국',
+        source_url VARCHAR(512),
+        
+        -- Multi-language Summaries (Cached Translations)
         desc_ko TEXT,
         desc_vi TEXT,
         desc_zh TEXT,
         desc_en TEXT,
-        eligibility TEXT,
-        source_url VARCHAR(512),
+        
+        -- Raw Korean descriptions from detailed Bokjiro API
+        desc_outline TEXT,
+        eligibility_dtl TEXT,
+        selection_crit TEXT,
+        welfare_content TEXT,
+        
+        -- Metadata Tags
+        trgter_indvdl TEXT,
+        life_array TEXT,
+        onap_psblt_yn CHAR(1) DEFAULT 'N',
+        
+        -- Structural convenience data (JSONB)
+        download_forms JSONB DEFAULT '[]'::jsonb,
+        apply_method JSONB DEFAULT '[]'::jsonb,
+        related_websites JSONB DEFAULT '[]'::jsonb,
+        inquiry_contacts JSONB DEFAULT '[]'::jsonb,
+        
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
     """

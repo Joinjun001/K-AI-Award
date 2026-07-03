@@ -63,30 +63,50 @@ def get_welfare_benefits():
     cur = conn.cursor()
     try:
         cur.execute("""
-            SELECT id, title, category, min_age, max_age, max_income, region,
-                   desc_ko, desc_vi, desc_zh, desc_en, eligibility, source_url
+            SELECT id, title, category, region, source_url,
+                   desc_ko, desc_vi, desc_zh, desc_en,
+                   desc_outline, eligibility_dtl, selection_crit, welfare_content,
+                   trgter_indvdl, life_array, onap_psblt_yn,
+                   download_forms, apply_method, related_websites, inquiry_contacts
             FROM welfare_benefits
             ORDER BY id ASC;
         """)
         rows = cur.fetchall()
         benefits = []
         for r in rows:
+            # Reconstruct eligibility summary
+            elig_raw = r[10] if r[10] else ""
+            elig_summary = elig_raw[:120] + ("..." if len(elig_raw) > 120 else "")
+            
             benefits.append({
                 "id": r[0],
                 "title": r[1],
                 "category": r[2],
-                "minAge": r[3],
-                "maxAge": r[4],
-                "maxIncome": r[5],
-                "region": r[6],
+                "minAge": 0,       # For backward compatibility
+                "maxAge": 18,      # For backward compatibility
+                "maxIncome": 150,  # For backward compatibility
+                "region": r[3] if r[3] else "전국",
+                "sourceUrl": r[4],
                 "desc": {
-                    "ko": r[7],
-                    "vi": r[8],
-                    "zh": r[9],
-                    "en": r[10]
+                    "ko": r[5] if r[5] else "",
+                    "vi": r[6] if r[6] else "",
+                    "zh": r[7] if r[7] else "",
+                    "en": r[8] if r[8] else ""
                 },
-                "eligibility": r[11],
-                "sourceUrl": r[12]
+                "eligibility": elig_summary,
+                
+                # Detailed raw fields
+                "descOutline": r[9],
+                "eligibilityDtl": r[10],
+                "selectionCrit": r[11],
+                "welfareContent": r[12],
+                "trgterIndvdl": r[13],
+                "lifeArray": r[14],
+                "onapPsbltYn": r[15],
+                "downloadForms": r[16],
+                "applyMethod": r[17],
+                "relatedWebsites": r[18],
+                "inquiryContacts": r[19]
             })
         return benefits
     except Exception as e:
@@ -246,31 +266,50 @@ def get_admin_welfare_benefits(token: str = None):
     cur = conn.cursor()
     try:
         cur.execute("""
-            SELECT id, title, category, min_age, max_age, max_income, region,
-                   desc_ko, desc_vi, desc_zh, desc_en, eligibility, source_url, updated_at
+            SELECT id, title, category, region, source_url,
+                   desc_ko, desc_vi, desc_zh, desc_en,
+                   desc_outline, eligibility_dtl, selection_crit, welfare_content,
+                   trgter_indvdl, life_array, onap_psblt_yn,
+                   download_forms, apply_method, related_websites, inquiry_contacts, updated_at
             FROM welfare_benefits
             ORDER BY updated_at DESC;
         """)
         rows = cur.fetchall()
         benefits = []
         for r in rows:
+            elig_raw = r[10] if r[10] else ""
+            elig_summary = elig_raw[:120] + ("..." if len(elig_raw) > 120 else "")
+            
             benefits.append({
                 "id": r[0],
                 "title": r[1],
                 "category": r[2],
-                "minAge": r[3],
-                "maxAge": r[4],
-                "maxIncome": r[5],
-                "region": r[6],
+                "minAge": 0,       # For backward compatibility
+                "maxAge": 18,      # For backward compatibility
+                "maxIncome": 150,  # For backward compatibility
+                "region": r[3] if r[3] else "전국",
+                "sourceUrl": r[4],
                 "desc": {
-                    "ko": r[7],
-                    "vi": r[8],
-                    "zh": r[9],
-                    "en": r[10]
+                    "ko": r[5] if r[5] else "",
+                    "vi": r[6] if r[6] else "",
+                    "zh": r[7] if r[7] else "",
+                    "en": r[8] if r[8] else ""
                 },
-                "eligibility": r[11],
-                "sourceUrl": r[12],
-                "updatedAt": r[13].strftime("%Y-%m-%d %H:%M:%S") if r[13] else ""
+                "eligibility": elig_summary,
+                
+                # Detailed raw fields
+                "descOutline": r[9],
+                "eligibilityDtl": r[10],
+                "selectionCrit": r[11],
+                "welfareContent": r[12],
+                "trgterIndvdl": r[13],
+                "lifeArray": r[14],
+                "onapPsbltYn": r[15],
+                "downloadForms": r[16],
+                "applyMethod": r[17],
+                "relatedWebsites": r[18],
+                "inquiryContacts": r[19],
+                "updatedAt": r[20].strftime("%Y-%m-%d %H:%M:%S") if r[20] else ""
             })
         return benefits
     except Exception as e:

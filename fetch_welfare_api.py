@@ -3,8 +3,9 @@ import json
 import time
 import urllib.request
 import urllib.parse
-import re
 import psycopg2
+import psycopg2.extras
+import xml.etree.ElementTree as ET
 
 # Configurations
 API_KEY_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'api_key.txt')
@@ -36,76 +37,6 @@ def translate_text(text, target_lang):
         print(f"Translation error ({target_lang}): {e}")
         return text  # Fallback to Korean if error occurs
 
-# Parse Age condition from text
-def parse_age(target_text):
-    # Default fallback age group
-    min_age, max_age = 0, 18
-    if not target_text:
-        return min_age, max_age
-    
-    # 1. "만 X ~ Y세" 또는 "만 X세 ~ Y세" 또는 "만X~Y세"
-    range_match = re.search(r'(?:만\s*)?(\d+)\s*(?:세)?\s*(?:~|-)\s*(?:만\s*)?(\d+)\s*세', target_text)
-    if range_match:
-        return int(range_match.group(1)), int(range_match.group(2))
-    
-    # 2. "만 X세 미만/이하"
-    under_match = re.search(r'(?:만\s*)?(\d+)\s*세\s*(?:미만|이하)', target_text)
-    if under_match:
-        return 0, int(under_match.group(1))
-    
-    # 3. "만 X세 이상"
-    over_match = re.search(r'(?:만\s*)?(\d+)\s*세\s*이상', target_text)
-    if over_match:
-        return int(over_match.group(1)), 18
-        
-    # 4. 단일 "만 X세"
-    single_match = re.search(r'(?:만\s*)?(\d+)\s*세', target_text)
-    if single_match:
-        age = int(single_match.group(1))
-        return max(0, age - 1), min(18, age + 1)
-        
-    # 5. Lifecycle keywords fallback
-    has_infant = "영유아" in target_text or "보육" in target_text or "임산부" in target_text or "출산" in target_text or "양육" in target_text
-    has_child = "아동" in target_text or "초등" in target_text or "소아" in target_text or "자녀" in target_text
-    has_youth = "청소년" in target_text or "중고등" in target_text or "학업" in target_text
-    
-    if has_infant and has_youth:
-        return 0, 18
-    if has_infant and has_child:
-        return 0, 12
-    if has_child and has_youth:
-        return 6, 18
-    if has_infant:
-        return 0, 5
-    if has_child:
-        return 6, 12
-    if has_youth:
-        return 13, 18
-        
-    return min_age, max_age
-
-# Parse Income condition from text
-def parse_income(target_text):
-    if not target_text:
-        return 150 # default보편 지원
-    
-    # Check if income is completely ignored/universal
-    universal_keywords = ["상관없이", "상관 없이", "제한 없음", "제한없음", "소득 무관", "소득무관", "기준 없음", "모든 유아", "모든 아동"]
-    if any(phrase in target_text for phrase in universal_keywords):
-        return 150
-    
-    # Extract median income percentage (e.g. 50%, 80%, 100%, 120%, 150%)
-    percent_match = re.search(r'(\d+)\s*%', target_text)
-    if percent_match:
-        return int(percent_match.group(1))
-    
-    if "기초" in target_text or "차상위" in target_text or "소득하위" in target_text:
-        # If it also supports general cases, fallback to universal
-        if "일반" in target_text or "기타" in target_text or "모든" in target_text:
-            return 150
-        return 50
-    return 150
-
 def save_to_db(items):
     try:
         conn = psycopg2.connect(
@@ -119,22 +50,38 @@ def save_to_db(items):
         
         upsert_query = """
         INSERT INTO welfare_benefits (
-            id, title, category, min_age, max_age, max_income, region,
-            desc_ko, desc_vi, desc_zh, desc_en, eligibility, source_url, updated_at
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP)
+            id, title, category, region, source_url,
+            desc_ko, desc_vi, desc_zh, desc_en,
+            desc_outline, eligibility_dtl, selection_crit, welfare_content,
+            trgter_indvdl, life_array, onap_psblt_yn,
+            download_forms, apply_method, related_websites, inquiry_contacts, updated_at
+        ) VALUES (
+            %s, %s, %s, %s, %s,
+            %s, %s, %s, %s,
+            %s, %s, %s, %s,
+            %s, %s, %s,
+            %s, %s, %s, %s, CURRENT_TIMESTAMP
+        )
         ON CONFLICT (id) DO UPDATE SET
             title = EXCLUDED.title,
             category = EXCLUDED.category,
-            min_age = EXCLUDED.min_age,
-            max_age = EXCLUDED.max_age,
-            max_income = EXCLUDED.max_income,
             region = EXCLUDED.region,
+            source_url = EXCLUDED.source_url,
             desc_ko = EXCLUDED.desc_ko,
             desc_vi = EXCLUDED.desc_vi,
             desc_zh = EXCLUDED.desc_zh,
             desc_en = EXCLUDED.desc_en,
-            eligibility = EXCLUDED.eligibility,
-            source_url = EXCLUDED.source_url,
+            desc_outline = EXCLUDED.desc_outline,
+            eligibility_dtl = EXCLUDED.eligibility_dtl,
+            selection_crit = EXCLUDED.selection_crit,
+            welfare_content = EXCLUDED.welfare_content,
+            trgter_indvdl = EXCLUDED.trgter_indvdl,
+            life_array = EXCLUDED.life_array,
+            onap_psblt_yn = EXCLUDED.onap_psblt_yn,
+            download_forms = EXCLUDED.download_forms,
+            apply_method = EXCLUDED.apply_method,
+            related_websites = EXCLUDED.related_websites,
+            inquiry_contacts = EXCLUDED.inquiry_contacts,
             updated_at = CURRENT_TIMESTAMP;
         """
         
@@ -143,16 +90,23 @@ def save_to_db(items):
                 item["id"],
                 item["title"],
                 item["category"],
-                item["minAge"],
-                item["maxAge"],
-                item["maxIncome"],
                 item["region"],
+                item["sourceUrl"],
                 item["desc"]["ko"],
                 item["desc"]["vi"],
                 item["desc"]["zh"],
                 item["desc"]["en"],
-                item["eligibility"],
-                item["sourceUrl"]
+                item["descOutline"],
+                item["eligibilityDtl"],
+                item["selectionCrit"],
+                item["welfareContent"],
+                item["trgterIndvdl"],
+                item["lifeArray"],
+                item["onapPsbltYn"],
+                psycopg2.extras.Json(item["downloadForms"]),
+                psycopg2.extras.Json(item["applyMethod"]),
+                psycopg2.extras.Json(item["relatedWebsites"]),
+                psycopg2.extras.Json(item["inquiryContacts"])
             ))
             
         conn.commit()
@@ -162,12 +116,9 @@ def save_to_db(items):
     except Exception as e:
         print(f"Error saving to PostgreSQL DB: {e}")
 
-# Fetch and update cache
 def fetch_and_cache():
-    # Load env variables from .env
     load_env()
     
-    # Read API Key
     api_key = os.getenv("DATA_PORTAL_API_KEY", "")
     if not api_key and os.path.exists(API_KEY_FILE):
         with open(API_KEY_FILE, 'r', encoding='utf-8') as f:
@@ -176,14 +127,13 @@ def fetch_and_cache():
                 api_key = user_key
                 
     if not api_key:
-        api_key = "data-portal-test-key"  # default fallback key
-                
+        api_key = "data-portal-test-key"
+        
     print(f"Fetching live data from Bokjiro Central Ministry Welfare API using key: {api_key[:8]}...")
-    url = f"http://apis.data.go.kr/B554287/NationalWelfareInformationsV001/NationalWelfarelistV001?serviceKey={api_key}&pageNo=1&numOfRows=100&callTp=L&srchKeyCode=001"
     
-    req = urllib.request.Request(url, headers={
-        "User-Agent": "Mozilla/5.0"
-    })
+    # Fetch list
+    url = f"http://apis.data.go.kr/B554287/NationalWelfareInformationsV001/NationalWelfarelistV001?serviceKey={api_key}&pageNo=1&numOfRows=100&callTp=L&srchKeyCode=001"
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     
     try:
         try:
@@ -199,60 +149,92 @@ def fetch_and_cache():
             else:
                 raise he
                 
-        import xml.etree.ElementTree as ET
         root = ET.fromstring(xml_content)
         items = root.findall('.//servList')
         print(f"Total raw items fetched from XML API: {len(items)}")
         
-        # Filter for multicultural/children/welfare categories
         filtered_items = []
         for idx, item in enumerate(items):
+            serv_id = item.find('servId').text if item.find('servId') is not None else ''
             title = item.find('servNm').text if item.find('servNm') is not None else ''
             desc_text = item.find('servDgst').text if item.find('servDgst') is not None else ''
-            target_text = ""
-            if item.find('tgTrgDetailDesc') is not None and item.find('tgTrgDetailDesc').text:
-                target_text = item.find('tgTrgDetailDesc').text.strip()
-            
-            # Fallback if empty
-            if not target_text:
-                parts = []
-                trg_val = item.find('trgterIndvdlArray').text if item.find('trgterIndvdlArray') is not None else ''
-                life_val = item.find('lifeArray').text if item.find('lifeArray') is not None else ''
-                if trg_val:
-                    parts.append(f"대상: {trg_val}")
-                if life_val:
-                    parts.append(f"생애주기: {life_val}")
-                if desc_text:
-                    parts.append(desc_text)
-                target_text = " | ".join(parts)
-                
             category = item.find('jurMnofNm').text if item.find('jurMnofNm') is not None else '복지'
+            trg_val = item.find('trgterIndvdlArray').text if item.find('trgterIndvdlArray') is not None else ''
+            life_val = item.find('lifeArray').text if item.find('lifeArray') is not None else ''
             
             # Keywords matching multicultural, child, family support
             match_keywords = ["다문화", "외국인", "보육", "아동", "출산", "양육", "가족", "소아", "임산부", "영유아"]
-            
-            # Exclude business/corporate/industrial/farming/fishery policies that are not family welfare
             exclude_keywords = ["법인", "기업", "사업자", "어업", "농업", "농가", "임업", "경영체", "합작", "경영자금", "벤처", "스타트업", "소상공인"]
             
-            is_matched = any(kw in title or kw in desc_text or kw in target_text for kw in match_keywords)
-            is_excluded = any(kw in title or kw in target_text for kw in exclude_keywords)
+            is_matched = any(kw in title or kw in desc_text or kw in trg_val or kw in life_val for kw in match_keywords)
+            is_excluded = any(kw in title or kw in trg_val for kw in exclude_keywords)
             
             if is_matched and not is_excluded:
-                # Limit policies to maximum 15 items to avoid excessive translation overhead
                 if len(filtered_items) >= 15:
                     break
                     
-                print(f"Processing matched policy: {title}")
+                print(f"Processing matched policy: {title} ({serv_id})")
                 
-                # Parse conditions
-                min_age, max_age = parse_age(target_text)
-                max_income = parse_income(target_text)
+                # Call detailed API
+                detail_url = f"http://apis.data.go.kr/B554287/NationalWelfareInformationsV001/NationalWelfaredetailedV001?serviceKey={api_key}&servId={serv_id}"
                 
+                eligibility_dtl = ""
+                selection_crit = ""
+                welfare_content = ""
+                onap_psblt_yn = item.find('onapPsbltYn').text if item.find('onapPsbltYn') is not None else 'N'
+                
+                download_forms = []
+                apply_method = []
+                related_websites = []
+                inquiry_contacts = []
+                
+                try:
+                    detail_req = urllib.request.Request(detail_url, headers={"User-Agent": "Mozilla/5.0"})
+                    with urllib.request.urlopen(detail_req, timeout=15) as det_res:
+                        detail_xml = det_res.read()
+                        detail_root = ET.fromstring(detail_xml)
+                        dtl_node = detail_root if detail_root.tag == 'wantedDtl' else detail_root.find('.//wantedDtl')
+                        
+                        if dtl_node is not None:
+                            eligibility_dtl = dtl_node.find('tgtrDtlCn').text.strip() if dtl_node.find('tgtrDtlCn') is not None and dtl_node.find('tgtrDtlCn').text else ""
+                            selection_crit = dtl_node.find('slctCritCn').text.strip() if dtl_node.find('slctCritCn') is not None and dtl_node.find('slctCritCn').text else ""
+                            welfare_content = dtl_node.find('alwServCn').text.strip() if dtl_node.find('alwServCn') is not None and dtl_node.find('alwServCn').text else ""
+                            
+                            # Parse forms
+                            for nested in dtl_node.findall('basfrmList'):
+                                n_name = nested.find('servSeDetailNm').text if nested.find('servSeDetailNm') is not None else ''
+                                n_url = nested.find('servSeDetailLink').text if nested.find('servSeDetailLink') is not None else ''
+                                if n_name or n_url:
+                                    download_forms.append({"name": n_name, "url": n_url})
+                                    
+                            # Parse methods
+                            for nested in dtl_node.findall('applmetList'):
+                                n_name = nested.find('servSeDetailNm').text if nested.find('servSeDetailNm') is not None else ''
+                                n_url = nested.find('servSeDetailLink').text if nested.find('servSeDetailLink') is not None else ''
+                                if n_name or n_url:
+                                    apply_method.append({"step": n_name, "guide": n_url})
+                                    
+                            # Parse websites
+                            for nested in dtl_node.findall('inqplHmpgReldList'):
+                                n_name = nested.find('servSeDetailNm').text if nested.find('servSeDetailNm') is not None else ''
+                                n_url = nested.find('servSeDetailLink').text if nested.find('servSeDetailLink') is not None else ''
+                                if n_name or n_url:
+                                    related_websites.append({"name": n_name, "url": n_url})
+                                    
+                            # Parse contacts
+                            for nested in dtl_node.findall('inqplCtadrList'):
+                                n_name = nested.find('servSeDetailNm').text if nested.find('servSeDetailNm') is not None else ''
+                                n_url = nested.find('servSeDetailLink').text if nested.find('servSeDetailLink') is not None else ''
+                                if n_name or n_url:
+                                    inquiry_contacts.append({"name": n_name, "phone": n_url})
+                except Exception as det_err:
+                    print(f"  -> Detail fetch error: {det_err}")
+                    
                 # Region parsing
                 region = "전국"
-                if "마포구" in target_text or "마포구" in category or "마포" in title:
+                if "마포구" in eligibility_dtl or "마포구" in category or "마포" in title:
                     region = "서울 마포구"
-                elif "수원시" in target_text or "수원시" in category or "수원" in title:
+                elif "수원시" in eligibility_dtl or "수원시" in category or "수원" in title:
                     region = "경기 수원시"
                     
                 # Translate descriptions
@@ -260,42 +242,46 @@ def fetch_and_cache():
                 desc_zh = translate_text(desc_text, 'zh-CN')
                 desc_en = translate_text(desc_text, 'en')
                 
-                # Extract detailed source URL directly from API
                 source_url = item.find('servDtlLink').text if item.find('servDtlLink') is not None else 'https://www.bokjiro.go.kr'
                 
                 filtered_items.append({
-                    "id": f"api_w_{idx}",
+                    "id": serv_id,
                     "title": title,
                     "category": category,
-                    "minAge": min_age,
-                    "maxAge": max_age,
-                    "maxIncome": max_income,
                     "region": region,
+                    "sourceUrl": source_url,
                     "desc": {
                         "ko": desc_text,
                         "vi": desc_vi,
                         "zh": desc_zh,
                         "en": desc_en
                     },
-                    "eligibility": target_text[:120] + ("..." if len(target_text) > 120 else ""),
-                    "sourceUrl": source_url
+                    "descOutline": desc_text,
+                    "eligibilityDtl": eligibility_dtl,
+                    "selectionCrit": selection_crit,
+                    "welfareContent": welfare_content,
+                    "trgterIndvdl": trg_val,
+                    "lifeArray": life_val,
+                    "onapPsbltYn": onap_psblt_yn,
+                    "downloadForms": download_forms,
+                    "applyMethod": apply_method,
+                    "relatedWebsites": related_websites,
+                    "inquiryContacts": inquiry_contacts
                 })
                 
-        # Write to JSON Cache file if we have parsed results
         if len(filtered_items) > 0:
             with open(OUTPUT_JSON_PATH, 'w', encoding='utf-8') as f:
                 json.dump(filtered_items, f, ensure_ascii=False, indent=4)
             print(f"Successfully cached {len(filtered_items)} live policies to {OUTPUT_JSON_PATH}")
             save_to_db(filtered_items)
         else:
-            print("No matching multicultural policies found in live feed. Skipping cache update.")
+            print("No matching multicultural policies found. Skipping cache update.")
             
     except Exception as e:
         import traceback
         traceback.print_exc()
         print(f"API fetch or parsing error: {e}")
 
-# Daemon main loop
 def main():
     print(f"Starting Bojogum24 API cache syncing daemon (Interval: {INTERVAL_SECONDS}s)...")
     while True:
