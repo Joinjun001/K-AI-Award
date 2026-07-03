@@ -1883,15 +1883,19 @@ async function fetchAdminWelfareList() {
                     <td style="padding: 14px 16px; font-weight: 500; color: var(--text-secondary); font-family: monospace;">${item.id}</td>
                     <td style="padding: 14px 16px; font-weight: 600; color: var(--text-primary); max-width: 200px; overflow: hidden; text-overflow: ellipsis;" title="${item.title || ''}">${item.title || ''}</td>
                     <td style="padding: 14px 16px;"><span style="background-color: rgba(49, 130, 246, 0.08); color: var(--toss-blue); padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">${item.category}</span></td>
-                    <td style="padding: 14px 16px; text-align: center;">만 ${item.minAge}세</td>
-                    <td style="padding: 14px 16px; text-align: center;">만 ${item.maxAge}세</td>
-                    <td style="padding: 14px 16px; text-align: center;">중위소득 ${item.maxIncome}%</td>
+                    <td style="padding: 14px 16px; text-align: center;">
+                        <span style="background-color: ${item.onapPsbltYn === 'Y' ? 'rgba(52, 211, 153, 0.15)' : 'rgba(156, 163, 175, 0.15)'}; color: ${item.onapPsbltYn === 'Y' ? '#059669' : '#4b5563'}; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">
+                            ${item.onapPsbltYn === 'Y' ? '온라인 가능' : '방문 신청'}
+                        </span>
+                    </td>
+                    <td style="padding: 14px 16px; text-align: center; max-width: 150px; overflow: hidden; text-overflow: ellipsis;" title="${item.trgterIndvdl || ''}">${item.trgterIndvdl || '-'}</td>
+                    <td style="padding: 14px 16px; text-align: center; max-width: 150px; overflow: hidden; text-overflow: ellipsis;" title="${item.lifeArray || ''}">${item.lifeArray || '-'}</td>
                     <td style="padding: 14px 16px;"><i class="fa-solid fa-location-dot" style="color: var(--toss-blue); margin-right: 4px;"></i>${item.region}</td>
                     <td style="padding: 14px 16px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; cursor: help;" title="${item.desc?.ko || ''}">${item.desc?.ko || '-'}</td>
                     <td style="padding: 14px 16px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; cursor: help;" title="${item.desc?.vi || ''}">${item.desc?.vi || '-'}</td>
                     <td style="padding: 14px 16px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; cursor: help;" title="${item.desc?.zh || ''}">${item.desc?.zh || '-'}</td>
                     <td style="padding: 14px 16px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; cursor: help;" title="${item.desc?.en || ''}">${item.desc?.en || '-'}</td>
-                    <td style="padding: 14px 16px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; cursor: help;" title="${item.eligibility || ''}">${item.eligibility || '-'}</td>
+                    <td style="padding: 14px 16px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; cursor: help;" title="${item.eligibilityDtl || ''}">${item.eligibilityDtl || '-'}</td>
                     <td style="padding: 14px 16px; text-align: center;">
                         ${item.sourceUrl ? `<a href="${item.sourceUrl}" target="_blank" style="color: var(--toss-blue); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 12px;"></i> 바로가기</a>` : '-'}
                     </td>
