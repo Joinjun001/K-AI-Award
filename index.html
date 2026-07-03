@@ -39,11 +39,6 @@
                         <option value="en">English (English)</option>
                     </select>
                 </div>
-                <!-- Global Notification Icon with Badge -->
-                <div class="notification-bell" onclick="switchTab('tab-alerts')">
-                    <i class="fa-regular fa-bell"></i>
-                    <span id="alert-badge" class="badge hidden">0</span>
-                </div>
             </div>
         </header>
 
@@ -170,42 +165,6 @@
                 </div>
             </section>
 
-            <section id="tab-alerts" class="tab-content">
-                <div class="section-title">
-                    <h2><i class="fa-solid fa-bell"></i> <span id="txt-alerts-title">나의 맞춤 혜택 & 알림</span></h2>
-                    <p id="txt-alerts-subtitle">다문화 가정을 위한 실시간 맞춤 혜택 목록 및 알림 보관함입니다.</p>
-                </div>
-
-                <div class="alerts-layout">
-                    <!-- Match List and Notifications (Full Width) -->
-                    <div class="alerts-results" style="width: 100%;">
-                        <!-- Simulated Push Trigger Button -->
-                        <div class="card simulation-trigger-card">
-                            <h4><i class="fa-solid fa-circle-play"></i> <span id="txt-push-title">실시간 가상 신규 혜택 등록 알림</span></h4>
-                            <p id="txt-push-desc">복지로에 새로운 복지 제도가 등록되었을 때의 <strong>백그라운드 푸시 알림 작동</strong>을 테스트합니다.</p>
-                            <div class="trigger-buttons">
-                                <button class="btn btn-sm btn-primary" onclick="triggerMockPushNotification('child_allowance')" id="btn-test-push1">
-                                    '다문화 교육입학금' 신설 알림 테스트
-                                </button>
-                                <button class="btn btn-sm btn-primary" onclick="triggerMockPushNotification('voucher')" id="btn-test-push2">
-                                    '다문화 바우처 카드' 신설 알림 테스트
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Active matching list -->
-                        <div class="card active-benefits-card">
-                            <h3><i class="fa-solid fa-gift"></i> <span id="txt-matched-benefits-title">매칭된 맞춤 혜택 목록</span></h3>
-                            <div id="matching-benefits-list" class="benefits-list">
-                                <div class="no-data">
-                                    <i class="fa-solid fa-spinner fa-spin"></i>
-                                    <p>혜택 데이터를 불러오고 있습니다...</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             <!-- TAB 4: PROFILE / SETTINGS (Dummy for mockup completeness) -->
             <section id="tab-profile" class="tab-content">
@@ -250,10 +209,6 @@
             <button class="nav-item" onclick="switchTab('tab-helper', this)">
                 <i class="fa-solid fa-file-contract"></i>
                 <span id="nav-txt-helper">서류 도우미</span>
-            </button>
-            <button class="nav-item" onclick="switchTab('tab-alerts', this)">
-                <i class="fa-solid fa-bell"></i>
-                <span id="nav-txt-alerts">맞춤 혜택</span>
             </button>
             <button class="nav-item" onclick="switchTab('tab-profile', this)">
                 <i class="fa-solid fa-user"></i>
@@ -378,6 +333,6 @@
     </div>
 
     <!-- UI Interaction Scripts -->
-    <script src="app.js?v=3.6"></script>
+    <script src="app.js?v=3.7"></script>
 </body>
 </html>
