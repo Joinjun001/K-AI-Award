@@ -64,6 +64,24 @@ def parse_age(target_text):
         age = int(single_match.group(1))
         return max(0, age - 1), min(18, age + 1)
         
+    # 5. Lifecycle keywords fallback
+    has_infant = "영유아" in target_text or "보육" in target_text or "임산부" in target_text or "출산" in target_text or "양육" in target_text
+    has_child = "아동" in target_text or "초등" in target_text or "소아" in target_text or "자녀" in target_text
+    has_youth = "청소년" in target_text or "중고등" in target_text or "학업" in target_text
+    
+    if has_infant and has_youth:
+        return 0, 18
+    if has_infant and has_child:
+        return 0, 12
+    if has_child and has_youth:
+        return 6, 18
+    if has_infant:
+        return 0, 5
+    if has_child:
+        return 6, 12
+    if has_youth:
+        return 13, 18
+        
     return min_age, max_age
 
 # Parse Income condition from text
@@ -191,7 +209,23 @@ def fetch_and_cache():
         for idx, item in enumerate(items):
             title = item.find('servNm').text if item.find('servNm') is not None else ''
             desc_text = item.find('servDgst').text if item.find('servDgst') is not None else ''
-            target_text = item.find('tgTrgDetailDesc').text if item.find('tgTrgDetailDesc') is not None else ''
+            target_text = ""
+            if item.find('tgTrgDetailDesc') is not None and item.find('tgTrgDetailDesc').text:
+                target_text = item.find('tgTrgDetailDesc').text.strip()
+            
+            # Fallback if empty
+            if not target_text:
+                parts = []
+                trg_val = item.find('trgterIndvdlArray').text if item.find('trgterIndvdlArray') is not None else ''
+                life_val = item.find('lifeArray').text if item.find('lifeArray') is not None else ''
+                if trg_val:
+                    parts.append(f"대상: {trg_val}")
+                if life_val:
+                    parts.append(f"생애주기: {life_val}")
+                if desc_text:
+                    parts.append(desc_text)
+                target_text = " | ".join(parts)
+                
             category = item.find('jurMnofNm').text if item.find('jurMnofNm') is not None else '복지'
             
             # Keywords matching multicultural, child, family support

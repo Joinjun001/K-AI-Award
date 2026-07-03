@@ -1,5 +1,39 @@
 [
     {
+        "id": "api_w_0",
+        "title": "에너지바우처",
+        "category": "기후에너지환경부",
+        "minAge": 0,
+        "maxAge": 5,
+        "maxIncome": 150,
+        "region": "전국",
+        "desc": {
+            "ko": "에너지취약계층에게 에너지바우처를 지급하여 전기·가스·지역난방·등유·LPG 등 필요 에너지의 이용 비용을 지원합니다.",
+            "vi": "Phiếu năng lượng được cung cấp cho các nhóm dễ bị tổn thương về năng lượng để hỗ trợ chi phí sử dụng năng lượng cần thiết như điện, gas, sưởi ấm khu vực, dầu hỏa, LPG.",
+            "zh": "向能源弱势群体提供能源券，以支持使用电力、天然气、区域供暖、煤油和液化石油气等必要能源的费用。",
+            "en": "Energy vouchers are provided to energy-vulnerable groups to support the costs of using necessary energy such as electricity, gas, district heating, kerosene, and LPG."
+        },
+        "eligibility": "대상: 장애인,저소득,한부모·조손 | 생애주기: 영유아,노년 | 에너지취약계층에게 에너지바우처를 지급하여 전기·가스·지역난방·등유·LPG 등 필요 에너지의 이용 비용을 지원합니다.",
+        "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000072&wlfareInfoReldBztpCd=01"
+    },
+    {
+        "id": "api_w_2",
+        "title": "영구임대주택공급",
+        "category": "국토교통부",
+        "minAge": 0,
+        "maxAge": 18,
+        "maxIncome": 150,
+        "region": "전국",
+        "desc": {
+            "ko": "생계·의료급여 수급자, 국가유공자, 일본군 위안부 피해자 등 사회보호계층에게 영구임대주택을 공급하여 주거안정을 도모합니다.",
+            "vi": "Chúng tôi thúc đẩy sự ổn định dân cư bằng cách cung cấp nhà cho thuê lâu dài cho các tầng lớp bảo trợ xã hội như những người nhận trợ cấp sinh kế và y tế, những người có công và nạn nhân của phụ nữ giải khuây trong quân đội Nhật Bản.",
+            "zh": "我们通过向生活和医疗福利受益人、国家功臣和日军慰安妇受害者等社会保障阶层提供永久租赁住房，促进居住稳定。",
+            "en": "We promote residential stability by supplying permanent rental housing to social protection classes such as recipients of livelihood and medical benefits, people of national merit, and victims of Japanese military comfort women."
+        },
+        "eligibility": "대상: 다문화·탈북민,보훈대상자,장애인,저소득,한부모·조손 | 생계·의료급여 수급자, 국가유공자, 일본군 위안부 피해자 등 사회보호계층에게 영구임대주택을 공급하여 주거안정을 도모합니다.",
+        "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000888&wlfareInfoReldBztpCd=01"
+    },
+    {
         "id": "api_w_6",
         "title": "온가족보듬사업",
         "category": "성평등가족부",
@@ -13,15 +47,66 @@
             "zh": "我们帮助弱势家庭和处于紧急/危机中的家庭恢复家庭功能，加强他们的情感和经济自力更生。",
             "en": "We help vulnerable families and families in emergency/crisis recover their family functions and strengthen their emotional and economic self-reliance."
         },
-        "eligibility": "",
+        "eligibility": "대상: 다문화·탈북민,저소득,한부모·조손 | 취약가족 및 긴급·위기가족이 가족 기능을 회복하고 정서적, 경제적 자립역량을 강화할 수 있도록 합니다.",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00001098&wlfareInfoReldBztpCd=01"
+    },
+    {
+        "id": "api_w_7",
+        "title": "청소년복지시설 운영 지원",
+        "category": "성평등가족부",
+        "minAge": 6,
+        "maxAge": 18,
+        "maxIncome": 150,
+        "region": "전국",
+        "desc": {
+            "ko": "가정 밖 청소년을 보호하고 상담, 교육문화활동 지원을 통해 비행, 탈선을 예방하여 가정복귀와 사회적응을 돕습니다.",
+            "vi": "Chúng tôi bảo vệ thanh thiếu niên xa nhà và giúp họ trở về nhà và thích nghi với xã hội bằng cách ngăn chặn tình trạng phạm pháp và phạm pháp thông qua tư vấn và hỗ trợ cho các hoạt động giáo dục và văn hóa.",
+            "zh": "我们通过对教育和文化活动的咨询和支持，防止青少年犯罪和违法行为，从而保护离家青少年，帮助他们重返家园并适应社会。",
+            "en": "We protect out-of-home youth and help them return to home and adapt to society by preventing delinquency and delinquency through counseling and support for educational and cultural activities."
+        },
+        "eligibility": "생애주기: 아동,청소년,청년 | 가정 밖 청소년을 보호하고 상담, 교육문화활동 지원을 통해 비행, 탈선을 예방하여 가정복귀와 사회적응을 돕습니다.",
+        "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000751&wlfareInfoReldBztpCd=01"
+    },
+    {
+        "id": "api_w_16",
+        "title": "(북한이탈주민)교육비 지원",
+        "category": "통일부",
+        "minAge": 13,
+        "maxAge": 18,
+        "maxIncome": 150,
+        "region": "전국",
+        "desc": {
+            "ko": "북한이탈주민이 안정적인 정착기반을 마련하고 교육적 어려움을 해소할 수 있도록 교육비를 지원합니다.",
+            "vi": "Chúng tôi hỗ trợ chi phí giáo dục để những người đào thoát Bắc Triều Tiên có thể thiết lập nền tảng ổn định cho việc định cư và giải quyết những khó khăn trong giáo dục.",
+            "zh": "我们支持教育经费，为脱北者奠定稳定的定居基础，解决教育困难。",
+            "en": "We support education expenses so that North Korean defectors can establish a stable foundation for settlement and resolve educational difficulties."
+        },
+        "eligibility": "대상: 다문화·탈북민 | 생애주기: 청소년,청년 | 북한이탈주민이 안정적인 정착기반을 마련하고 교육적 어려움을 해소할 수 있도록 교육비를 지원합니다.",
+        "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000063&wlfareInfoReldBztpCd=01"
+    },
+    {
+        "id": "api_w_17",
+        "title": "(북한이탈주민)상담 지원",
+        "category": "통일부",
+        "minAge": 0,
+        "maxAge": 18,
+        "maxIncome": 150,
+        "region": "전국",
+        "desc": {
+            "ko": "북한이탈주민의 주택/취업/교육/의료 등 상담지원 서비스를 체계적으로 제공하여 성공적인 지역사회 정착을 유도합니다.",
+            "vi": "Chúng tôi cung cấp một cách có hệ thống các dịch vụ hỗ trợ tư vấn, bao gồm nhà ở/việc làm/giáo dục/chăm sóc y tế, cho những người đào thoát Bắc Triều Tiên để khuyến khích họ định cư thành công trong cộng đồng.",
+            "zh": "我们系统地为脱北者提供住房/就业/教育/医疗等咨询支持服务，鼓励他们成功融入社区。",
+            "en": "We systematically provide counseling support services, including housing/employment/education/medical care, to North Korean defectors to encourage their successful settlement in the community."
+        },
+        "eligibility": "대상: 다문화·탈북민 | 북한이탈주민의 주택/취업/교육/의료 등 상담지원 서비스를 체계적으로 제공하여 성공적인 지역사회 정착을 유도합니다.",
+        "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000921&wlfareInfoReldBztpCd=01"
     },
     {
         "id": "api_w_21",
         "title": "한부모가족 아동양육비 지원",
         "category": "성평등가족부",
         "minAge": 0,
-        "maxAge": 18,
+        "maxAge": 12,
         "maxIncome": 150,
         "region": "전국",
         "desc": {
@@ -30,15 +115,32 @@
             "zh": "我们为低收入单亲家庭和祖父母家庭提供子女抚养费，使他们能够维持家庭功能并过上稳定的生活。",
             "en": "We provide child support to low-income single-parent families and grandparents' families so that they can maintain family function and live a stable life."
         },
-        "eligibility": "",
+        "eligibility": "대상: 한부모·조손 | 저소득 한부모가족 및 조손가족이 가족의 기능을 유지하고 안정된 생활을 할 수 있도록 아동 양육비를 지원합니다.",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00001068&wlfareInfoReldBztpCd=01"
+    },
+    {
+        "id": "api_w_22",
+        "title": "스포츠강좌이용권",
+        "category": "문화체육관광부",
+        "minAge": 0,
+        "maxAge": 18,
+        "maxIncome": 150,
+        "region": "전국",
+        "desc": {
+            "ko": "저소득층 유청소년에게 지속적인 스포츠 활동 기회를 보장하여  체력향상과 건전한 여가활동을 지원합니다.",
+            "vi": "Chúng tôi hỗ trợ thanh thiếu niên từ các gia đình có thu nhập thấp cải thiện thể lực và tham gia các hoạt động giải trí lành mạnh bằng cách đảm bảo các cơ hội liên tục cho các hoạt động thể thao.",
+            "zh": "我们通过确保持续的体育活动机会，支持低收入家庭的青少年增强体力，从事健康的休闲活动。",
+            "en": "We support youth from low-income families to improve their physical strength and engage in healthy leisure activities by ensuring continuous opportunities for sports activities."
+        },
+        "eligibility": "대상: 저소득,한부모·조손 | 생애주기: 영유아,아동,청소년 | 저소득층 유청소년에게 지속적인 스포츠 활동 기회를 보장하여  체력향상과 건전한 여가활동을 지원합니다.",
+        "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000076&wlfareInfoReldBztpCd=01"
     },
     {
         "id": "api_w_28",
         "title": "실종아동 등 보호 및 지원",
         "category": "보건복지부",
-        "minAge": 0,
-        "maxAge": 18,
+        "minAge": 6,
+        "maxAge": 12,
         "maxIncome": 150,
         "region": "전국",
         "desc": {
@@ -47,15 +149,32 @@
             "zh": "我们通过针对儿童和残疾人（智力、自闭症和精神障碍）的预防失踪教育和宣传以及对长期失踪人员家庭的支持来防止家庭破裂。",
             "en": "We prevent family breakup through disappearance prevention education and promotion for children and disabled people (intellectual, autistic, and mental), and support for families of long-term missing persons."
         },
-        "eligibility": "",
+        "eligibility": "대상: 장애인 | 생애주기: 아동 | 아동 및 장애인(지적·자폐성·정신)의 실종예방 교육 및 홍보, 장기실종 가족지원을 통해 가족해체를 예방합니다.",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000032&wlfareInfoReldBztpCd=01"
+    },
+    {
+        "id": "api_w_34",
+        "title": "의료급여(요양비)",
+        "category": "보건복지부",
+        "minAge": 0,
+        "maxAge": 5,
+        "maxIncome": 150,
+        "region": "전국",
+        "desc": {
+            "ko": "의료급여 수급권자에게 의료비를 지원하여 저소득층의  국민보건 향상과 사회복지 증진에 기여합니다.",
+            "vi": "Chúng tôi góp phần cải thiện sức khỏe cộng đồng và phúc lợi xã hội cho người có thu nhập thấp bằng cách hỗ trợ chi phí y tế cho những người nhận trợ cấp y tế.",
+            "zh": "我们通过支持医疗福利受益人的医疗费用，为改善低收入人群的公共卫生和社会福利做出贡献。",
+            "en": "We contribute to improving public health and social welfare for low-income people by supporting medical expenses for medical benefit recipients."
+        },
+        "eligibility": "대상: 저소득 | 생애주기: 임신 · 출산 | 의료급여 수급권자에게 의료비를 지원하여 저소득층의  국민보건 향상과 사회복지 증진에 기여합니다.",
+        "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000056&wlfareInfoReldBztpCd=01"
     },
     {
         "id": "api_w_36",
         "title": "의료급여임신.출산진료비지원",
         "category": "보건복지부",
         "minAge": 0,
-        "maxAge": 18,
+        "maxAge": 2,
         "maxIncome": 150,
         "region": "전국",
         "desc": {
@@ -64,8 +183,25 @@
             "zh": "我们通过支持孕妇、分娩者和2岁以下儿童的医疗费用，为改善低收入人群的健康和社会福利做出贡献。",
             "en": "We contribute to improving the health of low-income people and social welfare by supporting medical expenses for pregnant or childbirth recipients and children under 2 years of age."
         },
-        "eligibility": "",
+        "eligibility": "대상: 저소득 | 생애주기: 영유아,임신 · 출산 | 임신 또는 출산한 의료급여 수급자와 2세미만 자녀에게 의료비를 지원하여 저소득층 국민보건 향상과 사회복지 증진에 기여합니다.",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000061&wlfareInfoReldBztpCd=01"
+    },
+    {
+        "id": "api_w_37",
+        "title": "(북한이탈주민)사회보장 지원(수급권자 범위의 특례)",
+        "category": "통일부",
+        "minAge": 0,
+        "maxAge": 18,
+        "maxIncome": 150,
+        "region": "전국",
+        "desc": {
+            "ko": "북한에서 남한으로 이주한 주민의 안정적인 정착을 지원합니다.",
+            "vi": "Chúng tôi hỗ trợ việc định cư ổn định cho những cư dân di cư từ Bắc Triều Tiên đến Hàn Quốc.",
+            "zh": "我们支持从朝鲜移民到韩国的居民稳定定居。",
+            "en": "We support the stable settlement of residents who migrated from North Korea to South Korea."
+        },
+        "eligibility": "대상: 다문화·탈북민 | 북한에서 남한으로 이주한 주민의 안정적인 정착을 지원합니다.",
+        "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000782&wlfareInfoReldBztpCd=01"
     },
     {
         "id": "api_w_39",
@@ -81,7 +217,7 @@
             "zh": "通过及早发现和治疗先天性代谢异常，提前预防残疾的发生，促进婴幼儿的健康。",
             "en": "By detecting and treating congenital metabolic abnormalities early, we prevent the occurrence of disabilities in advance and promote the health of infants and young children."
         },
-        "eligibility": "",
+        "eligibility": "생애주기: 영유아,아동,청소년 | 선천성대사이상의 유무를 조기에 발견·치료함으로써 장애발생을 사전에 예방하여 영유아의 건강 증진을 도모합니다.",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000040&wlfareInfoReldBztpCd=01"
     },
     {
@@ -89,7 +225,7 @@
         "title": "고위험 임산부 의료비 지원",
         "category": "보건복지부",
         "minAge": 0,
-        "maxAge": 18,
+        "maxAge": 5,
         "maxIncome": 150,
         "region": "전국",
         "desc": {
@@ -98,7 +234,7 @@
             "zh": "通过支持适当治疗和管理高危妊娠所需的医疗费用，我们可以减轻经济负担并确保健康分娩。",
             "en": "By supporting medical expenses necessary for appropriate treatment and management of high-risk pregnancies, we reduce financial burden and ensure healthy childbirth."
         },
-        "eligibility": "",
+        "eligibility": "생애주기: 임신 · 출산 | 고위험 임신의 적정 치료와 관리에 필요한 진료비를 지원하여 경제적 부담을 줄이고, 건강한 출산을 보장합니다.",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00001088&wlfareInfoReldBztpCd=01"
     },
     {
@@ -106,7 +242,7 @@
         "title": "어린이집지원(교사근무환경개선비,교사겸직원장지원비)",
         "category": "교육부",
         "minAge": 0,
-        "maxAge": 18,
+        "maxAge": 5,
         "maxIncome": 150,
         "region": "전국",
         "desc": {
@@ -115,143 +251,7 @@
             "zh": "我们支持工作环境改善费用，以改善保育中心主任和教师的工作条件。",
             "en": "We support working environment improvement expenses to improve the working conditions of daycare center directors and teachers."
         },
-        "eligibility": "",
+        "eligibility": "어린이집 보육교사와 교사를 겸직하는 원장의 근로여건개선을 위해 근무환경 개선비를 지원합니다.",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00001094&wlfareInfoReldBztpCd=01"
-    },
-    {
-        "id": "api_w_49",
-        "title": "공동육아나눔터 운영",
-        "category": "성평등가족부",
-        "minAge": 0,
-        "maxAge": 18,
-        "maxIncome": 150,
-        "region": "전국",
-        "desc": {
-            "ko": "육아 공간 및 돌봄 프로그램 제공, 이웃 간 자녀 돌봄 품앗이 활동 지원을 통해 양육 부담을 경감하고 돌봄친화적 분위기를 조성합니다.",
-            "vi": "Chúng tôi giảm bớt gánh nặng chăm sóc trẻ em và tạo ra bầu không khí thân thiện với việc chăm sóc trẻ bằng cách cung cấp không gian chăm sóc trẻ em và các chương trình chăm sóc cũng như hỗ trợ các hoạt động chăm sóc trẻ em giữa những người hàng xóm.",
-            "zh": "我们通过提供托儿空间和托儿计划以及支持邻居之间的托儿活动来减轻托儿负担并营造友好的氛围。",
-            "en": "We reduce the burden of childcare and create a care-friendly atmosphere by providing childcare space and care programs, and supporting childcare activities among neighbors."
-        },
-        "eligibility": "",
-        "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000028&wlfareInfoReldBztpCd=01"
-    },
-    {
-        "id": "api_w_57",
-        "title": "국가유공자의료급여증발급",
-        "category": "국가보훈부",
-        "minAge": 0,
-        "maxAge": 18,
-        "maxIncome": 150,
-        "region": "전국",
-        "desc": {
-            "ko": "저소득 국가유공자와 가족들의 의료비 부담 경감을 위해 국가유공자 의료급여증을 발급합니다.",
-            "vi": "Để giảm bớt gánh nặng chi phí y tế cho các cựu chiến binh có công với đất nước có thu nhập thấp và gia đình họ, chúng tôi cấp giấy chứng nhận trợ cấp y tế cho người có công với đất nước.",
-            "zh": "为减轻低收入国家有功军人及其家属的医疗费用负担，我们为国家有功人员颁发医疗待遇证。",
-            "en": "To reduce the burden of medical expenses on low-income veterans of national merit and their families, we issue medical benefit certificates for national meritorious persons."
-        },
-        "eligibility": "",
-        "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00001091&wlfareInfoReldBztpCd=01"
-    },
-    {
-        "id": "api_w_60",
-        "title": "아이돌봄서비스",
-        "category": "성평등가족부",
-        "minAge": 0,
-        "maxAge": 18,
-        "maxIncome": 150,
-        "region": "전국",
-        "desc": {
-            "ko": "맞벌이를 하거나 갑자기 아이를 돌볼 수 없는 일이 생겼을 때 육아 도우미가 방문하여 12세 이하 자녀의 양육을 도와줍니다.",
-            "vi": "Khi bạn có thu nhập kép hoặc đột nhiên không thể chăm sóc con cái, một trợ lý chăm sóc trẻ em sẽ đến thăm bạn để giúp bạn nuôi dạy con bạn dưới 12 tuổi.",
-            "zh": "当您有双重收入或突然无法照顾您的孩子时，儿童保育助理会上门帮助您抚养 12 岁以下的孩子。",
-            "en": "When you have a dual income or are suddenly unable to care for your children, a child care assistant visits you to help you raise your children under the age of 12."
-        },
-        "eligibility": "",
-        "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000024&wlfareInfoReldBztpCd=01"
-    },
-    {
-        "id": "api_w_66",
-        "title": "한부모가족자녀 교육비 지원",
-        "category": "교육부",
-        "minAge": 0,
-        "maxAge": 18,
-        "maxIncome": 150,
-        "region": "전국",
-        "desc": {
-            "ko": "한부모가족보호대상자에게 고교비(학비)를 지원합니다.",
-            "vi": "Chi phí trung học (học phí) được hỗ trợ cho các gia đình đơn thân.",
-            "zh": "单亲家庭的高中费用（学费）得到补助。",
-            "en": "High school expenses (tuition) are supported for single-parent families."
-        },
-        "eligibility": "",
-        "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00001104&wlfareInfoReldBztpCd=01"
-    },
-    {
-        "id": "api_w_69",
-        "title": "폭력피해자 주거지원 사업",
-        "category": "성평등가족부",
-        "minAge": 0,
-        "maxAge": 18,
-        "maxIncome": 150,
-        "region": "전국",
-        "desc": {
-            "ko": "가정폭력, 성폭력 등 폭력피해자들의 자립을 지원하고 사회 적응 여건을 조성하고자, 폭력 피해여성과 그 가족들이 공동으로 생활할 수 있는 주거 공간을 제공합니다.",
-            "vi": "Để hỗ trợ sự độc lập của nạn nhân bạo lực như bạo lực gia đình và bạo lực tình dục cũng như tạo điều kiện để thích ứng với xã hội, chúng tôi cung cấp không gian dân cư nơi nạn nhân bạo lực là phụ nữ và gia đình họ có thể sống cùng nhau.",
-            "zh": "为了支持家庭暴力和性暴力等暴力受害者的独立，并为社会适应创造条件，我们提供女性暴力受害者与其家人共同生活的居住空间。",
-            "en": "In order to support the independence of victims of violence such as domestic violence and sexual violence and to create conditions for social adaptation, we provide residential space where women victims of violence and their families can live together."
-        },
-        "eligibility": "",
-        "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00001101&wlfareInfoReldBztpCd=01"
-    },
-    {
-        "id": "api_w_78",
-        "title": "특별현금급여(가족요양비)",
-        "category": "보건복지부",
-        "minAge": 0,
-        "maxAge": 18,
-        "maxIncome": 150,
-        "region": "전국",
-        "desc": {
-            "ko": "가족등으로부터 방문요양에 상당한 장기요양급여를 받은 때 수급자에게 특별현금급여를 지급합니다.",
-            "vi": "Trợ cấp tiền mặt đặc biệt được trả cho người nhận khi họ nhận được trợ cấp chăm sóc dài hạn tương đương với việc chăm sóc đến thăm từ các thành viên trong gia đình, v.v.",
-            "zh": "当接受者获得相当于家庭成员等的探访护理等长期护理福利时，将向他们支付特殊现金福利。",
-            "en": "Special cash benefits are paid to recipients when they receive long-term care benefits equivalent to visiting care from family members, etc."
-        },
-        "eligibility": "",
-        "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00001086&wlfareInfoReldBztpCd=01"
-    },
-    {
-        "id": "api_w_87",
-        "title": "발달장애인 부모상담지원사업",
-        "category": "보건복지부",
-        "minAge": 0,
-        "maxAge": 18,
-        "maxIncome": 150,
-        "region": "전국",
-        "desc": {
-            "ko": "발달장애인 부모에게 발달장애인의 양육과 부양에 따른 심리적 부담 완화 및 가족기능 향상 도모를 위한 전문 심리상담을 지원합니다.",
-            "vi": "Chúng tôi cung cấp cho các bậc cha mẹ bị khuyết tật phát triển tư vấn tâm lý chuyên nghiệp để giảm bớt gánh nặng tâm lý trong việc nuôi dạy và hỗ trợ người khuyết tật phát triển cũng như cải thiện chức năng gia đình.",
-            "zh": "我们为发育障碍家长提供专业的心理咨询，减轻抚养和抚养发育障碍人士的心理负担，改善家庭功能。",
-            "en": "We provide parents with developmental disabilities with professional psychological counseling to alleviate the psychological burden of raising and supporting a person with developmental disabilities and to improve family function."
-        },
-        "eligibility": "",
-        "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000064&wlfareInfoReldBztpCd=01"
-    },
-    {
-        "id": "api_w_88",
-        "title": "육아종합지원서비스 제공",
-        "category": "교육부",
-        "minAge": 0,
-        "maxAge": 18,
-        "maxIncome": 150,
-        "region": "전국",
-        "desc": {
-            "ko": "영유아와 부모를 위한 종합적인 육아종합서비스를 제공하는 육아종합지원센터 운영비를 지원합니다.",
-            "vi": "Chúng tôi hỗ trợ chi phí hoạt động của một trung tâm hỗ trợ chăm sóc trẻ em toàn diện, nơi cung cấp các dịch vụ chăm sóc trẻ em toàn diện cho trẻ sơ sinh, trẻ em và cha mẹ của chúng.",
-            "zh": "我们支持综合儿童保育支持中心的运营成本，该中心为婴儿和儿童及其父母提供综合儿童保育服务。",
-            "en": "We support the operating costs of a comprehensive child care support center that provides comprehensive child care services for infants and children and their parents."
-        },
-        "eligibility": "",
-        "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000030&wlfareInfoReldBztpCd=01"
     }
 ]
