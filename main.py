@@ -132,7 +132,7 @@ def get_welfare_benefits():
         cur.close()
         conn.close()
 
-def call_gemini_api(payload, model_name="gemini-2.5-flash"):
+def call_gemini_api(payload, model_name="gemini-3.5-flash"):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_API_KEY}"
     req = urllib.request.Request(
         url,
@@ -140,15 +140,15 @@ def call_gemini_api(payload, model_name="gemini-2.5-flash"):
         headers={"Content-Type": "application/json"}
     )
     try:
-        with urllib.request.urlopen(req, timeout=30) as response:
+        with urllib.request.urlopen(req, timeout=60) as response:
             res_data = json.loads(response.read().decode("utf-8"))
             return res_data
     except Exception as e:
         logger.error(f"Gemini API model {model_name} error: {e}")
         # Try fallback model
-        if model_name != "gemini-2.0-flash":
-            logger.info("Falling back to gemini-2.0-flash...")
-            return call_gemini_api(payload, model_name="gemini-2.0-flash")
+        if model_name != "gemini-2.5-flash":
+            logger.info("Falling back to gemini-2.5-flash...")
+            return call_gemini_api(payload, model_name="gemini-2.5-flash")
         raise e
 
 @app.post("/api/ocr")
@@ -254,14 +254,52 @@ async def analyze_document(
         return result
     except Exception as e:
         logger.error(f"Failed to generate translation from Gemini: {e}")
-        # Return fallback structure
+        # Localized fallback structure
+        fallback_msg = {
+            "ko": {
+                "extracted": text or "이미지 텍스트 추출 실패",
+                "schedule": "<h4>📅 일정 요약</h4><p>API 연동 에러가 발생하여 간이 안내 처리합니다.</p>",
+                "materials": "<h4>🎒 준비물</h4><p>안내문을 개별 확인해 주시기 바랍니다.</p>",
+                "submissions": "<h4>✍️ 제출 서류</h4><p>기한 내에 제출 서류가 있는지 확인 바랍니다.</p>",
+                "translation": "Gemini API 호출에 실패하였습니다. 설정 및 네트워크 상태를 확인하세요.",
+                "culture": "<h4>💡 참고 사항</h4><p>한국 학교 문화 설명을 불러올 수 없습니다.</p>"
+            },
+            "vi": {
+                "extracted": text or "Không thể trích xuất văn bản từ ảnh",
+                "schedule": "<h4>📅 Lịch trình chính</h4><p>Đã xảy ra lỗi kết nối API. Vui lòng kiểm tra lại tài liệu gốc.</p>",
+                "materials": "<h4>🎒 Đồ dùng chuẩn bị</h4><p>Vui lòng trực tiếp đối chiếu lại tài liệu hướng dẫn.</p>",
+                "submissions": "<h4>✍️ Hồ sơ cần nộp</h4><p>Vui lòng xác nhận xem có hồ sơ nào cần nộp đúng hạn không.</p>",
+                "translation": "Không thể kết nối đến Gemini API. Vui lòng kiểm tra thiết lập hoặc kết nối mạng.",
+                "culture": "<h4>💡 Tham khảo văn hóa</h4><p>Không thể tải giải thích văn hóa học đường Hàn Quốc.</p>"
+            },
+            "zh": {
+                "extracted": text or "图片文本提取失败",
+                "schedule": "<h4>📅 日程摘要</h4><p>API 连通发生错误，请以原通知为准进行核对。</p>",
+                "materials": "<h4>🎒 准备物品</h4><p>请单独确认通知内容以准备所需物品。</p>",
+                "submissions": "<h4>✍️ 提交材料</h4><p>请确认是否有需要在期限内提交的材料。</p>",
+                "translation": "调用 Gemini API 失败。请检查设置和网络状态。",
+                "culture": "<h4>💡 文化小贴士</h4><p>无法载入韩国学校文化相关说明。</p>"
+            },
+            "en": {
+                "extracted": text or "Failed to extract text from image",
+                "schedule": "<h4>📅 Schedule Summary</h4><p>An API integration error occurred. Please verify with the original document.</p>",
+                "materials": "<h4>🎒 Materials</h4><p>Please check the notices individually to prepare necessary materials.</p>",
+                "submissions": "<h4>✍️ Submissions</h4><p>Please check if there are any documents to submit by the deadline.</p>",
+                "translation": "Failed to call Gemini API. Please check settings and network status.",
+                "culture": "<h4>💡 Cultural Notes</h4><p>Could not load explanations of Korean school culture.</p>"
+            }
+        }
+        
+        l_key = lang if lang in fallback_msg else "ko"
+        f_data = fallback_msg[l_key]
+        
         return {
-            "extracted_text": text or "이미지 텍스트 추출 실패",
-            "schedule": "<h4>📅 일정 요약</h4><p>API 연동 에러가 발생하여 간이 안내 처리합니다.</p>",
-            "materials": "<h4>🎒 준비물</h4><p>안내문을 개별 확인해 주시기 바랍니다.</p>",
-            "submissions": "<h4>✍️ 제출 서류</h4><p>기한 내에 제출 서류가 있는지 확인 바랍니다.</p>",
-            "full_translation": "Gemini API 호출에 실패하였습니다. 설정 및 네트워크 상태를 확인하세요.",
-            "cultural_notes": "<h4>💡 참고 사항</h4><p>한국 학교 문화 설명을 불러올 수 없습니다.</p>"
+            "extracted_text": f_data["extracted"],
+            "schedule": f_data["schedule"],
+            "materials": f_data["materials"],
+            "submissions": f_data["submissions"],
+            "full_translation": f_data["translation"],
+            "cultural_notes": f_data["culture"]
         }
 
 import hashlib

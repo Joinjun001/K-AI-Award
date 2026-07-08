@@ -61,6 +61,33 @@ const translations = {
         settingSecurity: "보안 및 개인정보 관리",
         settingFeedback: "번역 품질 피드백 및 기여",
         settingApi: "공용 데이터 연동 관리 (보조금24 API)",
+        settingAdmin: "관리자 대시보드 (조회)",
+        adminLoginTitle: "관리자 로그인",
+        adminUsernameLabel: "관리자 아이디",
+        adminUsernamePlaceholder: "아이디를 입력하세요",
+        adminPasswordLabel: "비밀번호",
+        adminPasswordPlaceholder: "비밀번호를 입력하세요",
+        adminLoginSubmit: "로그인",
+        adminDashboardTitle: "다온 복지 혜택 관리자 대시보드",
+        adminDashboardSubtitle: "welfare_benefits 테이블 데이터 실시간 조회 (조회 전용)",
+        adminRefresh: "새로고침",
+        adminClose: "닫기",
+        thId: "ID",
+        thTitle: "제목",
+        thCategory: "카테고리",
+        thOnline: "온라인 신청",
+        thTarget: "대상자 분류",
+        thLifecycle: "생애주기",
+        thRegion: "지역",
+        thDescKo: "설명 요약 (국문)",
+        thDescVi: "설명 (베트남어)",
+        thDescZh: "설명 (중국어)",
+        thDescEn: "설명 (영어)",
+        thEligKo: "상세 지원 대상 (한글 원문)",
+        thLink: "원본 링크",
+        thUpdated: "수정일시",
+        reportLoadingTitle: "문서를 분석하는 중입니다",
+        reportClose: "닫기",
         
         optInc50: "50% 이하 (기초/차상위 등)",
         optInc80: "80% 이하 (교육지원금 등)",
@@ -94,7 +121,11 @@ const translations = {
         methodPhotoLabel: "사진 업로드",
         methodTextLabel: "텍스트 직접 입력",
         uploadZoneTitle: "가정통신문 사진을 올려주세요",
-        uploadZoneDesc: "클릭하여 앨범에서 선택하거나 카메라 촬영"
+        uploadZoneDesc: "클릭하여 앨범에서 선택하거나 카메라 촬영",
+        confirmTitle: "이 이미지를 번역할까요?",
+        confirmDesc: "다온 AI가 문서의 내용과 준비물을 파악하여 요약해 드립니다.",
+        confirmNo: "아니요",
+        confirmYes: "번역하기"
     },
     vi: {
         // Navigation
@@ -147,6 +178,33 @@ const translations = {
         settingSecurity: "Quản lý bảo mật & Thông tin cá nhân",
         settingFeedback: "Phản hồi và đóng góp chất lượng dịch",
         settingApi: "Quản lý liên kết dữ liệu công cộng (Bojogum24 API)",
+        settingAdmin: "Bảng điều khiển quản trị (Xem)",
+        adminLoginTitle: "Đăng nhập quản trị viên",
+        adminUsernameLabel: "ID quản trị viên",
+        adminUsernamePlaceholder: "Nhập ID",
+        adminPasswordLabel: "Mật khẩu",
+        adminPasswordPlaceholder: "Nhập mật khẩu",
+        adminLoginSubmit: "Đăng nhập",
+        adminDashboardTitle: "Bảng điều khiển phúc lợi Daon",
+        adminDashboardSubtitle: "Truy vấn dữ liệu bảng welfare_benefits (Chỉ xem)",
+        adminRefresh: "Làm mới",
+        adminClose: "Đóng",
+        thId: "ID",
+        thTitle: "Tiêu đề",
+        thCategory: "Thể loại",
+        thOnline: "Đăng ký Online",
+        thTarget: "Phân loại đối tượng",
+        thLifecycle: "Vòng đời",
+        thRegion: "Khu vực",
+        thDescKo: "Tóm tắt (tiếng Hàn)",
+        thDescVi: "Mô tả (tiếng Việt)",
+        thDescZh: "Mô tả (tiếng Trung)",
+        thDescEn: "Mô tả (tiếng Anh)",
+        thEligKo: "Đối tượng chi tiết (Gốc)",
+        thLink: "Link gốc",
+        thUpdated: "Ngày cập nhật",
+        reportLoadingTitle: "Đang phân tích tài liệu",
+        reportClose: "Đóng",
         
         optInc50: "Dưới 50% (Hộ nghèo/cận nghèo v.v.)",
         optInc80: "Dưới 80% (Học bổng giáo dục v.v.)",
@@ -180,7 +238,11 @@ const translations = {
         methodPhotoLabel: "Tải ảnh lên",
         methodTextLabel: "Nhập văn bản",
         uploadZoneTitle: "Tải ảnh thư báo lên",
-        uploadZoneDesc: "Nhấp để chọn từ thư viện hoặc chụp ảnh"
+        uploadZoneDesc: "Nhấp để chọn từ thư viện hoặc chụp ảnh",
+        confirmTitle: "Bạn có muốn dịch hình ảnh này không?",
+        confirmDesc: "Daon AI sẽ phân tích nội dung tài liệu và tóm tắt các đồ dùng cần chuẩn bị.",
+        confirmNo: "Không",
+        confirmYes: "Dịch ngay"
     },
     zh: {
         // Navigation
@@ -233,6 +295,33 @@ const translations = {
         settingSecurity: "安全与隐私管理",
         settingFeedback: "翻译质量反馈与贡献",
         settingApi: "公共数据关联管理 (补助金24 API)",
+        settingAdmin: "管理员仪表板 (查看)",
+        adminLoginTitle: "管理员登录",
+        adminUsernameLabel: "管理员账号",
+        adminUsernamePlaceholder: "请输入账号",
+        adminPasswordLabel: "密码",
+        adminPasswordPlaceholder: "请输入密码",
+        adminLoginSubmit: "登录",
+        adminDashboardTitle: "多稳福利管理仪表板",
+        adminDashboardSubtitle: "welfare_benefits 表数据实时查询 (仅查看)",
+        adminRefresh: "刷新",
+        adminClose: "关闭",
+        thId: "ID",
+        thTitle: "标题",
+        thCategory: "分类",
+        thOnline: "线上申请",
+        thTarget: "对象分类",
+        thLifecycle: "生命周期",
+        thRegion: "地区",
+        thDescKo: "摘要 (韩文)",
+        thDescVi: "说明 (越南语)",
+        thDescZh: "说明 (中文)",
+        thDescEn: "说明 (英语)",
+        thEligKo: "详细对象 (原文)",
+        thLink: "原链接",
+        thUpdated: "更新时间",
+        reportLoadingTitle: "正在分析文档",
+        reportClose: "关闭",
         
         optInc50: "50% 以下 (最低生活保障/次低收入等)",
         optInc80: "80% 以下 (教育补助金等)",
@@ -266,7 +355,11 @@ const translations = {
         methodPhotoLabel: "上传照片",
         methodTextLabel: "直接输入文本",
         uploadZoneTitle: "请上传学校通知书照片",
-        uploadZoneDesc: "点击选择相册 or 拍照"
+        uploadZoneDesc: "点击选择相册 or 拍照",
+        confirmTitle: "是否翻译此图片？",
+        confirmDesc: "多稳 AI 将分析文件内容并为您总结所需物品。",
+        confirmNo: "取消",
+        confirmYes: "翻译"
     },
     en: {
         // Navigation
@@ -319,6 +412,33 @@ const translations = {
         settingSecurity: "Security & Privacy Settings",
         settingFeedback: "Translation Quality Feedback & Contribute",
         settingApi: "Public Data Integration (Bojogum24 API)",
+        settingAdmin: "Admin Dashboard (Read)",
+        adminLoginTitle: "Admin Login",
+        adminUsernameLabel: "Admin ID",
+        adminUsernamePlaceholder: "Enter ID",
+        adminPasswordLabel: "Password",
+        adminPasswordPlaceholder: "Enter Password",
+        adminLoginSubmit: "Login",
+        adminDashboardTitle: "Daon Welfare Admin Dashboard",
+        adminDashboardSubtitle: "welfare_benefits table real-time query (Read-only)",
+        adminRefresh: "Refresh",
+        adminClose: "Close",
+        thId: "ID",
+        thTitle: "Title",
+        thCategory: "Category",
+        thOnline: "Online Apply",
+        thTarget: "Target Group",
+        thLifecycle: "Life Cycle",
+        thRegion: "Region",
+        thDescKo: "Summary (KO)",
+        thDescVi: "Description (VI)",
+        thDescZh: "Description (ZH)",
+        thDescEn: "Description (EN)",
+        thEligKo: "Eligibility (KO)",
+        thLink: "Source Link",
+        thUpdated: "Updated At",
+        reportLoadingTitle: "Analyzing document",
+        reportClose: "Close",
         
         optInc50: "Under 50% (Low-income/Basic, etc.)",
         optInc80: "Under 80% (Education Grant, etc.)",
@@ -348,7 +468,15 @@ const translations = {
         obTitle3: "Please enter your family's monthly average income",
         obDesc3: "Please write your family's monthly average income in units of 10,000 KRW for government benefits matching.",
         obAddChild: "Add Child",
-        counterUnit: "child"
+        counterUnit: "child",
+        methodPhotoLabel: "Upload Photo",
+        methodTextLabel: "Enter Text",
+        uploadZoneTitle: "Upload a school newsletter photo",
+        uploadZoneDesc: "Click to select from gallery or take a photo",
+        confirmTitle: "Translate this image?",
+        confirmDesc: "Daon AI will analyze the document and summarize the required items for you.",
+        confirmNo: "Cancel",
+        confirmYes: "Translate"
     }};// Mock RAG Knowledge Base (Vector Database emulation)
 const mockKnowledgeBase = [
     {
@@ -569,8 +697,11 @@ function changeLanguage(langCode) {
         'txt-helper-input-title': translations[langCode].helperInputTitle,
         'txt-ocr-loading-desc': translations[langCode].ocrLoadingDesc,
         'txt-helper-loading-desc': translations[langCode].helperLoadingDesc,
-        'txt-report-title': translations[langCode].reportTitle,
-        'txt-btn-copy': translations[langCode].btnCopy,
+        'txt-report-modal-title': translations[langCode].reportTitle,
+        'txt-report-loading-title': translations[langCode].reportLoadingTitle,
+        'txt-report-loading-desc': translations[langCode].helperLoadingDesc,
+        'txt-report-copy': translations[langCode].btnCopy,
+        'txt-report-close': translations[langCode].reportClose,
         'txt-alerts-title': translations[langCode].alertsTitle,
         'txt-profile-setting-title': translations[langCode].profileSettingTitle,
         'txt-profile-setting-desc': translations[langCode].profileSettingDesc,
@@ -589,10 +720,37 @@ function changeLanguage(langCode) {
         'txt-setting-security': '<i class="fa-solid fa-shield-halved"></i> ' + translations[langCode].settingSecurity,
         'txt-setting-feedback': '<i class="fa-solid fa-language"></i> ' + translations[langCode].settingFeedback,
         'txt-setting-api': '<i class="fa-solid fa-circle-nodes"></i> ' + translations[langCode].settingApi,
+        'txt-setting-admin': '<i class="fa-solid fa-user-shield"></i> ' + translations[langCode].settingAdmin,
+        'txt-admin-login-title': translations[langCode].adminLoginTitle,
+        'txt-admin-username-label': translations[langCode].adminUsernameLabel,
+        'txt-admin-password-label': translations[langCode].adminPasswordLabel,
+        'btn-admin-login-submit': translations[langCode].adminLoginSubmit,
+        'txt-admin-dashboard-title': translations[langCode].adminDashboardTitle,
+        'txt-admin-dashboard-subtitle': translations[langCode].adminDashboardSubtitle,
+        'txt-admin-refresh': translations[langCode].adminRefresh,
+        'btn-admin-close': translations[langCode].adminClose,
+        'th-id': translations[langCode].thId,
+        'th-title': translations[langCode].thTitle,
+        'th-category': translations[langCode].thCategory,
+        'th-online': translations[langCode].thOnline,
+        'th-target': translations[langCode].thTarget,
+        'th-lifecycle': translations[langCode].thLifecycle,
+        'th-region': translations[langCode].thRegion,
+        'th-desc-ko': translations[langCode].thDescKo,
+        'th-desc-vi': translations[langCode].thDescVi,
+        'th-desc-zh': translations[langCode].thDescZh,
+        'th-desc-en': translations[langCode].thDescEn,
+        'th-elig-ko': translations[langCode].thEligKo,
+        'th-link': translations[langCode].thLink,
+        'th-updated': translations[langCode].thUpdated,
         'txt-method-photo-label': translations[langCode].methodPhotoLabel,
         'txt-method-text-label': translations[langCode].methodTextLabel,
         'txt-upload-zone-title': translations[langCode].uploadZoneTitle,
-        'txt-upload-zone-desc': translations[langCode].uploadZoneDesc
+        'txt-upload-zone-desc': translations[langCode].uploadZoneDesc,
+        'txt-confirm-title': translations[langCode].confirmTitle,
+        'txt-confirm-desc': translations[langCode].confirmDesc,
+        'txt-confirm-no': translations[langCode].confirmNo,
+        'txt-confirm-yes': translations[langCode].confirmYes
     };
     
     for (const [id, text] of Object.entries(elements)) {
@@ -621,6 +779,16 @@ function changeLanguage(langCode) {
     if (textInput) {
         textInput.placeholder = translations[langCode].placeholderText;
     }
+
+    // Update admin login input placeholders
+    const adminUsernameEl = document.getElementById('admin-username');
+    if (adminUsernameEl) {
+        adminUsernameEl.placeholder = translations[langCode].adminUsernamePlaceholder;
+    }
+    const adminPasswordEl = document.getElementById('admin-password');
+    if (adminPasswordEl) {
+        adminPasswordEl.placeholder = translations[langCode].adminPasswordPlaceholder;
+    }
     
     const helperResultCard = document.getElementById('helper-result-card');
     if (helperResultCard && !helperResultCard.classList.contains('hidden')) {
@@ -643,6 +811,7 @@ function setUploadMethod(method) {
     const btnText = document.getElementById('btn-method-text');
     const containerPhoto = document.getElementById('method-photo-container');
     const containerText = document.getElementById('method-text-container');
+    const runBtn = document.getElementById('btn-run-rag-container');
     
     if (!btnPhoto || !btnText || !containerPhoto || !containerText) return;
     
@@ -661,6 +830,7 @@ function setUploadMethod(method) {
         // Toggle containers
         containerPhoto.classList.remove('hidden');
         containerText.classList.add('hidden');
+        if (runBtn) runBtn.classList.add('hidden');
     } else {
         // Update tab buttons
         btnText.classList.add('active');
@@ -676,6 +846,7 @@ function setUploadMethod(method) {
         // Toggle containers
         containerPhoto.classList.add('hidden');
         containerText.classList.remove('hidden');
+        if (runBtn) runBtn.classList.remove('hidden');
     }
 }
 
@@ -761,6 +932,9 @@ async function proceedImageTranslation() {
     const langTag = document.getElementById('report-modal-lang-tag');
     if (langTag) langTag.textContent = langLabels[currentLanguage];
     
+    // Start step-by-step loading progress text updates
+    startLoadingProgress(currentLanguage);
+    
     try {
         // 1. Run real OCR using backend API
         const formData = new FormData();
@@ -799,6 +973,9 @@ async function proceedImageTranslation() {
         const data = await analyzeResponse.json();
         latestAnalysisResult = data;
         
+        // Stop loading progress text updates
+        stopLoadingProgress();
+        
         // Render results inside modal content container
         renderReportModalResult(data);
         
@@ -814,6 +991,8 @@ async function proceedImageTranslation() {
     } catch (error) {
         console.error("Image translation workflow failed:", error);
         triggerToast("분석 실패", "AI 분석 도중 서버 오류가 발생하였습니다. 시뮬레이션 결과로 대체합니다.", "error");
+        
+        stopLoadingProgress();
         
         // Fallback to simulation
         latestAnalysisResult = null;
@@ -871,6 +1050,9 @@ async function runDocumentRAG() {
     const langTag = document.getElementById('report-modal-lang-tag');
     if (langTag) langTag.textContent = langLabels[currentLanguage];
     
+    // Start step-by-step loading progress text updates
+    startLoadingProgress(currentLanguage);
+    
     try {
         const formData = new FormData();
         formData.append("text", textInput);
@@ -888,6 +1070,9 @@ async function runDocumentRAG() {
         const data = await response.json();
         latestAnalysisResult = data;
         
+        // Stop loading progress text updates
+        stopLoadingProgress();
+        
         // Render results inside modal content container
         renderReportModalResult(data);
         
@@ -903,6 +1088,8 @@ async function runDocumentRAG() {
         console.error("Text analysis failed:", error);
         triggerToast("분석 실패", "AI 분석 도중 서버 오류가 발생하였습니다. 시뮬레이션 결과로 대체합니다.", "error");
         
+        stopLoadingProgress();
+        
         latestAnalysisResult = null;
         const fallbackData = getFallbackData(currentLanguage);
         renderReportModalResult(fallbackData);
@@ -912,33 +1099,164 @@ async function runDocumentRAG() {
     }
 }
 
+// Loading progress state dynamic messages
+let loadingInterval = null;
+function startLoadingProgress(lang) {
+    const descEl = document.getElementById('txt-report-loading-desc');
+    if (!descEl) return;
+    
+    const messages = {
+        ko: [
+            "다온 AI가 이미지 글자를 판독하는 중입니다...",
+            "문서의 핵심 단어와 강조 사항을 추출하는 중입니다...",
+            "RAG 데이터베이스에서 한국 학교/공공기관 문화 배경을 매칭하는 중입니다...",
+            "아동 준비물과 부모 제출용 서류를 분류하고 있습니다...",
+            "선택한 언어로 요약 리포트를 번역하고 있습니다...",
+            "최종 RAG 분석 번역 결과를 조립하는 중입니다..."
+        ],
+        vi: [
+            "Daon AI đang nhận dạng và giải mã văn bản...",
+            "Đang trích xuất từ khóa chính và nội dung cần lưu ý...",
+            "Đang đối chiếu bối cảnh văn hóa giáo dục Hàn Quốc từ RAG database...",
+            "Đang phân loại đồ chuẩn bị của trẻ và hồ sơ nộp của phụ huynh...",
+            "Đang dịch báo cáo tóm tắt sang tiếng Việt...",
+            "Đang hoàn thiện kết quả phân tích RAG cuối cùng..."
+        ],
+        zh: [
+            "多稳 AI 正在识别并解读文档中的文字...",
+            "正在提取文档中的核心关键词及注意事项...",
+            "正在从 RAG 知识库检索匹配韩国学校及行政文化背景...",
+            "正在分类整理学生的准备物品和家长的提交材料...",
+            "正在将总结报告翻译成中文...",
+            "正在合成最终的 RAG 定制分析报告..."
+        ],
+        en: [
+            "Daon AI is recognizing and decoding the document characters...",
+            "Extracting core keywords and key highlights from the notice...",
+            "Matching Korean school/administrative cultural contexts from RAG database...",
+            "Sorting out student preparations and parent submission documents...",
+            "Translating the summary report into English...",
+            "Assembling the final RAG customized analysis results..."
+        ]
+    };
+    
+    const langMsgs = messages[lang] || messages['ko'];
+    let idx = 0;
+    
+    descEl.textContent = langMsgs[0];
+    
+    clearInterval(loadingInterval);
+    loadingInterval = setInterval(() => {
+        idx = (idx + 1) % langMsgs.length;
+        descEl.textContent = langMsgs[idx];
+    }, 2500);
+}
+
+function stopLoadingProgress() {
+    clearInterval(loadingInterval);
+}
+
+// Progressive HTML Typewriter Effect
+function typewriteHTML(elementId, htmlString, speed = 8, callback = null) {
+    const container = document.getElementById(elementId);
+    if (!container) {
+        if (callback) callback();
+        return;
+    }
+    container.innerHTML = "";
+    
+    if (!htmlString) {
+        if (callback) callback();
+        return;
+    }
+    
+    // Parse HTML string into tokens (HTML tags or raw text characters)
+    const tokens = [];
+    let i = 0;
+    while (i < htmlString.length) {
+        if (htmlString[i] === '<') {
+            let tagEnd = htmlString.indexOf('>', i);
+            if (tagEnd !== -1) {
+                tokens.push(htmlString.substring(i, tagEnd + 1));
+                i = tagEnd + 1;
+            } else {
+                tokens.push(htmlString[i]);
+                i++;
+            }
+        } else {
+            tokens.push(htmlString[i]);
+            i++;
+        }
+    }
+    
+    let tokenIndex = 0;
+    function next() {
+        if (tokenIndex < tokens.length) {
+            const token = tokens[tokenIndex];
+            if (token.startsWith('<')) {
+                container.innerHTML += token;
+                tokenIndex++;
+                next(); // Append HTML tags instantly
+            } else {
+                container.innerHTML += token;
+                tokenIndex++;
+                setTimeout(next, speed);
+            }
+        } else {
+            if (callback) callback();
+        }
+    }
+    next();
+}
+
 function renderReportModalResult(data) {
     const contentBox = document.getElementById('report-modal-content-container');
     if (!contentBox) return;
     
-    let outputHTML = "";
+    // Initialize section boxes
+    contentBox.innerHTML = `
+        <div id="sec-submissions"></div>
+        <div id="sec-materials"></div>
+        <div id="sec-schedule"></div>
+        <div id="sec-translation"></div>
+        <div id="sec-culture"></div>
+    `;
     
-    // Core Summaries (Ordered: 1. Parent Submissions/Preparations, 2. Child Materials, 3. Key Schedule)
-    outputHTML += data.submissions || "";
-    outputHTML += data.materials || "";
-    outputHTML += data.schedule || "";
+    const submissionsHTML = data.submissions || "";
+    const materialsHTML = data.materials || "";
+    const scheduleHTML = data.schedule || "";
     
-    // Full Translation
+    let translationHTML = "";
     if (data.full_translation) {
-        outputHTML += `
-            <div style="margin-top: 10px; padding: 15px; background: rgba(0, 0, 0, 0.03); border-left: 4px solid var(--secondary); border-radius: 12px;">
-                <h4 style="margin-top: 0; color: var(--text-main); font-weight: 700;"><i class="fa-solid fa-language"></i> 전체 번역본 (Full Translation)</h4>
+        const titles = {
+            ko: "전체 번역본 (Full Translation)",
+            vi: "Bản dịch đầy đủ (Full Translation)",
+            zh: "全文翻译 (Full Translation)",
+            en: "Full Translation"
+        };
+        const titleText = titles[currentLanguage] || titles['ko'];
+        translationHTML = `
+            <div style="margin-top: 10px; padding: 15px; background: rgba(0, 0, 0, 0.03); border-left: 4px solid var(--secondary); border-radius: 12px; margin-bottom: 12px;">
+                <h4 style="margin-top: 0; color: var(--text-main); font-weight: 700;"><i class="fa-solid fa-language"></i> ${titleText}</h4>
                 <p style="white-space: pre-wrap; line-height: 1.6; font-size: 0.95rem; margin: 0; color: var(--text-main);">${data.full_translation}</p>
             </div>
         `;
     }
     
-    // Culture notes
-    if (data.cultural_notes) {
-        outputHTML += data.cultural_notes;
-    }
+    const cultureHTML = data.cultural_notes || "";
     
-    contentBox.innerHTML = outputHTML;
+    // Run sequential typewriter rendering (Submissions -> Materials -> Schedule -> Translation -> Culture)
+    typewriteHTML("sec-submissions", submissionsHTML, 3, () => {
+        typewriteHTML("sec-materials", materialsHTML, 3, () => {
+            typewriteHTML("sec-schedule", scheduleHTML, 3, () => {
+                typewriteHTML("sec-translation", translationHTML, 2, () => {
+                    typewriteHTML("sec-culture", cultureHTML, 3, () => {
+                        // All sections typed out!
+                    });
+                });
+            });
+        });
+    });
 }
 
 function closeTranslationReportModal() {

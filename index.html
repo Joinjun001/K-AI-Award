@@ -105,7 +105,7 @@
                         </div>
 
                         <!-- 3. RUN BUTTON (COMMON) -->
-                        <button class="btn btn-primary btn-full" onclick="runDocumentRAG()" style="margin-top: 16px;">
+                        <button id="btn-run-rag-container" class="btn btn-primary btn-full" onclick="runDocumentRAG()" style="margin-top: 16px;">
                             <i class="fa-solid fa-wand-magic-sparkles"></i> <span id="txt-btn-analyze">다온 AI RAG 분석 실행</span>
                         </button>
                     </div>
@@ -140,7 +140,7 @@
                     <hr class="divider">
                     <div class="settings-list">
                         <div class="setting-item admin-item" onclick="openAdminLoginModal()" style="border-left: 3px solid var(--toss-blue);">
-                            <span style="font-weight: 600; color: var(--toss-blue);"><i class="fa-solid fa-user-shield"></i> 관리자 대시보드 (조회)</span>
+                            <span id="txt-setting-admin" style="font-weight: 600; color: var(--toss-blue);"><i class="fa-solid fa-user-shield"></i> 관리자 대시보드 (조회)</span>
                             <i class="fa-solid fa-angle-right" style="color: var(--toss-blue);"></i>
                         </div>
                         <div class="setting-item">
@@ -217,22 +217,22 @@
     <div id="admin-login-modal" class="modal-overlay hidden" onclick="closeAdminLoginModal(event)">
         <div class="modal-content anim-slide-up" onclick="event.stopPropagation();" style="max-width: 400px; border-radius: 20px;">
             <div class="modal-header" style="border-bottom: none; padding-bottom: 10px;">
-                <h3 style="font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--text-primary);"><i class="fa-solid fa-user-shield" style="color: var(--toss-blue); margin-right: 8px;"></i>관리자 로그인</h3>
+                <h3 style="font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--text-primary);"><i class="fa-solid fa-user-shield" style="color: var(--toss-blue); margin-right: 8px;"></i><span id="txt-admin-login-title">관리자 로그인</span></h3>
                 <button class="modal-close-btn" onclick="closeAdminLoginModal()">&times;</button>
             </div>
             <div class="modal-body" style="padding-top: 10px;">
                 <div class="form-group" style="margin-bottom: 15px;">
-                    <label for="admin-username" style="font-weight: 500; font-size: 14px; color: var(--text-primary); margin-bottom: 6px; display: block;">관리자 아이디</label>
+                    <label for="admin-username" id="txt-admin-username-label" style="font-weight: 500; font-size: 14px; color: var(--text-primary); margin-bottom: 6px; display: block;">관리자 아이디</label>
                     <input type="text" id="admin-username" placeholder="아이디를 입력하세요" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 15px; outline: none; background-color: var(--bg-secondary);">
                 </div>
                 <div class="form-group" style="margin-bottom: 10px;">
-                    <label for="admin-password" style="font-weight: 500; font-size: 14px; color: var(--text-primary); margin-bottom: 6px; display: block;">비밀번호</label>
+                    <label for="admin-password" id="txt-admin-password-label" style="font-weight: 500; font-size: 14px; color: var(--text-primary); margin-bottom: 6px; display: block;">비밀번호</label>
                     <input type="password" id="admin-password" placeholder="비밀번호를 입력하세요" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 15px; outline: none; background-color: var(--bg-secondary);">
                 </div>
                 <p id="admin-login-error" class="error-text hidden" style="color: var(--toss-red); font-size: 13px; margin: 10px 0 0 0; font-weight: 500;"></p>
             </div>
             <div class="modal-footer" style="border-top: none; padding-top: 10px;">
-                <button class="btn btn-primary btn-full" onclick="submitAdminLogin()" style="border-radius: 14px; padding: 14px; font-weight: 600;">로그인</button>
+                <button id="btn-admin-login-submit" class="btn btn-primary btn-full" onclick="submitAdminLogin()" style="border-radius: 14px; padding: 14px; font-weight: 600;">로그인</button>
             </div>
         </div>
     </div>
@@ -244,8 +244,8 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <span style="background-color: rgba(49, 130, 246, 0.1); color: var(--toss-blue); padding: 8px 12px; border-radius: 10px; font-size: 18px;"><i class="fa-solid fa-chart-line"></i></span>
                     <div>
-                        <h3 style="font-family: 'Outfit', sans-serif; font-weight: 700; margin: 0; color: var(--text-primary);">다온 복지 혜택 관리자 대시보드</h3>
-                        <p style="font-size: 13px; color: var(--text-secondary); margin: 2px 0 0 0;">welfare_benefits 테이블 데이터 실시간 조회 (조회 전용)</p>
+                        <h3 id="txt-admin-dashboard-title" style="font-family: 'Outfit', sans-serif; font-weight: 700; margin: 0; color: var(--text-primary);">다온 복지 혜택 관리자 대시보드</h3>
+                        <p id="txt-admin-dashboard-subtitle" style="font-size: 13px; color: var(--text-secondary); margin: 2px 0 0 0;">welfare_benefits 테이블 데이터 실시간 조회 (조회 전용)</p>
                     </div>
                 </div>
                 <button class="modal-close-btn" onclick="closeAdminDashboardModal()">&times;</button>
@@ -255,20 +255,20 @@
                     <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;" class="admin-table">
                         <thead>
                             <tr style="background-color: var(--bg-secondary); border-bottom: 1px solid var(--border-color); color: var(--text-secondary); font-weight: 600; white-space: nowrap;">
-                                <th style="padding: 14px 16px;">ID</th>
-                                <th style="padding: 14px 16px; min-width: 180px;">제목</th>
-                                <th style="padding: 14px 16px;">카테고리</th>
-                                <th style="padding: 14px 16px; text-align: center;">온라인 신청</th>
-                                <th style="padding: 14px 16px; text-align: center;">대상자 분류</th>
-                                <th style="padding: 14px 16px; text-align: center;">생애주기</th>
-                                <th style="padding: 14px 16px;">지역</th>
-                                <th style="padding: 14px 16px; min-width: 200px;">설명 요약 (국문)</th>
-                                <th style="padding: 14px 16px; min-width: 200px;">설명 (베트남어)</th>
-                                <th style="padding: 14px 16px; min-width: 200px;">설명 (중국어)</th>
-                                <th style="padding: 14px 16px; min-width: 200px;">설명 (영어)</th>
-                                <th style="padding: 14px 16px; min-width: 200px;">상세 지원 대상 (한글 원문)</th>
-                                <th style="padding: 14px 16px; text-align: center;">원본 링크</th>
-                                <th style="padding: 14px 16px; min-width: 150px;">수정일시</th>
+                                <th id="th-id" style="padding: 14px 16px;">ID</th>
+                                <th id="th-title" style="padding: 14px 16px; min-width: 180px;">제목</th>
+                                <th id="th-category" style="padding: 14px 16px;">카테고리</th>
+                                <th id="th-online" style="padding: 14px 16px; text-align: center;">온라인 신청</th>
+                                <th id="th-target" style="padding: 14px 16px; text-align: center;">대상자 분류</th>
+                                <th id="th-lifecycle" style="padding: 14px 16px; text-align: center;">생애주기</th>
+                                <th id="th-region" style="padding: 14px 16px;">지역</th>
+                                <th id="th-desc-ko" style="padding: 14px 16px; min-width: 200px;">설명 요약 (국문)</th>
+                                <th id="th-desc-vi" style="padding: 14px 16px; min-width: 200px;">설명 (베트남어)</th>
+                                <th id="th-desc-zh" style="padding: 14px 16px; min-width: 200px;">설명 (중국어)</th>
+                                <th id="th-desc-en" style="padding: 14px 16px; min-width: 200px;">설명 (영어)</th>
+                                <th id="th-elig-ko" style="padding: 14px 16px; min-width: 200px;">상세 지원 대상 (한글 원문)</th>
+                                <th id="th-link" style="padding: 14px 16px; text-align: center;">원본 링크</th>
+                                <th id="th-updated" style="padding: 14px 16px; min-width: 150px;">수정일시</th>
                             </tr>
                         </thead>
                         <tbody id="admin-welfare-tbody">
@@ -278,8 +278,8 @@
                 </div>
             </div>
             <div class="modal-footer" style="border-top: 1px solid var(--border-color); padding-top: 16px; margin-top: 16px; justify-content: flex-end; gap: 10px;">
-                <button class="btn btn-secondary" onclick="fetchAdminWelfareList()" style="border-radius: 12px; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-arrows-rotate"></i>새로고침</button>
-                <button class="btn btn-outline" onclick="closeAdminDashboardModal()" style="border-radius: 12px;">닫기</button>
+                <button class="btn btn-secondary" onclick="fetchAdminWelfareList()" style="border-radius: 12px; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-arrows-rotate"></i><span id="txt-admin-refresh">새로고침</span></button>
+                <button id="btn-admin-close" class="btn btn-outline" onclick="closeAdminDashboardModal()" style="border-radius: 12px;">닫기</button>
             </div>
         </div>
     </div>
