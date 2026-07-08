@@ -13,6 +13,8 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css?v=3.1">
+    <!-- Google Identity Services (OAuth 2.0) -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <!-- Real-time Web Push Simulation Toast Container -->
@@ -126,17 +128,23 @@
                 </div>
             </section>
 
-            <!-- TAB 3: PROFILE / SETTINGS (Dummy for mockup completeness) -->
+            <!-- TAB 3: PROFILE / SETTINGS -->
             <section id="tab-profile" class="tab-content">
                 <div class="section-title">
                     <h2><i class="fa-solid fa-id-card"></i> <span id="txt-myprofile-title">마이 페이지 & 계정 정보</span></h2>
                 </div>
                 <div class="card text-center pad-lg">
-                    <div class="user-avatar-large">
-                        <i class="fa-solid fa-user-tie"></i>
+                    <div class="user-avatar-large" id="user-avatar-container" style="position: relative; margin: 0 auto 16px auto; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: var(--bg-secondary); border-radius: 50%; width: 90px; height: 90px; border: 3px solid var(--toss-blue);">
+                        <i class="fa-solid fa-user-tie" id="user-avatar-default-icon" style="font-size: 40px; color: var(--text-secondary);"></i>
+                        <img id="user-avatar-img" class="hidden" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <h3 id="txt-myprofile-username">다온 패밀리</h3>
-                    <p>daon_family@example.com</p>
+                    <p id="txt-myprofile-email" style="color: var(--text-secondary); margin-bottom: 12px;">daon_family@example.com</p>
+                    
+                    <div id="google-login-container" style="display: flex; justify-content: center; margin: 15px 0;">
+                        <div id="btn-google-login"></div>
+                    </div>
+                    <button id="btn-logout" class="btn btn-outline hidden" onclick="handleLogout()" style="margin: 10px auto; max-width: 150px; font-size: 13px; font-weight: 500; padding: 8px 16px; border-radius: 10px;">로그아웃</button>
                     <hr class="divider">
                     <div class="settings-list">
                         <div class="setting-item admin-item" onclick="openAdminLoginModal()" style="border-left: 3px solid var(--toss-blue);">

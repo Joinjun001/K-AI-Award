@@ -715,7 +715,9 @@ function changeLanguage(langCode) {
         'btn-test-push2': translations[langCode].btnTestPush2,
         'txt-matched-benefits-title': translations[langCode].matchedBenefitsTitle,
         'txt-myprofile-title': translations[langCode].myprofileTitle,
-        'txt-myprofile-username': translations[langCode].myprofileUsername,
+        'txt-myprofile-username': localStorage.getItem("daon_user_session")
+            ? JSON.parse(localStorage.getItem("daon_user_session")).name
+            : translations[langCode].myprofileUsername,
         'txt-setting-guide': '<i class="fa-solid fa-circle-info"></i> ' + translations[langCode].settingGuide,
         'txt-setting-security': '<i class="fa-solid fa-shield-halved"></i> ' + translations[langCode].settingSecurity,
         'txt-setting-feedback': '<i class="fa-solid fa-language"></i> ' + translations[langCode].settingFeedback,
@@ -2234,6 +2236,9 @@ window.addEventListener('DOMContentLoaded', async () => {
         renderWelfareFeed();
         setUploadMethod('photo');
         
+        // Initialize Google Login
+        await initGoogleLogin();
+        
         // Onboarding Check
         const overlay = document.getElementById('onboarding-overlay');
         if (overlay) {
@@ -2404,5 +2409,160 @@ async function fetchAdminWelfareList() {
             </tr>
         `;
     }
+}
+
+// ==========================================
+// 7. GOOGLE OAUTH LOGIN CONTROLLER
+// ==========================================
+let googleClientId = "";
+let userSessionToken = null;
+
+async function initGoogleLogin() {
+    try {
+        // Fetch Client ID from backend config
+        const res = await fetch("/api/config");
+        if (!res.ok) throw new Error("Failed to fetch Google Client ID from backend.");
+        const config = await res.json();
+        googleClientId = config.googleClientId;
+        
+        // Check existing user session
+        const session = localStorage.getItem("daon_user_session");
+        if (session) {
+            const userData = JSON.parse(session);
+            applyUserSession(userData);
+        } else {
+            renderGoogleLoginButton();
+        }
+    } catch (err) {
+        console.error("Google sign-in initialization failed:", err);
+    }
+}
+
+function renderGoogleLoginButton() {
+    if (typeof google === "undefined" || !googleClientId) {
+        // Retry in 500ms if GIS SDK is not loaded yet
+        setTimeout(renderGoogleLoginButton, 500);
+        return;
+    }
+    
+    // Reset avatar UI to guest state
+    resetUserSessionUI();
+    
+    google.accounts.id.initialize({
+        client_id: googleClientId,
+        callback: handleCredentialResponse
+    });
+    
+    const container = document.getElementById("btn-google-login");
+    if (container) {
+        google.accounts.id.renderButton(container, {
+            theme: "outline",
+            size: "large",
+            shape: "pill",
+            width: 240
+        });
+    }
+}
+
+async function handleCredentialResponse(response) {
+    const credential = response.credential;
+    
+    // Show loading notification toast
+    triggerToast("로그인 진행 중", "구글 계정을 인증하는 중입니다...");
+    
+    try {
+        const res = await fetch("/api/auth/google", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ credential })
+        });
+        
+        if (!res.ok) throw new Error("Google token validation failed on backend.");
+        
+        const userData = await res.json();
+        if (userData.status === "success") {
+            // Cache user data in localStorage
+            localStorage.setItem("daon_user_session", JSON.stringify(userData));
+            
+            // Apply session data to profile card
+            applyUserSession(userData);
+            
+            triggerToast("로그인 성공", `${userData.name || '사용자'}님, 반갑습니다!`, "success");
+        } else {
+            triggerToast("로그인 실패", "구글 로그인 처리에 실패했습니다.", "error");
+        }
+    } catch (err) {
+        console.error("Google verify token error:", err);
+        triggerToast("로그인 오류", "구글 인증에 실패하였습니다. 다시 시도해 주세요.", "error");
+    }
+}
+
+function applyUserSession(userData) {
+    userSessionToken = userData.token;
+    
+    // Update Name & Email
+    const nameEl = document.getElementById("txt-myprofile-username");
+    if (nameEl) nameEl.textContent = userData.name || userData.username;
+    
+    const emailEl = document.getElementById("txt-myprofile-email");
+    if (emailEl) emailEl.textContent = userData.username;
+    
+    // Update Profile Image
+    const defaultIcon = document.getElementById("user-avatar-default-icon");
+    const avatarImg = document.getElementById("user-avatar-img");
+    if (defaultIcon) defaultIcon.classList.add("hidden");
+    if (avatarImg) {
+        avatarImg.src = userData.picture || "";
+        avatarImg.classList.remove("hidden");
+    }
+    
+    // Toggle Login button and Logout button visibility
+    const googleBtnContainer = document.getElementById("google-login-container");
+    if (googleBtnContainer) googleBtnContainer.classList.add("hidden");
+    
+    const logoutBtn = document.getElementById("btn-logout");
+    if (logoutBtn) logoutBtn.classList.remove("hidden");
+}
+
+function resetUserSessionUI() {
+    userSessionToken = null;
+    
+    // Reset Profile Name & Email
+    const nameEl = document.getElementById("txt-myprofile-username");
+    if (nameEl) nameEl.textContent = translations[currentLanguage].myprofileUsername || "다온 패밀리";
+    
+    const emailEl = document.getElementById("txt-myprofile-email");
+    if (emailEl) emailEl.textContent = "daon_family@example.com";
+    
+    // Reset Avatar
+    const defaultIcon = document.getElementById("user-avatar-default-icon");
+    const avatarImg = document.getElementById("user-avatar-img");
+    if (defaultIcon) defaultIcon.classList.remove("hidden");
+    if (avatarImg) {
+        avatarImg.src = "";
+        avatarImg.classList.add("hidden");
+    }
+    
+    // Toggle buttons
+    const googleBtnContainer = document.getElementById("google-login-container");
+    if (googleBtnContainer) googleBtnContainer.classList.remove("hidden");
+    
+    const logoutBtn = document.getElementById("btn-logout");
+    if (logoutBtn) logoutBtn.classList.add("hidden");
+}
+
+function handleLogout() {
+    // Clear Session Cache
+    localStorage.removeItem("daon_user_session");
+    
+    // Reset UI Elements
+    resetUserSessionUI();
+    
+    // Re-render Google Sign-in button
+    renderGoogleLoginButton();
+    
+    triggerToast("로그아웃 완료", "성공적으로 로그아웃 되었습니다.", "info");
 }
 

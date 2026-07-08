@@ -5,6 +5,7 @@ import logging
 import urllib.request
 import urllib.parse
 import psycopg2
+import requests
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -68,6 +69,43 @@ def get_db_connection():
     except Exception as e:
         logger.error(f"PostgreSQL connection error: {e}")
         raise HTTPException(status_code=500, detail="Database connection failed.")
+
+# Startup event to run migrations (ensure user_account has Google OAuth columns)
+@app.on_event("startup")
+def startup_db_migration():
+    logger.info("Running database migration checks...")
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        try:
+            # Check if user_account table exists
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS user_account (
+                    username VARCHAR(50) PRIMARY KEY,
+                    password_hash VARCHAR(255),
+                    role VARCHAR(20) DEFAULT 'user',
+                    email VARCHAR(100) UNIQUE,
+                    full_name VARCHAR(100),
+                    profile_pic VARCHAR(255),
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+            """)
+            
+            # Apply schema migrations
+            cur.execute("ALTER TABLE user_account ADD COLUMN IF NOT EXISTS email VARCHAR(100) UNIQUE;")
+            cur.execute("ALTER TABLE user_account ADD COLUMN IF NOT EXISTS full_name VARCHAR(100);")
+            cur.execute("ALTER TABLE user_account ADD COLUMN IF NOT EXISTS profile_pic VARCHAR(255);")
+            cur.execute("ALTER TABLE user_account ALTER COLUMN password_hash DROP NOT NULL;")
+            conn.commit()
+            logger.info("Database migration checks complete.")
+        except Exception as migration_error:
+            logger.error(f"Migration run error: {migration_error}")
+            conn.rollback()
+        finally:
+            cur.close()
+            conn.close()
+    except Exception as connection_error:
+        logger.error(f"Database connection failed during startup migration: {connection_error}")
 
 @app.get("/health")
 def health_check():
@@ -303,6 +341,72 @@ async def analyze_document(
         }
 
 import hashlib
+
+class GoogleAuthRequest(BaseModel):
+    credential: str
+
+@app.get("/api/config")
+def get_config():
+    return {
+        "googleClientId": os.getenv("GOOGLE_CLIENT_ID", "1019623812739-abc123xyz.apps.googleusercontent.com")
+    }
+
+@app.post("/api/auth/google")
+def google_auth(data: GoogleAuthRequest):
+    token = data.credential
+    try:
+        # Verify Google Client ID Token using Google tokeninfo API
+        res = requests.get(f"https://oauth2.googleapis.com/tokeninfo?id_token={token}", timeout=10)
+        if not res.ok:
+            raise HTTPException(status_code=400, detail="Invalid Google token.")
+        
+        user_info = res.json()
+        email = user_info.get("email")
+        name = user_info.get("name")
+        picture = user_info.get("picture")
+        
+        if not email:
+            raise HTTPException(status_code=400, detail="Email not provided by Google.")
+        
+        conn = get_db_connection()
+        cur = conn.cursor()
+        try:
+            # Check if user exists
+            cur.execute("SELECT username, role, full_name, profile_pic FROM user_account WHERE username = %s;", (email,))
+            row = cur.fetchone()
+            
+            if row:
+                # Update details if changed
+                cur.execute(
+                    "UPDATE user_account SET full_name = %s, profile_pic = %s WHERE username = %s;",
+                    (name, picture, email)
+                )
+                role = row[1]
+            else:
+                # Register new user
+                cur.execute(
+                    "INSERT INTO user_account (username, password_hash, role, email, full_name, profile_pic) VALUES (%s, %s, %s, %s, %s, %s);",
+                    (email, None, 'user', email, name, picture)
+                )
+                role = 'user'
+            conn.commit()
+        finally:
+            cur.close()
+            conn.close()
+            
+        return {
+            "status": "success",
+            "username": email,
+            "role": role,
+            "name": name,
+            "picture": picture,
+            "token": f"google-session-token-{email}"
+        }
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        logger.error(f"Google OAuth error: {e}")
+        raise HTTPException(status_code=500, detail="Google authentication failed.")
 
 class UserLogin(BaseModel):
     username: str
