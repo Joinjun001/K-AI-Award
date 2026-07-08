@@ -13,15 +13,12 @@ const translations = {
     ko: {
         // Navigation
         navHome: "홈",
-        navHelper: "서류 도우미",
-        navAlerts: "맞춤 혜택",
+        navAlerts: "혜택 피드",
         navProfile: "마이페이지",
         
         // General Welcome Panel
         welcomeTitle: "다문화 가정을 위한<br>따뜻한 AI 비서, 다온",
         welcomeDesc: "복지 신청 서류 번역부터 나에게 딱 맞는 혜택 알림까지, 다온이 한국 생활을 함께합니다.",
-        statusBenefitLabel: "내 조건 복지 혜택",
-        statusDocLabel: "미확인 관공서 안내문",
         
         // Tab Headers & Buttons
         helperSubtitle: "어려운 관공서 알림장이나 서류를 촬영하거나 텍스트를 입력해 보세요. 다온 AI가 알기 쉽게 번역하고 요약해 드립니다.",
@@ -40,17 +37,10 @@ const translations = {
         modalSourceLabel: "출처: 복지로 및 공식 기관",
         
         // Extra localization
-        judgeTitle: "심사위원 시뮬레이션 안내",
-        judgeDesc: "본 데모는 MVP 모델 검증을 위한 대화형 시뮬레이터입니다. 프로필을 설정하고 아래 탭을 클릭하여 <strong>RAG 기반 서류 번역/해설</strong>과 <strong>실시간 복지 매칭 알림</strong>을 체험해 보세요.",
-        btnJudgeSchool: "초등학교 안내장 예시 가져오기",
-        btnJudgeAdmin: "지자체 행정 안내문 예시 가져오기",
         helperTitle: "RAG 서류·행정 도우미",
         helperInputTitle: "문서 분석 및 번역",
         ocrLoadingDesc: "이미지에서 한글 텍스트를 추출 중입니다 (OCR)...",
-        visualizerTitle: "RAG 파이프라인 작동 실시간 모니터링",
-        visualizerStep1: "한글 원문 텍스트 추출 완료",
-        visualizerStep2: "Vector DB 내 한국 제도/학교 규칙 지식 검색 (Retrieval)",
-        visualizerStep3: "LLM과 지식을 결합한 맞춤 다국어 요약 & 해설 생성 (Generation)",
+        helperLoadingDesc: "다온 AI가 문서를 해독하고 한국 문화적 맥락을 파악하고 있습니다...",
         reportTitle: "다온 AI 맞춤 분석 리포트",
         btnCopy: "복사하기",
         alertsTitle: "나의 맞춤 혜택 & 알림",
@@ -105,15 +95,12 @@ const translations = {
     vi: {
         // Navigation
         navHome: "Trang chủ",
-        navHelper: "Trợ lý giấy tờ",
-        navAlerts: "Trợ cấp phù hợp",
+        navAlerts: "Bảng tin trợ cấp",
         navProfile: "Trang cá nhân",
         
         // General Welcome Panel
         welcomeTitle: "Daon, Trợ lý AI ấm áp<br>cho các gia đình đa văn hóa",
         welcomeDesc: "Từ dịch thuật hồ sơ hành chính đến thông báo trợ cấp phù hợp nhất cho bạn, Daon đồng hành cùng cuộc sống Hàn Quốc.",
-        statusBenefitLabel: "Trợ cấp khớp hồ sơ",
-        statusDocLabel: "Thông báo chưa xem",
         
         // Tab Headers & Buttons
         helperSubtitle: "Hãy chụp ảnh hoặc nhập văn bản các thông báo, tài liệu khó từ cơ quan công quyền. Daon AI sẽ dịch và tóm tắt một cách dễ hiểu.",
@@ -132,17 +119,10 @@ const translations = {
         modalSourceLabel: "Nguồn: Bokjiro & Cơ quan chính thức",
         
         // Extra localization
-        judgeTitle: "Hướng dẫn mô phỏng giám khảo",
-        judgeDesc: "Bản thử nghiệm này là trình mô phỏng tương tác để xác minh mô hình MVP. Thiết lập hồ sơ và nhấp vào các tab bên dưới để trải nghiệm <strong>Dịch thuật/Giải thích tài liệu dựa trên RAG</strong> và <strong>Thông báo đối chiếu phúc lợi thời gian thực</strong>.",
-        btnJudgeSchool: "Lấy ví dụ thư thông báo tiểu học",
-        btnJudgeAdmin: "Lấy ví dụ thư hành chính địa phương",
         helperTitle: "Trợ lý Hành chính & Tài liệu RAG",
         helperInputTitle: "Phân tích và Dịch tài liệu",
         ocrLoadingDesc: "Đang trích xuất văn bản tiếng Hàn từ hình ảnh (OCR)...",
-        visualizerTitle: "Giám sát thời gian thực hoạt động đường ống RAG",
-        visualizerStep1: "Đã trích xuất xong văn bản gốc tiếng Hàn",
-        visualizerStep2: "Tìm kiếm kiến thức về hệ thống Hàn Quốc/Nội quy trường học trong Vector DB (Retrieval)",
-        visualizerStep3: "Tạo tóm tắt và giải thích đa ngôn ngữ cá nhân hóa kết hợp LLM và kiến thức (Generation)",
+        helperLoadingDesc: "Daon AI đang giải mã tài liệu và tìm hiểu bối cảnh văn hóa Hàn Quốc...",
         reportTitle: "Báo cáo phân tích tùy chỉnh Daon AI",
         btnCopy: "Sao chép",
         alertsTitle: "Trợ cấp & Thông báo phù hợp của tôi",
@@ -197,15 +177,12 @@ const translations = {
     zh: {
         // Navigation
         navHome: "首页",
-        navHelper: "文件助手",
-        navAlerts: "专属福利",
+        navAlerts: "福利推荐",
         navProfile: "个人主页",
         
         // General Welcome Panel
         welcomeTitle: "多稳 (Daon)，多文化家庭的<br>贴心 AI 秘书",
         welcomeDesc: "从翻译政府办事文件，到推荐最适合您家庭의福利通知，多稳与您的韩国生活一路相随。",
-        statusBenefitLabel: "匹配的福利政策",
-        statusDocLabel: "未读政府通知",
         
         // Tab Headers & Buttons
         helperSubtitle: "您可以拍摄难以理解 of 政府通知、公文或输入文本。多稳 AI 将结合韩国文化背景，用母语为您通俗易懂地翻译和解读。",
@@ -224,17 +201,10 @@ const translations = {
         modalSourceLabel: "来源: 福利路及官方机构",
         
         // Extra localization
-        judgeTitle: "评审委员模拟指南",
-        judgeDesc: "此演示是一个交互式模拟器，用于验证 MVP 模型。设置您的个人资料并单击下面的标签，体验 **基于 RAG 的文档翻译/解说** 和 **实时福利匹配通知**。",
-        btnJudgeSchool: "获取小学通知书示例",
-        btnJudgeAdmin: "获取地方行政通知书示例",
         helperTitle: "RAG 文档·行政助手",
         helperInputTitle: "文档分析与翻译",
         ocrLoadingDesc: "正在从图像中提取韩文文本 (OCR)...",
-        visualizerTitle: "实时监控 RAG 管道运行",
-        visualizerStep1: "韩文原文文本提取完成",
-        visualizerStep2: "在向量数据库 (Vector DB) 中检索韩国制度/学校规章知识 (Retrieval)",
-        visualizerStep3: "结合大模型 (LLM) 与知识库生成定制的多语言摘要和解读 (Generation)",
+        helperLoadingDesc: "多稳 AI 正在解读文档并分析韩国文化背景...",
         reportTitle: "多稳 (Daon) AI 定制分析报告",
         btnCopy: "复制",
         alertsTitle: "我的专属福利与通知",
@@ -289,15 +259,12 @@ const translations = {
     en: {
         // Navigation
         navHome: "Home",
-        navHelper: "Document Helper",
-        navAlerts: "Welfare Alerts",
+        navAlerts: "Benefits Feed",
         navProfile: "My Page",
         
         // General Welcome Panel
         welcomeTitle: "Daon, a Warm AI Assistant<br>for Multicultural Families",
         welcomeDesc: "From translating complex administration documents to matching customized benefits just for you, Daon accompanies your life in Korea.",
-        statusBenefitLabel: "Welfare Matches",
-        statusDocLabel: "Unread Notices",
         
         // Tab Headers & Buttons
         helperSubtitle: "Take a picture of or paste text from government/school notices. Daon AI will translate and summarize them in your mother tongue along with cultural contexts.",
@@ -316,17 +283,10 @@ const translations = {
         modalSourceLabel: "Source: Bokjiro & Official Agencies",
         
         // Extra localization
-        judgeTitle: "Competition Judge Simulation Guide",
-        judgeDesc: "This demo is an interactive simulator for MVP model validation. Set up your profile and click the tabs below to experience **RAG-based document translation/explanation** and **real-time welfare matching alerts**.",
-        btnJudgeSchool: "Load School Notice Example",
-        btnJudgeAdmin: "Load Gov Administrative Notice Example",
         helperTitle: "RAG Document & Admin Helper",
         helperInputTitle: "Document Analysis & Translation",
         ocrLoadingDesc: "Extracting Korean text from image (OCR)...",
-        visualizerTitle: "Real-time RAG Pipeline Monitoring",
-        visualizerStep1: "Korean Raw Text Extraction Completed",
-        visualizerStep2: "Search Korean Regulations & School Rules in Vector DB (Retrieval)",
-        visualizerStep3: "Generate Custom Multilingual Summary & Explanation with LLM + Knowledge (Generation)",
+        helperLoadingDesc: "Daon AI is analyzing the document and identifying the Korean cultural context...",
         reportTitle: "Daon AI Custom Analysis Report",
         btnCopy: "Copy",
         alertsTitle: "My Personalized Benefits & Alerts",
@@ -506,9 +466,8 @@ function switchTab(tabId, navElement = null) {
         // Find corresponding nav button if navigation was triggered programmatically
         let navIndex = 0;
         if (tabId === 'tab-home') navIndex = 0;
-        else if (tabId === 'tab-helper') navIndex = 1;
-        else if (tabId === 'tab-alerts') navIndex = 2;
-        else if (tabId === 'tab-profile') navIndex = 3;
+        else if (tabId === 'tab-alerts') navIndex = 1;
+        else if (tabId === 'tab-profile') navIndex = 2;
         
         const navItems = document.querySelectorAll('.nav-item');
         if (navItems[navIndex]) {
@@ -558,8 +517,6 @@ function changeLanguage(langCode) {
     const elements = {
         'txt-welcome-title': translations[langCode].welcomeTitle,
         'txt-welcome-desc': translations[langCode].welcomeDesc,
-        'txt-status-benefit-label': translations[langCode].statusBenefitLabel,
-        'txt-status-doc-label': translations[langCode].statusDocLabel,
         'txt-helper-subtitle': translations[langCode].helperSubtitle,
         'txt-btn-photo': translations[langCode].btnPhoto,
         'txt-btn-analyze': translations[langCode].btnAnalyze,
@@ -596,17 +553,10 @@ function changeLanguage(langCode) {
         'txt-ob-add-child': translations[langCode].obAddChild,
         
         // Newly added DOM text translations
-        'txt-judge-title': translations[langCode].judgeTitle,
-        'txt-judge-desc': translations[langCode].judgeDesc,
-        'btn-judge-school': translations[langCode].btnJudgeSchool,
-        'btn-judge-admin': translations[langCode].btnJudgeAdmin,
         'txt-helper-title': translations[langCode].helperTitle,
         'txt-helper-input-title': translations[langCode].helperInputTitle,
         'txt-ocr-loading-desc': translations[langCode].ocrLoadingDesc,
-        'txt-visualizer-title': translations[langCode].visualizerTitle,
-        'txt-visualizer-step1': translations[langCode].visualizerStep1,
-        'txt-visualizer-step2': translations[langCode].visualizerStep2,
-        'txt-visualizer-step3': translations[langCode].visualizerStep3,
+        'txt-helper-loading-desc': translations[langCode].helperLoadingDesc,
         'txt-report-title': translations[langCode].reportTitle,
         'txt-btn-copy': translations[langCode].btnCopy,
         'txt-alerts-title': translations[langCode].alertsTitle,
@@ -665,7 +615,7 @@ function changeLanguage(langCode) {
         renderMatchingBenefits();
     }
     
-    renderHomeWelfareFeed();
+    renderWelfareFeed();
 }
 
 
@@ -673,7 +623,7 @@ function changeLanguage(langCode) {
 // 5. RAG DOCUMENT HELPER ENGINE SIMULATION
 // ==========================================
 function loadMockData(type) {
-    switchTab('tab-helper');
+    switchTab('tab-home');
     document.getElementById('doc-text-input').value = mockNoticeTemplates[type];
 }
 
@@ -710,66 +660,51 @@ function runDocumentRAG() {
     latestInputText = textInput;
     latestRetrievedKnowledge = [];
     
-    // Show visualizer
-    const visualizer = document.getElementById('rag-visualizer');
-    visualizer.classList.remove('hidden');
-    
-    // Reset steps
-    document.getElementById('step-ocr').classList.remove('active');
-    document.getElementById('step-retrieve').classList.remove('active');
-    document.getElementById('step-generate').classList.remove('active');
-    document.getElementById('retrieved-data-box').style.display = "none";
+    // Hide previous result
     document.getElementById('helper-result-card').classList.add('hidden');
     
-    // Step 1: OCR Complete
+    // Show helper loading spinner
+    const loadingCard = document.getElementById('helper-loading');
+    if (loadingCard) {
+        loadingCard.classList.remove('hidden');
+    }
+    
+    // Search keywords in Mock KB
+    mockKnowledgeBase.forEach(kb => {
+        if (textInput.includes(kb.keyword)) {
+            latestRetrievedKnowledge.push(kb);
+        }
+    });
+    
+    // Default fallback if no keywords matched
+    if (latestRetrievedKnowledge.length === 0) {
+        latestRetrievedKnowledge.push({
+            keyword: "가정통신문 기본수칙",
+            category: "학교 행정",
+            content: "한국 초등학교의 가정통신문은 중요한 마감 기한(일정, 서류 제출)과 개별 준비물이 핵심입니다. 기한을 어기면 참여가 누락될 수 있습니다."
+        });
+    }
+
+    // Emulate LLM Generation delay
     setTimeout(() => {
-        document.getElementById('step-ocr').classList.add('active');
+        if (loadingCard) {
+            loadingCard.classList.add('hidden');
+        }
         
-        // Step 2: Retrieval (Similarity search in knowledge base)
-        setTimeout(() => {
-            document.getElementById('step-retrieve').classList.add('active');
-            
-            // Search keywords in Mock KB
-            mockKnowledgeBase.forEach(kb => {
-                if (textInput.includes(kb.keyword)) {
-                    latestRetrievedKnowledge.push(kb);
-                }
-            });
-            
-            // Default fallback if no keywords matched
-            if (latestRetrievedKnowledge.length === 0) {
-                latestRetrievedKnowledge.push({
-                    keyword: "가정통신문 기본수칙",
-                    category: "학교 행정",
-                    content: "한국 초등학교의 가정통신문은 중요한 마감 기한(일정, 서류 제출)과 개별 준비물이 핵심입니다. 기한을 어기면 참여가 누락될 수 있습니다."
-                });
-            }
-            
-            // Show retrieved knowledge
-            const box = document.getElementById('retrieved-data-box');
-            box.innerHTML = `<strong>지식 검색 성공 (${latestRetrievedKnowledge.length}건):</strong><br>` + 
-                latestRetrievedKnowledge.map(k => `🔍 [${k.category}] ${k.keyword}: ${k.content.substring(0, 70)}...`).join('<br>');
-            box.style.display = "block";
-            
-            // Step 3: Generation (Combined prompt creation and translation)
-            setTimeout(() => {
-                document.getElementById('step-generate').classList.add('active');
-                
-                setTimeout(() => {
-                    updateRAGOutputText();
-                    document.getElementById('helper-result-card').classList.remove('remove');
-                    document.getElementById('helper-result-card').classList.remove('hidden');
-                    document.getElementById('txt-status-doc-val').textContent = "분석 완료";
-                    
-                    // Smooth scroll to results
-                    document.getElementById('helper-result-card').scrollIntoView({ behavior: 'smooth' });
-                }, 800);
-                
-            }, 1200);
-            
-        }, 1200);
+        updateRAGOutputText();
         
-    }, 600);
+        const resultCard = document.getElementById('helper-result-card');
+        if (resultCard) {
+            resultCard.classList.remove('remove');
+            resultCard.classList.remove('hidden');
+            resultCard.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        const statusDocValEl = document.getElementById('txt-status-doc-val');
+        if (statusDocValEl) {
+            statusDocValEl.textContent = "분석 완료";
+        }
+    }, 1200);
 }
 
 function renderAnalysisResult(data) {
@@ -930,7 +865,10 @@ function renderMatchingBenefits() {
     const lang = translations[currentLanguage] ? currentLanguage : 'ko';
     
     // Update main dashboard status card
-    document.getElementById('txt-status-benefit-val').textContent = matched.length + " " + (lang === 'ko' ? '건 지원 가능' : (lang === 'vi' ? 'trợ cấp' : (lang === 'zh' ? '项 서비스' : 'benefits')));
+    const statusBenefitValEl = document.getElementById('txt-status-benefit-val');
+    if (statusBenefitValEl) {
+        statusBenefitValEl.textContent = matched.length + " " + (lang === 'ko' ? '건 지원 가능' : (lang === 'vi' ? 'trợ cấp' : (lang === 'zh' ? '项 서비스' : 'benefits')));
+    }
     
     if (matched.length === 0) {
         container.innerHTML = `
@@ -962,16 +900,16 @@ function renderMatchingBenefits() {
     `).join('');
 }
 
-// Render real-time welfare policies horizontally on the Home Dashboard
-function renderHomeWelfareFeed() {
-    const container = document.getElementById('home-welfare-scroll');
+// Render real-time welfare policies vertically on the Welfare Feed Tab
+function renderWelfareFeed() {
+    const container = document.getElementById('welfare-list');
     if (!container) return;
     
     const lang = translations[currentLanguage] ? currentLanguage : 'ko';
     
     container.innerHTML = mockWelfareDatabase.map(benefit => `
-        <div class="welfare-scroll-card" onclick="viewBenefitDetail('${benefit.id}')">
-            <div class="scroll-card-header">
+        <div class="welfare-list-card" onclick="viewBenefitDetail('${benefit.id}')">
+            <div class="card-header">
                 <span class="benefit-cat-tag">${getLocalizedCategory(benefit.category, lang)}</span>
                 ${benefit.sourceUrl ? `
                     <a href="${benefit.sourceUrl}" target="_blank" class="feed-source-link" onclick="event.stopPropagation();">
@@ -983,7 +921,6 @@ function renderHomeWelfareFeed() {
             <p class="desc">${benefit.desc[lang] || benefit.desc['ko']}</p>
             <div class="meta-info">
                 <span class="region-tag">${getLocalizedRegion(benefit.region, lang)}</span>
-                <span>${translations[lang].metaTarget}: ${currentLanguage === 'vi' ? 'Từ' : (currentLanguage === 'zh' ? '满' : '')} ${benefit.minAge}~${benefit.maxAge} ${translations[lang].metaAgeUnit}</span>
             </div>
         </div>
     `).join('');
@@ -1004,21 +941,7 @@ function viewBenefitDetail(benefitId) {
     document.getElementById('modal-benefit-title').textContent = benefit.title;
     document.getElementById('modal-benefit-desc').textContent = benefit.desc[lang] || benefit.desc['ko'];
     
-    // Target Age text format
-    let ageText = "";
-    if (lang === 'vi') ageText = `Từ ${benefit.minAge} đến ${benefit.maxAge} tuổi`;
-    else if (lang === 'zh') ageText = `满 ${benefit.minAge}岁 ~ ${benefit.maxAge}岁`;
-    else if (lang === 'en') ageText = `${benefit.minAge} - ${benefit.maxAge} years old`;
-    else ageText = `만 ${benefit.minAge}세 ~ ${benefit.maxAge}세`;
-    document.getElementById('modal-benefit-age').textContent = ageText;
-    
-    // Income text format
-    let incomeText = "";
-    if (lang === 'vi') incomeText = `Dưới ${benefit.maxIncome}% thu nhập trung bình chuẩn`;
-    else if (lang === 'zh') incomeText = `中位数收入 ${benefit.maxIncome}% 以下`;
-    else if (lang === 'en') incomeText = `Under ${benefit.maxIncome}% of Median Income`;
-    else incomeText = `기준 중위소득 ${benefit.maxIncome}% 이하`;
-    document.getElementById('modal-benefit-income').textContent = incomeText;
+
     
     // Region text format
     let regionText = benefit.region;
@@ -1677,7 +1600,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         // Initial load setup
         changeLanguage(savedLang);
         simulateBenefitMatch(false);
-        renderHomeWelfareFeed();
+        renderWelfareFeed();
         
         // Onboarding Check
         const overlay = document.getElementById('onboarding-overlay');

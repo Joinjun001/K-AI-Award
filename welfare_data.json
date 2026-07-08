@@ -12,68 +12,16 @@
             "en": "Energy vouchers are provided to energy-vulnerable groups to support the costs of using necessary energy such as electricity, gas, district heating, kerosene, and LPG."
         },
         "descOutline": "에너지취약계층에게 에너지바우처를 지급하여 전기·가스·지역난방·등유·LPG 등 필요 에너지의 이용 비용을 지원합니다.",
-        "eligibilityDtl": "(에너지바우처) 대상자 본인이 소득 기준을 충족하고 대상자 본인 또는 대상자 본인의 주민등록표 등본 상 세대원이 세대원 특성 기준을 모두 충족하는 세대\n\n(소득기준)  「국민기초생활보장법」에 따른 생계, 의료, 주거, 교육 급여 중 하나 이상의 급여를 받는 자\n(세대원 특성기준) 다음 어느 하나에 해당하는 자\n\n(노인) 주민등록기준 1961. 12. 31. 이전 출생자\n(영유아) 주민등록기준 2019. 1. 1. 이후 출생한 7세 이하의 취학 전 아동\n(장애인)「장애인복지법」에 따라 등록된 장애인)\n(임산부) 임신 중이거나 분만 후 6개월 미만인 여성)\n(중증질환자, 희귀질환자, 중증난치질환자)국민건강보험법 시행령 제19조제1항 및 [별표2]에 따라 보건복지부장관이 정하여 고시하는 중증질환, 희귀질환, 중증난치질환(「본인일부부담금 산정특례에 관한 기준」 [별표3], [별표4], [별표4의2]을 가진 사람)\n(한부모가족)「한부모가족지원법」 제5조 및 제5조의2에 따른 지원대상자\n(소년소녀가정) 보건복지부에서 정한 아동분야 사업 중 소년소녀가정 지원대상에 해당하는 사람(「아동복지법」 제3조에 의한 가정위탁보호 아동을 포함)\n(다자녀 세대) 세대원 중 부 또는 모가 있고, 그 부 또는 모의 19세 미만 자녀를 2명 이상 포함된 세대(동일 등본에 등재된 가정위탁보호아동은 자녀로 포함)\n\n\n(연탄전환 에너지바우처) 대상자 본인이 연탄전환 기준을 충족하는 세대\n\n(연탄전환 기준) 기존 연탄을 사용하는 세대 중 26. 1월 이후 연탄 외 보일러로 난방시설을 전환하고 다음 어느 하나에 해당하는 자\n\n(기초생활수급자) 「국민기초생활 보장법」 상 생계의료주거교육급여 수급자(세대)\n(차상위계층) 기초생활수급자에 해당하지 않으면서 소득인정액이 기준 중위소득의 100분의 50 이하인 자(세대)\n(노인) 주민등록기준 1961. 12. 31. 이전 출생자\n(장애인) 「장애인복지법」에 따라 등록된 장애인\n(한부모가족) 「한부모가족지원법」 제5조 및 제5조의2에 따른 지원대상자\n(소년소녀가정) 보건복지부에서 정한 아동분야 사업 중 소년소녀가정 지원대상에 해당하는 사람(「아동복지법」 제3조에 의한 가정위탁보호 아동을 포함)",
-        "selectionCrit": "지원대상의 내용을 참고해주시기 바랍니다.",
-        "welfareContent": "(에너지바우처) 하절기(당해 7~9월) 동안 전기요금을, 동절기(당해 10월~익년 5월) 동안 전기, 도시가스, 지역난방, 등유, 연탄, LPG를 구입할 수 있는 바우처를 세대원수에 따라 4단계로 차등 지급\n\n실물카드(국민행복카드) 직접 결제 방식 또는 고지서 요금 자동차감 방식을 통해 지원\n\n(연탄전환 에너지바우처) 동절기(당해 10월~익년 5월)동안 전기, 도시가스, 등유, LPG를 구입할 수 있는 바우처를 세대원수에 관계없이 동일 지급 ㅇ 실물카드(국민행복카드) 직접 결제 방식을 통해 지원",
+        "eligibilityDtl": "",
+        "selectionCrit": "",
+        "welfareContent": "",
         "trgterIndvdl": "장애인,저소득,한부모·조손",
         "lifeArray": "영유아,노년",
         "onapPsbltYn": "Y",
-        "downloadForms": [
-            {
-                "name": "기후에너지환경부 고시 제2025-30호(에너지이용권 사업운영에 관한 규정).hwpx",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=20251118UUWBM1548100161536772&atcflSn=1"
-            },
-            {
-                "name": "26년도 에너지바우처 사업안내서.pdf",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=20260618UUWBM1103080197574802&atcflSn=1"
-            },
-            {
-                "name": "2026년 에너지이용권_서식.hwpx",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=20260618UUWBM1605330197644576&atcflSn=1"
-            }
-        ],
-        "applyMethod": [
-            {
-                "step": "신청기관연락처목록",
-                "guide": "거주지 읍/면/동 주민센터, 주민등록상 거주지 읍면동 행정복지센터 또는 복지로 웹사이트(PC/모바일앱)에서 ‘서비스 신청’"
-            },
-            {
-                "step": "조사기관연락처목록",
-                "guide": "담당 시/군/구청 또는 해당없음에서 조사 및 심사"
-            },
-            {
-                "step": "결정기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 시군구에서 보장 결정"
-            },
-            {
-                "step": "이의신청접수기관연락처목록 ",
-                "guide": "이의가 있을 경우, 담당 시/군/구청 또는 행정복지센터에 이의 신청 접수"
-            },
-            {
-                "step": "지급기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 한국에너지공단에서 대상자에게 서비스 제공"
-            },
-            {
-                "step": "사후관리기관목록",
-                "guide": "담당 시/군/구청 또는 한국에너지공단에서 서비스 제공 이후 대상자의 상황 관리"
-            },
-            {
-                "step": "사후관리기관목록",
-                "guide": "담당 시/군/구청 또는 시도에서 서비스 제공 이후 대상자의 상황 관리"
-            }
-        ],
-        "relatedWebsites": [
-            {
-                "name": "에너지바우처 홈페이지",
-                "url": "www.energyv.or.kr"
-            }
-        ],
-        "inquiryContacts": [
-            {
-                "name": "에너지바우처통합상담센터",
-                "phone": "1600-3190"
-            }
-        ]
+        "downloadForms": [],
+        "applyMethod": [],
+        "relatedWebsites": [],
+        "inquiryContacts": []
     },
     {
         "id": "WLF00000888",
@@ -88,72 +36,16 @@
             "en": "We promote residential stability by supplying permanent rental housing to social protection classes such as recipients of livelihood and medical benefits, people of national merit, and victims of Japanese military comfort women."
         },
         "descOutline": "생계·의료급여 수급자, 국가유공자, 일본군 위안부 피해자 등 사회보호계층에게 영구임대주택을 공급하여 주거안정을 도모합니다.",
-        "eligibilityDtl": "생계급여의료급여 수급자, 국가유공자, 일본군위안부 피해자, 지원대상 한부모가족, 도시근로자 월평균소득 70% 이하의 북한이탈주민 및 장애인 등 무주택세대 구성원을 대상으로 합니다.",
-        "selectionCrit": "무주택자로서 아래에 해당하는 사람을 대상으로 공급합니다. * 지자체 기준에 따라 모집 기준 상이\n\n「국민기초생활 보장법」상의 생계급여수급자 또는 의료급여수급자\n유공자 또는 그 유족(참전유공자 유족 제외) 등으로서 수급자 선정기준의 소득인정액 이하이고 영구임대 자산요건을 충족하는 자\n일본군위안부 피해자\n지원대상 한부모가족\n북한이탈주민으로서 전년도 도시근로자 가구당 월평균소득의 70%이하이고, 영구임대 자산요건을 자\n장애인등록증이 교부된 자(지적장애인ㆍ정신장애인 및 장애의 정도가 심한 뇌병변 장애인의 경우에는 그 배우자를 포함)로서 전년도 도시근로자 가구당 월평균소득의 70%이하이고, 영구임대 자산요건을 충족하는 자\n65세이상 직계존속 부양자로서 수급자 선정기준의 소득인정액 이하인 자(피부양자의 배우자도 무주택자이어야 함)\n「아동복지법」에 따라 아동복지시설에서 퇴소하는 자로서 아동복지시설의 장이 추천하는 자로서 전년도 도시근로자 가구당 월평균소득의 70%이하이고, 영구임대 자산요건을 충족하는 자\n65세 이상인 사람으로서 「국민기초생활 보장법」 제2조제1호에 따른 수급권자 또는 같은 조 제10호에 따른 차상위계층에 해당하는 사람\n전년도 도시근로자 가구당 월평균소득 50%이하인 자로서 영구임대 자산요건을 충족 하는자\n국토교통부장관 또는 시도지사가 영구임대주택의 입주가 필요하다고 인정하는 자\n장애인등록증이 교부된자(지적장애인ㆍ정신장애인 및 장애의 정도가 심한 뇌병변 장애인의 경우에는 그 배우자를 포함)로서 전년도 도시근로자 가구당 월평균소득의 100%이하이고, 영구임대 자산요건을 충족하는 자",
-        "welfareContent": "시세의 30% 수준의 저렴한 임대료의 영구임대주택을 공급합니다.",
+        "eligibilityDtl": "",
+        "selectionCrit": "",
+        "welfareContent": "",
         "trgterIndvdl": "다문화·탈북민,보훈대상자,장애인,저소득,한부모·조손",
         "lifeArray": "",
         "onapPsbltYn": "N",
-        "downloadForms": [
-            {
-                "name": "210331 공공주택 업무처리지침(개정전문).hwp",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=6575GOWF15GOWF156575&atcflSn=1"
-            },
-            {
-                "name": "2015년_국민주택기금_업무_편람.pdf",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=20230302UUWBM2015340024153770&atcflSn=1"
-            },
-            {
-                "name": "2015년_국민주택기금_업무_편람.pdf",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=20230302UUWBM2015340024153770&atcflSn=2"
-            }
-        ],
-        "applyMethod": [
-            {
-                "step": "신청기관연락처목록",
-                "guide": "거주지 읍/면/동 주민센터, 시군구, 읍면동에서 ‘서비스 신청’"
-            },
-            {
-                "step": "조사기관연락처목록",
-                "guide": "담당 시/군/구청 또는 시군구, 읍면동에서 조사 및 심사"
-            },
-            {
-                "step": "결정기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 시군구, 읍면동에서 보장 결정"
-            },
-            {
-                "step": "지급기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 한국토지주택공사, SH공사 등 지방공사에서 대상자에게 서비스 제공"
-            },
-            {
-                "step": "사후관리기관목록",
-                "guide": "담당 시/군/구청 또는 한국토지주택공사, 지방공사, 주택관리공단 등에서 서비스 제공 이후 대상자의 상황 관리"
-            }
-        ],
-        "relatedWebsites": [
-            {
-                "name": "한국토지주택공사",
-                "url": "www.lh.or.kr"
-            },
-            {
-                "name": "마이홈",
-                "url": "www.myhome.go.kr"
-            }
-        ],
-        "inquiryContacts": [
-            {
-                "name": "한국토지주택공사 콜센터",
-                "phone": "1600-1004"
-            },
-            {
-                "name": "거주지 관할 읍면동 주민센터",
-                "phone": ""
-            },
-            {
-                "name": "LH콜센터",
-                "phone": "1600-1004"
-            }
-        ]
+        "downloadForms": [],
+        "applyMethod": [],
+        "relatedWebsites": [],
+        "inquiryContacts": []
     },
     {
         "id": "WLF00001098",
@@ -168,56 +60,16 @@
             "en": "We help vulnerable families and families in emergency/crisis recover their family functions and strengthen their emotional and economic self-reliance."
         },
         "descOutline": "취약가족 및 긴급·위기가족이 가족 기능을 회복하고 정서적, 경제적 자립역량을 강화할 수 있도록 합니다.",
-        "eligibilityDtl": "취약위기가족을 대상으로 지원합니다.\n\n(손)자녀를 둔 한부모‧조손가족, 1인가구, 다문화가족 등 가족기능 강화를 위해 지원이 필요한 모든가족\n재난, 사고 등 경제‧사회적 위기사건을 직면한 위기가족",
-        "selectionCrit": "취약가족 : 한부모가족, 조손가족, 노부모 부양가족, 손자녀 돌봄 조부모, 청소년(한)부모, 1인가구, 다문화가족, 방임(보호)아동 및 원가정, 이혼 위기 가족 등 가족기능 및 역량 강화를 위해 지원이 필요한 모든 가족\n ※ 지자체와 협의하여 기준 중위소득 100% 이하(조정 가능) 우선 지원 가능 ※ 가족상담의 경우 모든 가족을 대상으로 진행\n\n기준에 적합한 대상자 중에서 지원이 필요하다고 판단되는 가구\n ※ 자립의지가 있는 비수급저소득 가구 우선 지원 ※ 「세월호피해구제및지원특별법」 제29조에 따라 친권자가 사망하거나 생사가 분명하지 아니한 미성년인 피해자는 학습정서지원 및 교육문화 프로그램 지원가능\n(소득기준 적용 시) 건강보험료 납부확인서 또는 수급자증명서를 통해 소득기준 확인\n\n긴급위기가족 : 재난사고 등 경제사회적 위기사건을 직면한 가족 \n\n위기사건으로 긴급지원이 필요하다고 판단되는 경우\n사례관리 대상자 중 긴급위기 상황이 발생한 경우\n가족의 생계를 책임지고 있거나 가족 구성원에 돌봄을 제공하는 청소년\n질병, 위기상황 등으로 도움이 필요한 1인가구",
-        "welfareContent": "취약위기가족이 가족기능을 회복하고 정서경제적 자립역량을 강화할 수 있도록 다음의 서비스를 제공합니다.\n\n가족상담 : 부모-자녀상담, 부부상담, 임신갈등상담, 이혼 전후 상담 등\n사례관리 : 대상자의 정책 욕구와 강점 사정을 기반으로 서비스 계획 수립 후 대상자에게 적합한 서비스와 자원을 확보하여 지원인력파견, 정보제공, 지역사회 자원 활용연계 등 직간접 서비스 지원\n교육문화 프로그램 및 자조모임 : 가족관계 향상을 위한 교육문화프로그램(부모교육, 가족캠프 등) 및 자조모임 등 사회적 관계망 형성 지원\n긴급위기지원 : 긴급위기 상황을 직면한 가족에 대한 심리정서지원 및 긴급돌봄 등 지원",
+        "eligibilityDtl": "",
+        "selectionCrit": "",
+        "welfareContent": "",
         "trgterIndvdl": "다문화·탈북민,저소득,한부모·조손",
         "lifeArray": "",
         "onapPsbltYn": "N",
-        "downloadForms": [
-            {
-                "name": "2026년 가족사업안내(1권)_최종본.hwp",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=20260511UUWBM1007370190482980&atcflSn=1"
-            }
-        ],
-        "applyMethod": [
-            {
-                "step": "신청기관연락처목록",
-                "guide": "거주지 읍/면/동 주민센터, 지역 가족센터에서 ‘서비스 신청’"
-            },
-            {
-                "step": "조사기관연락처목록",
-                "guide": "담당 시/군/구청 또는 지역 가족센터에서 조사 및 심사"
-            },
-            {
-                "step": "결정기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 지역 가족센터에서 보장 결정"
-            },
-            {
-                "step": "지급기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 지역 가족센터에서 대상자에게 서비스 제공"
-            },
-            {
-                "step": "사후관리기관목록",
-                "guide": "담당 시/군/구청 또는 지역 가족센터에서 서비스 제공 이후 대상자의 상황 관리"
-            }
-        ],
-        "relatedWebsites": [
-            {
-                "name": "한국건강가정진흥원",
-                "url": "www.familynet.or.kr"
-            },
-            {
-                "name": "다문화가족지원포털 다누리",
-                "url": "http://www.liveinkorea.kr/"
-            }
-        ],
-        "inquiryContacts": [
-            {
-                "name": "한국건강가정진흥원 가족센터협력부",
-                "phone": "02-3479-7716"
-            }
-        ]
+        "downloadForms": [],
+        "applyMethod": [],
+        "relatedWebsites": [],
+        "inquiryContacts": []
     },
     {
         "id": "WLF00000751",
@@ -232,51 +84,16 @@
             "en": "We protect out-of-home youth and help them return to home and adapt to society by preventing delinquency and delinquency through counseling and support for educational and cultural activities."
         },
         "descOutline": "가정 밖 청소년을 보호하고 상담, 교육문화활동 지원을 통해 비행, 탈선을 예방하여 가정복귀와 사회적응을 돕습니다.",
-        "eligibilityDtl": "9~24세 가정 밖 청소년을 대상으로 지원합니다.",
-        "selectionCrit": "지원대상의 내용을 참고해주시기 바랍니다.",
-        "welfareContent": "가정 밖 청소년들이 머무르며 생활을 할 수 있는 청소년쉼터 입소를 지원하여, 생활보호(의･식･주), 정서적 지지 및 심리상담, 의료지원, 학업복귀, 취업지원 등 맞춤형 서비스를 제공합니다.\n자립준비청소년이 안정적으로 자립하여 생활할 수 있는 능력과 여건을 갖추도록 사례관리와 주거지원을 기반으로 경제적 지원, 소득･생계･금융지원, 교육･진학지원, 취업･훈련지원, 건강･일상지원을 개인별 맞춤형으로 제공합니다.",
+        "eligibilityDtl": "",
+        "selectionCrit": "",
+        "welfareContent": "",
         "trgterIndvdl": "",
         "lifeArray": "아동,청소년,청년",
         "onapPsbltYn": "N",
         "downloadForms": [],
-        "applyMethod": [
-            {
-                "step": "신청기관연락처목록",
-                "guide": "거주지 읍/면/동 주민센터, 지자체,청소년복지시설에서 ‘서비스 신청’"
-            },
-            {
-                "step": "조사기관연락처목록",
-                "guide": "담당 시/군/구청 또는 지자체,청소년복지시설에서 조사 및 심사"
-            },
-            {
-                "step": "결정기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 지자체,청소년복지시설에서 보장 결정"
-            },
-            {
-                "step": "지급기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 지자체,청소년복지시설에서 대상자에게 서비스 제공"
-            },
-            {
-                "step": "사후관리기관목록",
-                "guide": "담당 시/군/구청 또는 지자체,청소년복지시설에서 서비스 제공 이후 대상자의 상황 관리"
-            }
-        ],
-        "relatedWebsites": [
-            {
-                "name": "1388청소년사이버상담센터",
-                "url": "www.1388.go.kr"
-            }
-        ],
-        "inquiryContacts": [
-            {
-                "name": "청소년 상담전화",
-                "phone": "1388"
-            },
-            {
-                "name": "한국청소년상담복지개발원",
-                "phone": "051-662-3230"
-            }
-        ]
+        "applyMethod": [],
+        "relatedWebsites": [],
+        "inquiryContacts": []
     },
     {
         "id": "WLF00000063",
@@ -291,64 +108,16 @@
             "en": "We support education expenses so that North Korean defectors can establish a stable foundation for settlement and resolve educational difficulties."
         },
         "descOutline": "북한이탈주민이 안정적인 정착기반을 마련하고 교육적 어려움을 해소할 수 있도록 교육비를 지원합니다.",
-        "eligibilityDtl": "북한이탈주민과 북한이탈주민의 자녀의 교육비를 지원합니다.",
-        "selectionCrit": "중고등학교, 대학등의 지원기준은 다음과 같습니다.\n\n「초ㆍ중등교육법」 제2조 각 호의 학교의 수업료 등 : 면제 - 북한이탈주민 자녀의 경우 「초ㆍ중등교육법」 제10조의2제3항에 따른 사립학교는 제외\n\n\n대학등의 입학금, 수업료등 : 국공립은 면제, 사립은 반액 보조\n\n가. 대학등의 범위 - 「고등교육법」 제2조 각 호의 학교  -「평생교육법」에 따라 학력과 학위가 인정되는 평생교육시설  -「학점인정 등에 관한 법률」에 따라 평가인정을 받은 학습과정을 운영하는 교육훈련기관  -「국민 평생 직업능력 개발법」에 따라 학위과정을 운영하는 기능대학 포함\n나. 북한이탈주민 자녀의 경우 「고등교육법」 제2조 각 호의 학교만 해당\n\n\n\n\n지원제한(사립대학에 한함) 기준은 아래와 같습니다. \n\n국내에서 4년제 대학 이상을 졸업한 자\n직전 학기 평균성적이 100점 만점 중 연속 2회 70점(C학점) 미만인 사람은 당해학기 보조 제한\n※ 지원 제외 기간도 지원 기간(6년의 범위에서 8학기)에 포함 ※ 제적/자퇴 이후(동 대학에) 재입학하거나, 타 대학에 신입학 또는 편입학한 경우에도 이전 학교 학업성적을 기준으로 적용",
-        "welfareContent": "중고등학교는 학교 자체에서 입학금, 수업료, 학교운영지원비 및 기숙사 사용료를 면제합니다.\n국공립대 해당 대학에서 입학금, 수업료 및 기성회비를 면제합니다.\n사립대 해당 학교가 보조금지급신청서(입학금, 수업료 및 기성회비)를 남북하나재단에 제출하면, 하나재단에서 50% 지급 보조합니다.\n대학 등에서 최초(처음)로 입학 또는 편입학 날로부터 6년의 범위에서 8학기 지원합니다.\n * 의학, 약학, 치의학, 수의학, 한의학 계통은 8년의 범위에서 12학기 지원\n * 타 대학으로 신입학 또는 편입학한 경우, 이전 학교에서 지원받은 학기는 차감하므로 6년의 범위내에서 8학기를 초과한 학기에 대한 등록금은 본인이 부담\n \n ※ 중고등학교, 국립사립대학 등의 입학금은 1회에 한하여 면제보조 ※ 학기제로 운영되지 않는 대학 등에 입학한 경우 20학점을 1학기로 산정",
+        "eligibilityDtl": "",
+        "selectionCrit": "",
+        "welfareContent": "",
         "trgterIndvdl": "다문화·탈북민",
         "lifeArray": "청소년,청년",
         "onapPsbltYn": "N",
-        "downloadForms": [
-            {
-                "name": "[별지 제9호서식] 교육지원 신청서.hwp",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=5478GOWF15GOWF155478&atcflSn=1"
-            },
-            {
-                "name": "[별지 제11호서식] 교육지원 보조금 지급신청서.hwp",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=5479GOWF15GOWF155479&atcflSn=1"
-            }
-        ],
-        "applyMethod": [
-            {
-                "step": "신청기관연락처목록",
-                "guide": "거주지 읍/면/동 주민센터, 남북하나재단에서 ‘서비스 신청’"
-            },
-            {
-                "step": "조사기관연락처목록",
-                "guide": "담당 시/군/구청 또는 남북하나재단에서 조사 및 심사"
-            },
-            {
-                "step": "결정기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 남북하나재단에서 보장 결정"
-            },
-            {
-                "step": "지급기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 남북하나재단에서 대상자에게 서비스 제공"
-            },
-            {
-                "step": "사후관리기관목록",
-                "guide": "담당 시/군/구청 또는 남북하나재단에서 서비스 제공 이후 대상자의 상황 관리"
-            }
-        ],
-        "relatedWebsites": [
-            {
-                "name": "남북하나재단",
-                "url": "https://www.koreahana.or.kr"
-            },
-            {
-                "name": "통일부",
-                "url": "www.unikorea.go.kr"
-            }
-        ],
-        "inquiryContacts": [
-            {
-                "name": "북한이탈주민 종합상담 콜센터",
-                "phone": "1577-6635"
-            },
-            {
-                "name": "남북하나재단",
-                "phone": "02-3215-5793"
-            }
-        ]
+        "downloadForms": [],
+        "applyMethod": [],
+        "relatedWebsites": [],
+        "inquiryContacts": []
     },
     {
         "id": "WLF00000921",
@@ -358,81 +127,21 @@
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000921&wlfareInfoReldBztpCd=01",
         "desc": {
             "ko": "북한이탈주민의 주택/취업/교육/의료 등 상담지원 서비스를 체계적으로 제공하여 성공적인 지역사회 정착을 유도합니다.",
-            "vi": "Chúng tôi cung cấp một cách có hệ thống các dịch vụ hỗ trợ tư vấn, bao gồm nhà ở/việc làm/giáo dục/chăm sóc y tế, cho những người đào thoát Bắc Triều Tiên để khuyến khích họ định cư thành công trong cộng đồng.",
+            "vi": "Chúng tôi cung cấp các dịch vụ hỗ trợ tư vấn một cách có hệ thống, bao gồm nhà ở/việc làm/giáo dục/chăm sóc y tế, cho những người đào thoát Bắc Triều Tiên để khuyến khích họ định cư thành công trong cộng đồng.",
             "zh": "我们系统地为脱北者提供住房/就业/教育/医疗等咨询支持服务，鼓励他们成功融入社区。",
             "en": "We systematically provide counseling support services, including housing/employment/education/medical care, to North Korean defectors to encourage their successful settlement in the community."
         },
         "descOutline": "북한이탈주민의 주택/취업/교육/의료 등 상담지원 서비스를 체계적으로 제공하여 성공적인 지역사회 정착을 유도합니다.",
-        "eligibilityDtl": "국내에 입국한 모든 북한이탈주민을 대상으로 지원합니다.",
-        "selectionCrit": "상담지원(사례개입)의 시급성과 적절성을 고려하여 우선 지원합니다.",
-        "welfareContent": "사회에 진출한 북한이탈주민에 대한 심층적 이해를 바탕으로 거주지에서 심리상담, 의료/교육/복지/취업지원 등 전문적 종합서비스를 제공합니다.",
+        "eligibilityDtl": "",
+        "selectionCrit": "",
+        "welfareContent": "",
         "trgterIndvdl": "다문화·탈북민",
         "lifeArray": "",
         "onapPsbltYn": "N",
-        "downloadForms": [
-            {
-                "name": "북한이탈주민 지역적응센터 운영 예규(통일부예규)(제72호)(20220103).hwp",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=1416GOWF16GOWF161416&atcflSn=1"
-            }
-        ],
-        "applyMethod": [
-            {
-                "step": "신청기관연락처목록",
-                "guide": "거주지 읍/면/동 주민센터, 북한이탈주민지원재단에서 ‘서비스 신청’"
-            },
-            {
-                "step": "신청기관연락처목록",
-                "guide": "거주지 읍/면/동 주민센터, 북한이탈주민 지역적응센터에서 ‘서비스 신청’"
-            },
-            {
-                "step": "조사기관연락처목록",
-                "guide": "담당 시/군/구청 또는 북한이탈주민지원재단에서 조사 및 심사"
-            },
-            {
-                "step": "조사기관연락처목록",
-                "guide": "담당 시/군/구청 또는 북한이탈주민 지역적응센터에서 조사 및 심사"
-            },
-            {
-                "step": "결정기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 북한이탈주민지원재단에서 보장 결정"
-            },
-            {
-                "step": "결정기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 북한이탈주민 지역적응센터에서 보장 결정"
-            },
-            {
-                "step": "지급기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 북한이탈주민지원재단에서 대상자에게 서비스 제공"
-            },
-            {
-                "step": "지급기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 북한이탈주민 지역적응센터에서 대상자에게 서비스 제공"
-            },
-            {
-                "step": "사후관리기관목록",
-                "guide": "담당 시/군/구청 또는 북한이탈주민지원재단에서 서비스 제공 이후 대상자의 상황 관리"
-            },
-            {
-                "step": "사후관리기관목록",
-                "guide": "담당 시/군/구청 또는 북한이탈주민 지역적응센터에서 서비스 제공 이후 대상자의 상황 관리"
-            }
-        ],
-        "relatedWebsites": [
-            {
-                "name": "북한이탈주민 포털",
-                "url": "https://hanaportal.unikorea.go.kr"
-            },
-            {
-                "name": "남북하나재단",
-                "url": "http://www.koreahana.or.kr"
-            }
-        ],
-        "inquiryContacts": [
-            {
-                "name": "북한이탈주민 종합상담 콜센터",
-                "phone": "1577-6635"
-            }
-        ]
+        "downloadForms": [],
+        "applyMethod": [],
+        "relatedWebsites": [],
+        "inquiryContacts": []
     },
     {
         "id": "WLF00001068",
@@ -442,81 +151,21 @@
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00001068&wlfareInfoReldBztpCd=01",
         "desc": {
             "ko": "저소득 한부모가족 및 조손가족이 가족의 기능을 유지하고 안정된 생활을 할 수 있도록 아동 양육비를 지원합니다.",
-            "vi": "Chúng tôi cung cấp hỗ trợ nuôi con cho các gia đình cha mẹ đơn thân có thu nhập thấp và gia đình ông bà để họ có thể duy trì chức năng gia đình và có cuộc sống ổn định.",
+            "vi": "Chúng tôi hỗ trợ hỗ trợ nuôi con cho các gia đình cha mẹ đơn thân có thu nhập thấp và gia đình ông bà để họ duy trì chức năng gia đình và có cuộc sống ổn định.",
             "zh": "我们为低收入单亲家庭和祖父母家庭提供子女抚养费，使他们能够维持家庭功能并过上稳定的生活。",
-            "en": "We provide child support to low-income single-parent families and grandparents' families so that they can maintain family function and live a stable life."
+            "en": "We support child support for low-income single-parent families and grandparents' families so that they can maintain family function and live a stable life."
         },
         "descOutline": "저소득 한부모가족 및 조손가족이 가족의 기능을 유지하고 안정된 생활을 할 수 있도록 아동 양육비를 지원합니다.",
-        "eligibilityDtl": "'한부모가족'의 서비스별 지원대상은 다음과 같습니다.\n\n아동양육비 : 지원대상자로 결정된 저소득 한부모가구의18세 미만의 아동* 단, 고등학교 이하 재학(고3 12월까지) 중인 경우 22세 미만 자녀\n추가아동양육비 :  조손가족 및35세 이상 미혼 한부모가족의5세 이하 자녀  25~34세 이하 청년 한부모가족의18세 미만 자녀\n학용품비 : 한부모가족(조손가족 포함)의 초등학생, 중학생 및 고등학생 자녀\n생활보조금 : 한부모가족 복지시설에 입소한 저소득 한부모가족(조손가족 포함)\n\n(참고) '청소년한부모'의 서비스별 지원대상은 다음과 같습니다.\n\n아동양육비 : 지원대상자로 결정된 저소득 청소년한부모의 자녀\n자립촉진수당 : 취업, 학업 등 자립활동에 참여하는 청소년한부모\n검정고시 등 학습지원 : 검정고시를 준비하거나 중고등학교에 재학중인 청소년한부모",
-        "selectionCrit": "'한부모가족'의소득인정액 기준은 다음과 같습니다\n\n복지급여 : 기준 중위소득65% 이하 한부모 및 조손가족\n한부모가족증명서 발급 : 기준 중위소득 65% 이하 한부모 및 조손가족 (비급여)\n\n(참고) 청소년한부모'의 소득인정액 기준은 다음과 같습니다.\n\n복지급여 : 기준중위소득 65% 이하 청소년한부모\n한부모가족증명서 발급(비급여) : 기준중위소득 72% 이하",
-        "welfareContent": "'한부모가족'의 아동양육비 등 지원내용은 다음과 같습니다.\n\n(아동양육비) 저소득 한부모가족의18세 미만 자녀 1인당 월 23만원 지급합니다. * 단, 고등학교 이하 재학(고3 12월까지) 중인 경우 22세 미만 자녀\n(추가아동양육비)\n - 조손가족 및 35세 이상 미혼 한부모가족의 5세 이하 아동 1인당 월 10만원 - 25세 이상 34세 이하 청년 한부모가족의 18세 미만 아동 1인당 월 10만원\n(학용품비) 한부모가족(조손가족 포함)의 초등학생, 중학생 및 고등학생 자녀 1인당 연 10만원의 학용품비 지원합니다.\n(생활보조금) 한부모가족 복지시설에 입소한 저소득 한부모가족(조손가족 포함)에 대해 가구당 월 10만원 지원합니다.\n\n(참고) '청소년한부모 자립지원'의지원내용은 다음과 같습니다. \n\n(아동양육비) 저소득 청소년한부모 자녀 1인당 월 37만원 지원 * 0~1세 자녀는 1인당 월 40만원 지원\n(자립촉진수당) 취업, 학업 등 자립활동에 참여하는 청소년한부모 대상 가구당 월 10만원씩 지원\n(검정고시 등 학습지원) 검정고시 학습비(학원비,교재비), 학용품비 등 지원",
+        "eligibilityDtl": "",
+        "selectionCrit": "",
+        "welfareContent": "",
         "trgterIndvdl": "한부모·조손",
         "lifeArray": "",
         "onapPsbltYn": "Y",
-        "downloadForms": [
-            {
-                "name": "2026년 한부모가족지원사업 안내 지침.pdf",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=20260326UUWBM1105100182286160&atcflSn=1"
-            },
-            {
-                "name": "사회보장급여 신청(변경)서.hwpx",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=20230104UUWBM1008450015644756&atcflSn=1"
-            },
-            {
-                "name": "[별지 1의2] 소득·재산 신고서(신규¸ 변경)(사회보장급여 관련 공통서식에 관한 고시).hwp",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=1035GOWF16GOWF161035&atcflSn=1"
-            },
-            {
-                "name": "[별지 1의3] 금융정보 등(금융ㆍ신용ㆍ보험정보) 제공 동의서.hwpx",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=20230206UUWBM1104080019961534&atcflSn=1"
-            },
-            {
-                "name": "(서식) 청소년 한부모 자립지원 제공 신청서.hwp",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=20230206UUWBM1105510019961941&atcflSn=1"
-            }
-        ],
-        "applyMethod": [
-            {
-                "step": "신청기관연락처목록",
-                "guide": "거주지 읍/면/동 주민센터, 읍면동 또는 복지로 웹사이트(PC/모바일앱)에서 ‘서비스 신청’"
-            },
-            {
-                "step": "조사기관연락처목록",
-                "guide": "담당 시/군/구청 또는 시군구에서 조사 및 심사"
-            },
-            {
-                "step": "결정기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 시군구에서 보장 결정"
-            },
-            {
-                "step": "이의신청접수기관연락처목록 ",
-                "guide": "이의가 있을 경우, 담당 시/군/구청 또는 시군구에 이의 신청 접수"
-            },
-            {
-                "step": "지급기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 시군구에서 대상자에게 서비스 제공"
-            },
-            {
-                "step": "사후관리기관목록",
-                "guide": "담당 시/군/구청 또는 시군구에서 서비스 제공 이후 대상자의 상황 관리"
-            }
-        ],
-        "relatedWebsites": [
-            {
-                "name": "성평등가족부",
-                "url": "http://www.mogef.go.kr"
-            }
-        ],
-        "inquiryContacts": [
-            {
-                "name": "가족상담전화",
-                "phone": "1577-4206"
-            },
-            {
-                "name": "성평등가족부",
-                "phone": "02-2100-6000"
-            }
-        ]
+        "downloadForms": [],
+        "applyMethod": [],
+        "relatedWebsites": [],
+        "inquiryContacts": []
     },
     {
         "id": "WLF00000076",
@@ -531,60 +180,16 @@
             "en": "We support youth from low-income families to improve their physical strength and engage in healthy leisure activities by ensuring continuous opportunities for sports activities."
         },
         "descOutline": "저소득층 유청소년에게 지속적인 스포츠 활동 기회를 보장하여  체력향상과 건전한 여가활동을 지원합니다.",
-        "eligibilityDtl": "아래의 수급자격을 충족하는 만 518세 유․청소년을 대상으로 합니다.\n\n「국민기초생활보장법」에 따른 생계, 의료, 주거, 교육급여 수급가구 및 차상위계층* * 차상위 장애자활본인부담경감확인서발급대상 / 법정 한부모 지원 가구\n경찰청 추천 학교가정성폭력 등 범죄피해가정 유청소년",
-        "selectionCrit": "스포츠강좌이용권 누적 지원기간, 소득, 범죄피해 여부 등을 고려하여 대상자를 선정합니다.\n\n(우선선정) 누적 이용기간 : 제한없음 / 수급자격 : 범죄피해가정(학교가정성폭력)*\n(1순위) 누적 이용기간 : 신규 및 30개월 미만 / 수급자격 : 기초생활수급자(생계의료주거교육)\n(2순위) 누적 이용기간 : 신규 및 30개월미만 / 수급자격 : 차상위계층, 법정 한부모가정\n(3순위) 누적 이용기간 : 30개월 이상 / 수급자격 : 기초생활수급자(생계의료주거교육)\n(4순위) 누적 이용기간 : 30개월 이상/ 수급자격 : 차상위층, 법정 한부모가정\n* 범죄피해가구 신청자 중 지역별 배정인원 내 선정** 누적이용기간 : 스포츠강좌이용권 최근 4년간 누적 결제 횟수",
-        "welfareContent": "월 105,000원 범위 내에서 12개월 스포츠활동 강좌비를 지급합니다. \n\n수강료가 105,000원 이상인 경우, 차액은 본인 부담",
+        "eligibilityDtl": "",
+        "selectionCrit": "",
+        "welfareContent": "",
         "trgterIndvdl": "저소득,한부모·조손",
         "lifeArray": "영유아,아동,청소년",
         "onapPsbltYn": "N",
-        "downloadForms": [
-            {
-                "name": "2025년 스포츠강좌이용권 사업지침.hwp",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=20250224UUWBM1545310125318282&atcflSn=1"
-            },
-            {
-                "name": "스포츠강좌이용권 신청서.hwp",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=5581GOWF15GOWF155581&atcflSn=1"
-            }
-        ],
-        "applyMethod": [
-            {
-                "step": "신청기관연락처목록",
-                "guide": "거주지 읍/면/동 주민센터, 지방자치단체(시군구청, 주민센터, 방문), 국민체육진흥공단(인터넷)에서 ‘서비스 신청’"
-            },
-            {
-                "step": "조사기관연락처목록",
-                "guide": "담당 시/군/구청 또는 지방자치단체에서 조사 및 심사"
-            },
-            {
-                "step": "결정기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 지방자치단체에서 보장 결정"
-            },
-            {
-                "step": "이의신청접수기관연락처목록 ",
-                "guide": "이의가 있을 경우, 담당 시/군/구청 또는 소재지 시군구청에 이의 신청 접수"
-            },
-            {
-                "step": "지급기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 지방자치단체에서 대상자에게 서비스 제공"
-            },
-            {
-                "step": "사후관리기관목록",
-                "guide": "담당 시/군/구청 또는 국민체육진흥공단에서 서비스 제공 이후 대상자의 상황 관리"
-            }
-        ],
-        "relatedWebsites": [
-            {
-                "name": "스포츠강좌이용권 홈페이지(국민체육진흥공단)",
-                "url": "http://svoucher.kspo.or.kr"
-            }
-        ],
-        "inquiryContacts": [
-            {
-                "name": "스포츠강좌이용권 상담 및 문의(국민체육진흥공단)",
-                "phone": "1551-0078"
-            }
-        ]
+        "downloadForms": [],
+        "applyMethod": [],
+        "relatedWebsites": [],
+        "inquiryContacts": []
     },
     {
         "id": "WLF00000032",
@@ -599,48 +204,16 @@
             "en": "We prevent family breakup through disappearance prevention education and promotion for children and disabled people (intellectual, autistic, and mental), and support for families of long-term missing persons."
         },
         "descOutline": "아동 및 장애인(지적·자폐성·정신)의 실종예방 교육 및 홍보, 장기실종 가족지원을 통해 가족해체를 예방합니다.",
-        "eligibilityDtl": "실종당시 18세 미만 아동, 실종장애인(지적자폐성정신)과 그 가족을 지원합니다.\n실종아동을 신고(국번없이 182, 경찰청) 후 연계하여 지원합니다.",
-        "selectionCrit": "지원대상의 내용을 참고해 주시기 바랍니다.",
-        "welfareContent": "실종아동전문기관을 통해서 실종이나 유괴를 예방할 수 있는 방문교육을 실시합니다.\n시설보호아동 등의 신상카드 접수 및 열람을 돕습니다.\n기타 실종가족지원 등의 서비스를 제공합니다.",
+        "eligibilityDtl": "",
+        "selectionCrit": "",
+        "welfareContent": "",
         "trgterIndvdl": "장애인",
         "lifeArray": "아동",
         "onapPsbltYn": "N",
-        "downloadForms": [
-            {
-                "name": "2026년_아동분야 사업안내(2권).pdf",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=20260430TTWAT2043310010670451&atcflSn=1"
-            }
-        ],
-        "applyMethod": [
-            {
-                "step": "조사기관연락처목록",
-                "guide": "담당 시/군/구청 또는 실종아동전문기관에서 조사 및 심사"
-            },
-            {
-                "step": "결정기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 실종아동전문기관에서 보장 결정"
-            },
-            {
-                "step": "지급기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 실종아동전문기관에서 대상자에게 서비스 제공"
-            },
-            {
-                "step": "사후관리기관목록",
-                "guide": "담당 시/군/구청 또는 아동권리보장원 실종아동전문기관에서 서비스 제공 이후 대상자의 상황 관리"
-            }
-        ],
-        "relatedWebsites": [
-            {
-                "name": "실종아동전문기관",
-                "url": "www.missingchild.or.kr"
-            }
-        ],
-        "inquiryContacts": [
-            {
-                "name": "실종아동전문기관",
-                "phone": "02-777-0182"
-            }
-        ]
+        "downloadForms": [],
+        "applyMethod": [],
+        "relatedWebsites": [],
+        "inquiryContacts": []
     },
     {
         "id": "WLF00000056",
@@ -655,56 +228,16 @@
             "en": "We contribute to improving public health and social welfare for low-income people by supporting medical expenses for medical benefit recipients."
         },
         "descOutline": "의료급여 수급권자에게 의료비를 지원하여 저소득층의  국민보건 향상과 사회복지 증진에 기여합니다.",
-        "eligibilityDtl": "수급권자가 긴급하거나 그 밖의 부득이한 사유로  의료급여 기관과 동일한 기능을 수행하는 기관에서  질병･부상･출산 등에 대하여 의료급여를 받거나 의료급여기관 외의 장소에서 출산을 한 때에 그 의료급여에 상당하는 금액을 수급권자에게 요양비로 지급합니다.",
-        "selectionCrit": "요양비(출산비를 제외한 협의의 요양비) 지급 요건은 다음과 같습니다.\n \n\n(질병 부상 출산 요양비) 의료급여기관을 이용할 수 없거나 의료급여기관이 없는 사유로 인하여 질병부상출산(사산의 경우로서 임신 16주 이상)에 대하여 요양을 받은 경우\n(자동복막투석(복막관류액 등)) 만성신부전환자가 의사의 처방전에 따라 자동복막투석 시 사용되는 복막관류액 또는 소모성재료를 의료급여기관 외의 의약품 판매업소에서 구입사용한 경우\n(당뇨병 소모성 재료) 당뇨병 환자가 의사의 처방전에 따라 혈당검사 또는 인슐린주사에 사용되는 소모성 재료를 의료급여기관 외의 의료기기 판매업소에서 구입사용한 경우\n(당뇨병 관리기기)제1형 당뇨병환자가 의사의 처방전에 따라 당뇨병에 사용되는 관리기기(연속혈당 측정기, 인슐린 자동주입기)를 의료급여기관 외의 의료기기 판매업소에서 구입사용한 경우\n(자가도뇨 소모성 재료) 신경인성 방광환자가 의사의 처방전에 따라 자가도뇨에 사용되는 소모성 재료를 의료급여 기관 외의 의료기기판매업소에서 구입사용한 경우\n(산소치료) 산소치료를 필요로 하는 환자가 가정에서 의사의 산소처방전에 의하여 보건복지부 장관이 정하여 고시하는 방법으로 가정에서 산소치료를 받는 경우\n(인공호흡기 대여서비스 등) 인공호흡기를 필요로 하는 환자가 의사의 처방전에 따라 건강보험공단에 등록된 업소에서 인공호흡기 치료 서비스를 제공받는 경우\n(기침유발기) 인공호흡기 사용하는 사람 중 기침유발기를 필요로 하는 환자가 의사의 처방전에 따라 건강보험공단에 등록된 업소에서 기침유발기 서비스를 제공받는 경우\n(양압기)양압기를 필요로 하는 환자가 의사의 처방전에 따라 건강보험공단에 등록된 업소에서 양압기 서비스를 제공받는 경우",
-        "welfareContent": "요양비 지급 범위는 다음과 같습니다.\n- 질병, 부상, 출산 요양비\n- 자동복막투석에 사용되는 복막관류액 또는 소모성 재료비\n- 산소 치료\n- 당뇨 소모성 재료\n- 당뇨병 관리기기\n- 자가도뇨 소모성 재료(간헐적 도뇨 카테터)\n- 인공호흡기 대여서비스 등\n- 기침유발기\n- 양압기",
+        "eligibilityDtl": "",
+        "selectionCrit": "",
+        "welfareContent": "",
         "trgterIndvdl": "저소득",
         "lifeArray": "임신 · 출산",
         "onapPsbltYn": "Y",
-        "downloadForms": [
-            {
-                "name": "2026 의료급여사업 안내.pdf",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=20260410UUWBM1523510185458943&atcflSn=1"
-            }
-        ],
-        "applyMethod": [
-            {
-                "step": "신청기관연락처목록",
-                "guide": "거주지 읍/면/동 주민센터, 시군구 또는 복지로 웹사이트(PC/모바일앱)에서 ‘서비스 신청’"
-            },
-            {
-                "step": "조사기관연락처목록",
-                "guide": "담당 시/군/구청 또는 시군구에서 조사 및 심사"
-            },
-            {
-                "step": "결정기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 시군구에서 보장 결정"
-            },
-            {
-                "step": "지급기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 의료기관에서 대상자에게 서비스 제공"
-            },
-            {
-                "step": "사후관리기관목록",
-                "guide": "담당 시/군/구청 또는 시군구에서 서비스 제공 이후 대상자의 상황 관리"
-            }
-        ],
-        "relatedWebsites": [
-            {
-                "name": "보건복지상담센터",
-                "url": "http://www.129.go.kr"
-            },
-            {
-                "name": "보건복지부",
-                "url": "http://www.mohw.go.kr"
-            }
-        ],
-        "inquiryContacts": [
-            {
-                "name": "보건복지상담센터",
-                "phone": "129"
-            }
-        ]
+        "downloadForms": [],
+        "applyMethod": [],
+        "relatedWebsites": [],
+        "inquiryContacts": []
     },
     {
         "id": "WLF00000061",
@@ -719,60 +252,16 @@
             "en": "We contribute to improving the health of low-income people and social welfare by supporting medical expenses for pregnant or childbirth recipients and children under 2 years of age."
         },
         "descOutline": "임신 또는 출산한 의료급여 수급자와 2세미만 자녀에게 의료비를 지원하여 저소득층 국민보건 향상과 사회복지 증진에 기여합니다.",
-        "eligibilityDtl": "의료급여 수급자 중 임신 중이거나 출산(유산 및 사산 포함)한 수급권자 및 출생일로부터2세 미만의 자녀를 지원합니다.",
-        "selectionCrit": "지원대상의 내용을 참고해 주시기 바랍니다.",
-        "welfareContent": "임신출산 진료비로 100만원을 지원합니다(다태아는 태아당 100만원). \n \n임신과 출산에 관련된 진료를 편리하게 받기 어려운 분만취약지역에 계속하여 30일 이상 거주하는 경우 20만원 추가 지원됩니다. \n \n진료비 지원 방법 : 의료기관에서 진료받은 본인부담금(비금여 포함)에 대해 사용 가능(지원금액 한도내에서 본인부담금이 차감되는 방법으로 지원) * 지원대상자로 선정되면, 의료기관(병의원, 약국)에서 건강보험공단으로 진료비 차감을 요청하고, 건강보험공단에서 의료기관(병의원, 약국)으로 진료비 지급 \n분만취약지 \n \n인천 : 강화군, 옹진군 \n경기 : 연천군, 가평군,양평군 \n강원 : 홍천군, 인제군, 정선군, 평창군, 화천군 \n충북 : 보은군, 괴산군, 단양군 \n전북 : 진안군, 무주군, 장수군 \n전남 : 보성군,완도군, 진도군, 신안군 \n대구 : 군위군 \n경북 : 의성군, 청송군, 영양군, 영덕군, 청도군, 봉화군, 울릉군 \n경남 : 의령군, 남해군,합천군, 산청군 * 「공공보건의료에 관한 법률」에 따라 보건복지부 '분만취약지 지원사업'에서 규정하는 지역에 한함",
+        "eligibilityDtl": "",
+        "selectionCrit": "",
+        "welfareContent": "",
         "trgterIndvdl": "저소득",
         "lifeArray": "영유아,임신 · 출산",
         "onapPsbltYn": "Y",
-        "downloadForms": [
-            {
-                "name": "2026 의료급여사업 안내.pdf",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=20260410UUWBM1523510185458943&atcflSn=1"
-            },
-            {
-                "name": "의료급여 임신·출산 진료비 지원(변경)신청서.hwp",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=2484GOWF12GOWF122484&atcflSn=1"
-            }
-        ],
-        "applyMethod": [
-            {
-                "step": "신청기관연락처목록",
-                "guide": "거주지 읍/면/동 주민센터, 시군구 또는 복지로 웹사이트(PC/모바일앱)에서 ‘서비스 신청’"
-            },
-            {
-                "step": "조사기관연락처목록",
-                "guide": "담당 시/군/구청 또는 시군구에서 조사 및 심사"
-            },
-            {
-                "step": "결정기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 시군구에서 보장 결정"
-            },
-            {
-                "step": "지급기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 의료기관에서 대상자에게 서비스 제공"
-            },
-            {
-                "step": "사후관리기관목록",
-                "guide": "담당 시/군/구청 또는 시군구에서 서비스 제공 이후 대상자의 상황 관리"
-            }
-        ],
-        "relatedWebsites": [
-            {
-                "name": "보건복지부 상담센터",
-                "url": "http://www.129.go.kr"
-            },
-            {
-                "name": "보건복지부",
-                "url": "http://www.mohw.go.kr"
-            }
-        ],
-        "inquiryContacts": [
-            {
-                "name": "보건복지상담센터",
-                "phone": "129"
-            }
-        ]
+        "downloadForms": [],
+        "applyMethod": [],
+        "relatedWebsites": [],
+        "inquiryContacts": []
     },
     {
         "id": "WLF00000782",
@@ -787,64 +276,16 @@
             "en": "We support the stable settlement of residents who migrated from North Korea to South Korea."
         },
         "descOutline": "북한에서 남한으로 이주한 주민의 안정적인 정착을 지원합니다.",
-        "eligibilityDtl": "생활이 어려운 북한이탈주민을 지원합니다.",
-        "selectionCrit": "「2025년 국민기초생활보장사업안내」에 따른 2025년 북한이탈주민 특례대상자 선정기준에 해당하는 경우 사회보장을 지원합니다.",
-        "welfareContent": "(생계급여 수급자) 생활이 어려운 북한이탈주민에게 생계급여를 지원합니다.\n\n「북한이탈주민의 보호 및 정착지원에 관한 법률」제26조에 따라 하나원 퇴소 이후 생활이 어려운 북한이탈주민은 5년의 범위 내에서 특례 적용\n구체적 특례내용은 보건복지부 지침(국민기초생활보장사업 안내)에 따름\n북한이탈주민 특례를 제외한 사항은 일반 수급권자와 동일하며, 특례 적용기간 이후에는 일반국민과 동일한 기준 적용\n 북한이탈주민 특례\n - 특례 기간 : 최초 거주지 전입일 이후 5년\n - 특례 적용의 개시일 산정은 최초 거주지 전입일부터 기산\n - 특례기간 중 탈수급 하였다 재 신청하는 경우 특례규정 재적용 가능\n\n 특례 내용\n - 근로무능력자로만 구성된 가구는 가구원수에 1인을 추가하여 생계급여 지급(근로능력자가 포함된 가구는 일반수급자 선정기준과 동일)\n - 정착금(기본금, 장려금 및 주거지원금 등)은 재산가액 산정 제외\n - 부양의무자 기준 미적용\n - 최초 거주지 전입 후 6개월간 생계급여의 조건부과를 면제하고(조건제시유예자로 관리), 해당기간 만료후(거주지 전입 후 7개월～5년)에는 자활사업 참여의무 부과\n\n(의료급여 수급자) 「북한이탈주민의 보호 및 정착지원에 관한 법률」의 적용을 받고 있는 자와 그 가족으로서 보건복지부장관이 의료급여가 필요하다고 인정한 자에게 의료급여를 지원합니다.",
+        "eligibilityDtl": "",
+        "selectionCrit": "",
+        "welfareContent": "",
         "trgterIndvdl": "다문화·탈북민",
         "lifeArray": "",
         "onapPsbltYn": "N",
-        "downloadForms": [
-            {
-                "name": "금융정보 등 제공 동의서.hwp",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=0992GOWF16GOWF160992&atcflSn=1"
-            },
-            {
-                "name": "사회보장급여 신청(변경)서.hwp",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=0991GOWF16GOWF160991&atcflSn=1"
-            }
-        ],
-        "applyMethod": [
-            {
-                "step": "신청기관연락처목록",
-                "guide": "거주지 읍/면/동 주민센터, 읍면동 에서 ‘서비스 신청’"
-            },
-            {
-                "step": "조사기관연락처목록",
-                "guide": "담당 시/군/구청 또는 시군구에서 조사 및 심사"
-            },
-            {
-                "step": "결정기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 시군구에서 보장 결정"
-            },
-            {
-                "step": "이의신청접수기관연락처목록 ",
-                "guide": "이의가 있을 경우, 담당 시/군/구청 또는 시군구에 이의 신청 접수"
-            },
-            {
-                "step": "지급기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 시군구에서 대상자에게 서비스 제공"
-            },
-            {
-                "step": "사후관리기관목록",
-                "guide": "담당 시/군/구청 또는 시군구에서 서비스 제공 이후 대상자의 상황 관리"
-            }
-        ],
-        "relatedWebsites": [
-            {
-                "name": "북한이탈주민 포털",
-                "url": "https://hanaportal.unikorea.go.kr"
-            },
-            {
-                "name": "남북하나재단",
-                "url": "https://www.koreahana.or.kr"
-            }
-        ],
-        "inquiryContacts": [
-            {
-                "name": "북한이탈주민 종합상담 콜센터",
-                "phone": "1577-6635"
-            }
-        ]
+        "downloadForms": [],
+        "applyMethod": [],
+        "relatedWebsites": [],
+        "inquiryContacts": []
     },
     {
         "id": "WLF00000040",
@@ -859,56 +300,16 @@
             "en": "By detecting and treating congenital metabolic abnormalities early, we prevent the occurrence of disabilities in advance and promote the health of infants and young children."
         },
         "descOutline": "선천성대사이상의 유무를 조기에 발견·치료함으로써 장애발생을 사전에 예방하여 영유아의 건강 증진을 도모합니다.",
-        "eligibilityDtl": "선천성대사이상 지원대상은 다음과 같습니다.\n\n(선별검사) 신생아 선천성 대사이상 외래 선별검사를 받은 영아\n(확진검사) 선천성 대사이상 선별검사 결과 유소견 판정 후, 선천성 대사이상 질환 관련 확진검사 결과 선천성대사이상 환아로 판정된 영아\n\n환아관리 지원대상은 다음과 같습니다.\n\n확진검사 결과 선천성대사이상 및 희귀 등 기타 질환으로 진단받아 특수식이 또는 의료비 지원이 필요한, 신청일 기준 만 19세 미만* 환아* 만 나이는 출생월 기준으로 산정하며, 만 19세가 도래한 달까지만 지원",
-        "selectionCrit": "선천성대사이상 검사비 지원내용 및 지원기준은 다음과 같습니다.\n\n신생아 선천성대사이상 외래 선별검사비의 (일부)본인부담금 지원\n- 출생 후 28일 이내에 실시하여 건강보험이 적용된 선별검사를 대상으로 함\n * 단, 출생일 기준 28일 이후에 실시하였어도 건강보험이 적용된 선별검사는 지원 가능\n- 1회 지원이 원칙이나, 유소견 검사결과에 따라 선별검사를 재실시한 경우에는 1회에 한하여 추가 지원 가능(최대 2회)\n- 검사비 외 항목(진찰료 등)은 지원 제외- 정상 신생아는 최초 1회에 한하여 급여를 인정하되, 검사결과 유소견자의 경우 1회에 한하여 추가 인정\n선천성대사이상 선별검사 결과 유소견 판정 후, 선천성대사이상 질환 관련 확진검사를 받은 경우 확진검사비의 (일부)본인부담금 지원 - 확진검사 결과 선천성대사이상 환아로 판정된 경우에만 지원(7만원 한도) - 검사비 외 항목(진찰료 등)은 지원 제외 \n\n환아관리 대상질환 및 지원내용은 다음과 같습니다.\n\n(특수조제분유, 저단백햇반 지원) 선천성대사이상 질환: 고전적 페닐케톤뇨증, 타이로신혈증, 단풍시럽뇨병, 메틸말론산혈증/프로피온산혈증, 아이소발레린산혈증, 지방산대사장애, 호모시스틴뇨, 요소회로대사장애(아르지닌혈증, 시트룰린혈증 등), 글루타르산뇨, 고글라이신혈증, 갈락토스혈증, 고칼슘혈증\n(의료비 지원) 선천성대사이상 질환: 선천성 갑상선기능저하증\n(특수조제분유) 희귀 등 기타 질환: 단장증후군, 담도폐쇄증, 장림프관확장증\n※크론병 지원기간은 변경(25년4월~)지침 참조",
-        "welfareContent": "선천성대사이상 검사비를 지원합니다.\n\n선천성대사이상 선별검사비용(2~4만원) 지원\n2차정밀검사비용(7만원한도) * 정밀검사 결과 선천성대사이상 질환으로 확진된 환아는 의료기관의 검사결과 등 증빙서류를 구비하여 관할 보건소장에게 검사비 청구\n\n특수식이 및 의료비를 지원합니다.\n\n특수식이(특수조제분유, 저단백햇반) 및 선천성 갑상선기능저하증 의료비(연 25만원 한도) 지원",
+        "eligibilityDtl": "",
+        "selectionCrit": "",
+        "welfareContent": "",
         "trgterIndvdl": "",
         "lifeArray": "영유아,아동,청소년",
         "onapPsbltYn": "N",
-        "downloadForms": [
-            {
-                "name": "2026년 모자보건사업 안내.pdf",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=20260416UUWBM1417530186675526&atcflSn=1"
-            }
-        ],
-        "applyMethod": [
-            {
-                "step": "신청기관연락처목록",
-                "guide": "거주지 읍/면/동 주민센터, 보건소에서 ‘서비스 신청’"
-            },
-            {
-                "step": "조사기관연락처목록",
-                "guide": "담당 시/군/구청 또는 보건소에서 조사 및 심사"
-            },
-            {
-                "step": "결정기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 보건소에서 보장 결정"
-            },
-            {
-                "step": "지급기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 보건소에서 대상자에게 서비스 제공"
-            },
-            {
-                "step": "사후관리기관목록",
-                "guide": "담당 시/군/구청 또는 보건소에서 서비스 제공 이후 대상자의 상황 관리"
-            }
-        ],
-        "relatedWebsites": [
-            {
-                "name": "보건복지부 상담센터",
-                "url": "https://www.129.go.kr"
-            },
-            {
-                "name": "공공보건포털 e보건소",
-                "url": "https://www.e-health.go.kr"
-            }
-        ],
-        "inquiryContacts": [
-            {
-                "name": "보건복지부 상담센터",
-                "phone": "129"
-            }
-        ]
+        "downloadForms": [],
+        "applyMethod": [],
+        "relatedWebsites": [],
+        "inquiryContacts": []
     },
     {
         "id": "WLF00001088",
@@ -923,60 +324,16 @@
             "en": "By supporting medical expenses necessary for appropriate treatment and management of high-risk pregnancies, we reduce financial burden and ensure healthy childbirth."
         },
         "descOutline": "고위험 임신의 적정 치료와 관리에 필요한 진료비를 지원하여 경제적 부담을 줄이고, 건강한 출산을 보장합니다.",
-        "eligibilityDtl": "19대 고위험 임신질환*으로 진단받고 입원치료 받은 임산부를 대상으로 지원합니다. * 조기진통, 분만관련 출혈, 중증 임신중독증, 양막의 조기파열, 태반조기박리, 전치태반, 절박유산, 양수과다증, 양수과소증, 분만전 출혈, 자궁경부무력증, 고혈압, 다태임신, 당뇨병, 대사장애를 동반한 임신과다구토, 신질환, 심부전, 자궁 내 성장 제한, 자궁 및 자궁의 부속기 질환\n세부질환기준으로 각 질환별 지원대상 질병코드로 시작되는 하위코드 모두 포함하여 지원",
-        "selectionCrit": "질환별 세부 지원기준은 다음과 같습니다. \n\n각 질환별 지원대상 질병코드로 시작되는 하위코드를 모두 포함하여 지원\n19종 질환에 중복 해당될 경우 지원대상자에게 유리한 지원기간을 적용하여 지원\n질환별 세부 기준 (임신주수, 질병코드)\n- 조기진통 : 임신주수 20주 이상, 37주 미만 / O60\n- 분만관련 출혈 : 임신주수 20주 이상 / O67, O72\n- 중증 임신중독증 : 임신주수 20주 이상 / O11, O14, O15\n- 양막의 조기파열 : 임신주수 20주 이상, 37주 미만 / O42\n- 태반조기박리 : 임신주수 20주 이상 / O45\n- 전치태반 : 임신주수 20주 이상 / O44, O69.4\n- 절박유산 : 임신주수 20주 이상 / O20.0\n- 양수과다증 : 임신주수 20주 이상 / O40\n- 양수과소증 : 임신주수 20주 이상 / O41.0\n- 분만전 출혈 : O46\n- 자궁경부무력증 : O34.3\n- 고혈압 : O10, O13, O16\n- 다태임신 : O30, O31\n- 당뇨병 : O24\n- 대사장애를 동반한 임신과다구토 : O21.1\n- 신질환 : N00-N23* (N00-N08, N10-N16, N17-N19, N20-N23)\n* 해당 질환코드 외 O코드(임신, 출산 및 산후기)가 진단서 상에 동시 기재되어 있어야 함\n- 심부전 : I00-I52* (I00-I02, I05-I09, I10-I15, I20-I25, I26-I28, I30-I52)\n* 해당 질환코드 외 O코드(임신, 출산 및 산후기)가 진단서 상에 동시 기재되어 있어야 함\n- 자궁 내 성장 제한 : O36.5 - 자궁 및 자궁의 부속기 질환 : O23.5, O34.0, O34.1, O34.4, O34.8, O41.1",
-        "welfareContent": "고위험 임산부 입원치료비의 급여 중 전액본인부담금 및 비급여 진료비의 90%를 지원합니다. * 병실입원료 및 환자특식은 제외, 1인당 300만원 한도",
+        "eligibilityDtl": "",
+        "selectionCrit": "",
+        "welfareContent": "",
         "trgterIndvdl": "",
         "lifeArray": "임신 · 출산",
         "onapPsbltYn": "N",
-        "downloadForms": [
-            {
-                "name": "2026년 모자보건사업 안내.pdf",
-                "url": "https://bokjiro.go.kr/ssis-tbu/CmmFileUtil/getDownload.do?atcflId=20260416UUWBM1417530186675526&atcflSn=1"
-            }
-        ],
-        "applyMethod": [
-            {
-                "step": "신청기관연락처목록",
-                "guide": "거주지 읍/면/동 주민센터, 시군구 보건소에서 ‘서비스 신청’"
-            },
-            {
-                "step": "신청기관연락처목록",
-                "guide": "거주지 읍/면/동 주민센터, e보건소에서 ‘서비스 신청’"
-            },
-            {
-                "step": "조사기관연락처목록",
-                "guide": "담당 시/군/구청 또는 시군구 보건소에서 조사 및 심사"
-            },
-            {
-                "step": "결정기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 시군구 보건소에서 보장 결정"
-            },
-            {
-                "step": "지급기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 시군구 보건소에서 대상자에게 서비스 제공"
-            },
-            {
-                "step": "사후관리기관목록",
-                "guide": "담당 시/군/구청 또는 보건소에서 서비스 제공 이후 대상자의 상황 관리"
-            }
-        ],
-        "relatedWebsites": [
-            {
-                "name": "공공보건포털 e보건소",
-                "url": "https://www.e-health.go.kr"
-            },
-            {
-                "name": "보건복지부 상담센터",
-                "url": "http://www.129.go.kr"
-            }
-        ],
-        "inquiryContacts": [
-            {
-                "name": "보건복지부 상담센터",
-                "phone": "129"
-            }
-        ]
+        "downloadForms": [],
+        "applyMethod": [],
+        "relatedWebsites": [],
+        "inquiryContacts": []
     },
     {
         "id": "WLF00001094",
@@ -991,46 +348,15 @@
             "en": "We support working environment improvement expenses to improve the working conditions of daycare center directors and teachers."
         },
         "descOutline": "어린이집 보육교사와 교사를 겸직하는 원장의 근로여건개선을 위해 근무환경 개선비를 지원합니다.",
-        "eligibilityDtl": "교사근무환경개선비 지원대상은 다음과 같습니다.\n\n(지원조건)\n- 어린이집 또는 시간제보육제공기관에서 반을 맡고 있는 담임교사(보육교사 또는 특수교사) 및 연장보육 전담교사, 담임교사와 연장보육 전담교사를 대체하는 대체교사\n- 평일 8시간을 원칙으로 월 15일 이상 어린이집 또는 시간제보육 제공기관에서 실제 근무 또는 평일 4시간을 원칙으로 월 15일 이상 어린이집 및 시간제보육 제공기관에서 실제 근무\n* 월급여 야간연장 교사는 일 6시간 이상 8시간 이내 근무 가능\n* 신학기 적응기간(3,4월)에 한하여 대체교사 유휴인력 어린이집 지원 시 담임교사지원비 지급 가능\n* 실제 근무일수가 15일 미만일 경우에는 근로자의 날, 공휴일(일요일 제외) 및 대체공휴일을 근무일수에 포함가능 하며, 월 5일 이내 휴가 또는 월 5일 이내의 법정보수교육 참석일을 추가포함 가능. 다만, 원장사전직무교육은 인정 불가\n* 야간연장 교사, 방과후 교사, 24시간 교사도 지원대상 기준을 충족하는 경우 지원 가능* 1일 2시간의 근로시간 단축 근무를 시행하고 있는 임신 후 12주 이내 또는 36주 이후에 있는 여성 교사, 육아기 근로시간 단축 근무자가 월15일 이상 근무하는 경우 지원가능(전액 지급)\n(지원 제외 대상자)\n- 어린이집에 담임교사로 등록되어 있지만 담임 업무를 수행하지 않은 경우는 제외\n- 본인이 대표자로 있는 어린이집에서 보육교사(특수교사 포함)로 근무하고 있는 사람\n- 어린이집 원장 중 보육교사를 겸직하는 사람- 3~5세 누리과정 담당교사(처우개선비 별도 지원이 가능하므로 제외)\n\n교사겸직원장 지원 지원대상은 다음과 같습니다.\n\n원장으로 근무하는 사람 중 반 담임교사로 임면보고되어 원장 직무와 보육교사 직무를 겸직하고 있는 사람으로서 평일 8시간을 원칙으로 월 15일 이상 근무한 사람",
-        "selectionCrit": "지원대상의 내용을 참고해주시기 바랍니다.",
-        "welfareContent": "보육교사 및 교사겸직원장의 근로여건 개선을 위해 근무환경개선비를 지원합니다.\n\n(교사근무환경개선비)\n- 일 8시간 근무 기본보육 담임교사 및 대체교사 : 월 28만원\n- 일 4시간 근무 연장보육 전담교사 및 대체교사 : 월 14만원 * 평일기준 8시간 근무일수와 4시간 근무일수를 합하여 월 15일 이상인 경우 월 14만원 지급\n(교사겸직원장지원) 월 7만 5천원",
+        "eligibilityDtl": "",
+        "selectionCrit": "",
+        "welfareContent": "",
         "trgterIndvdl": "",
         "lifeArray": "",
         "onapPsbltYn": "N",
         "downloadForms": [],
-        "applyMethod": [
-            {
-                "step": "신청기관연락처목록",
-                "guide": "거주지 읍/면/동 주민센터, 어린이집에서 ‘서비스 신청’"
-            },
-            {
-                "step": "조사기관연락처목록",
-                "guide": "담당 시/군/구청 또는 시군구에서 조사 및 심사"
-            },
-            {
-                "step": "결정기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 시군구에서 보장 결정"
-            },
-            {
-                "step": "지급기관연락처목록 ",
-                "guide": "담당 시/군/구청 또는 시군구에서 대상자에게 서비스 제공"
-            },
-            {
-                "step": "사후관리기관목록",
-                "guide": "담당 시/군/구청 또는 어린이집에서 서비스 제공 이후 대상자의 상황 관리"
-            }
-        ],
-        "relatedWebsites": [
-            {
-                "name": "교육부",
-                "url": "https://www.moe.go.kr"
-            }
-        ],
-        "inquiryContacts": [
-            {
-                "name": "교육부 민원 전화 상담실",
-                "phone": "02-6222-6060"
-            }
-        ]
+        "applyMethod": [],
+        "relatedWebsites": [],
+        "inquiryContacts": []
     }
 ]
