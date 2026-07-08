@@ -23,7 +23,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyD8AMx28UlQS0lEBbYLHIK0pZaZ--dU1E8")
+# Load .env file manually if it exists to support running without Docker Compose
+def load_env():
+    env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
+    if os.path.exists(env_path):
+        with open(env_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    key, val = line.split('=', 1)
+                    os.environ[key.strip()] = val.strip()
+
+load_env()
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if not GEMINI_API_KEY:
+    logger.warning("GEMINI_API_KEY environment variable is not set. Gemini API features will fail.")
+
 DB_HOST = os.getenv("DB_HOST", "host.docker.internal")
 DB_PORT = int(os.getenv("DB_PORT", "5432"))
 DB_USER = os.getenv("DB_USER", "daon_user")
