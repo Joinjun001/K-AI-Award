@@ -90,7 +90,11 @@ const translations = {
         obTitle3: "가정의 월평균 소득을 입력해 주세요",
         obDesc3: "정부 복지 혜택 매칭을 위해 가구 전체의 월평균 소득을 만 원 단위로 적어주세요.",
         obAddChild: "자녀 추가하기",
-        counterUnit: "명"
+        counterUnit: "명",
+        methodPhotoLabel: "사진 업로드",
+        methodTextLabel: "텍스트 직접 입력",
+        uploadZoneTitle: "가정통신문 사진을 올려주세요",
+        uploadZoneDesc: "클릭하여 앨범에서 선택하거나 카메라 촬영"
     },
     vi: {
         // Navigation
@@ -172,7 +176,11 @@ const translations = {
         obTitle3: "Vui lòng nhập thu nhập trung bình hàng tháng của gia đình bạn",
         obDesc3: "Vui lòng viết tổng thu nhập trung bình hàng tháng của gia đình bạn theo đơn vị 10.000 KRW để đối chiếu phúc lợi chính phủ.",
         obAddChild: "Thêm con",
-        counterUnit: "trẻ"
+        counterUnit: "trẻ",
+        methodPhotoLabel: "Tải ảnh lên",
+        methodTextLabel: "Nhập văn bản",
+        uploadZoneTitle: "Tải ảnh thư báo lên",
+        uploadZoneDesc: "Nhấp để chọn từ thư viện hoặc chụp ảnh"
     },
     zh: {
         // Navigation
@@ -254,7 +262,11 @@ const translations = {
         obTitle3: "请输入家庭的月平均收入",
         obDesc3: "请填写您家庭的月平均总收入（以万韩元为单位），以便进行政府福利匹配。",
         obAddChild: "添加子女",
-        counterUnit: "名"
+        counterUnit: "名",
+        methodPhotoLabel: "上传照片",
+        methodTextLabel: "直接输入文本",
+        uploadZoneTitle: "请上传学校通知书照片",
+        uploadZoneDesc: "点击选择相册 or 拍照"
     },
     en: {
         // Navigation
@@ -576,7 +588,11 @@ function changeLanguage(langCode) {
         'txt-setting-guide': '<i class="fa-solid fa-circle-info"></i> ' + translations[langCode].settingGuide,
         'txt-setting-security': '<i class="fa-solid fa-shield-halved"></i> ' + translations[langCode].settingSecurity,
         'txt-setting-feedback': '<i class="fa-solid fa-language"></i> ' + translations[langCode].settingFeedback,
-        'txt-setting-api': '<i class="fa-solid fa-circle-nodes"></i> ' + translations[langCode].settingApi
+        'txt-setting-api': '<i class="fa-solid fa-circle-nodes"></i> ' + translations[langCode].settingApi,
+        'txt-method-photo-label': translations[langCode].methodPhotoLabel,
+        'txt-method-text-label': translations[langCode].methodTextLabel,
+        'txt-upload-zone-title': translations[langCode].uploadZoneTitle,
+        'txt-upload-zone-desc': translations[langCode].uploadZoneDesc
     };
     
     for (const [id, text] of Object.entries(elements)) {
@@ -618,39 +634,212 @@ function changeLanguage(langCode) {
     renderWelfareFeed();
 }
 
+let currentUploadMethod = "photo"; // "photo" or "text"
+
+function setUploadMethod(method) {
+    currentUploadMethod = method;
+    
+    const btnPhoto = document.getElementById('btn-method-photo');
+    const btnText = document.getElementById('btn-method-text');
+    const containerPhoto = document.getElementById('method-photo-container');
+    const containerText = document.getElementById('method-text-container');
+    
+    if (!btnPhoto || !btnText || !containerPhoto || !containerText) return;
+    
+    if (method === 'photo') {
+        // Update tab buttons
+        btnPhoto.classList.add('active');
+        btnPhoto.style.backgroundColor = 'var(--bg-app)';
+        btnPhoto.style.color = 'var(--toss-blue)';
+        btnPhoto.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)';
+        
+        btnText.classList.remove('active');
+        btnText.style.backgroundColor = 'transparent';
+        btnText.style.color = 'var(--text-sub)';
+        btnText.style.boxShadow = 'none';
+        
+        // Toggle containers
+        containerPhoto.classList.remove('hidden');
+        containerText.classList.add('hidden');
+    } else {
+        // Update tab buttons
+        btnText.classList.add('active');
+        btnText.style.backgroundColor = 'var(--bg-app)';
+        btnText.style.color = 'var(--toss-blue)';
+        btnText.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)';
+        
+        btnPhoto.classList.remove('active');
+        btnPhoto.style.backgroundColor = 'transparent';
+        btnPhoto.style.color = 'var(--text-sub)';
+        btnPhoto.style.boxShadow = 'none';
+        
+        // Toggle containers
+        containerPhoto.classList.add('hidden');
+        containerText.classList.remove('hidden');
+    }
+}
+
 
 // ==========================================
 // 5. RAG DOCUMENT HELPER ENGINE SIMULATION
 // ==========================================
+let pendingTranslationFile = null;
+let latestAnalysisResult = null;
+
 function loadMockData(type) {
     switchTab('tab-home');
+    setUploadMethod('text');
     document.getElementById('doc-text-input').value = mockNoticeTemplates[type];
 }
 
 function simulateOCR(input) {
     if (input.files && input.files[0]) {
-        const overlay = document.getElementById('ocr-loading');
-        overlay.classList.remove('hidden');
+        pendingTranslationFile = input.files[0];
         
-        // Emulate OCR processing delay
-        setTimeout(() => {
-            overlay.classList.add('hidden');
-            // Inject dummy text matching a typical school letter
-            document.getElementById('doc-text-input').value = `[알림장 - 마포초등학교 1학년]
-제목: 방학 돌봄교실 안내 및 신청서 배부
-- 급식 신청: 동의서 체크 후 5월 14일까지 행정실 제출.
-- 준비물: 개인 물통 및 매일 신을 깨끗한 실내화 지참.`;
-            
-            triggerToast("OCR 성공", "이미지에서 한글 텍스트를 추출하였습니다.");
-        }, 1500);
+        // Show Image Preview on main page upload zone
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const previewContainer = document.getElementById('image-preview-container');
+            const previewImg = document.getElementById('uploaded-image-preview');
+            if (previewImg && previewContainer) {
+                previewImg.src = e.target.result;
+                previewContainer.classList.remove('hidden');
+            }
+        }
+        reader.readAsDataURL(pendingTranslationFile);
+        
+        // Open confirmation modal
+        const confirmModal = document.getElementById('confirm-translate-modal');
+        if (confirmModal) {
+            confirmModal.classList.remove('hidden');
+        }
     }
 }
+
+function cancelImageTranslation() {
+    pendingTranslationFile = null;
+    const fileInput = document.getElementById('doc-file-upload');
+    if (fileInput) fileInput.value = "";
+    
+    // Hide preview
+    removeUploadedImage();
+    
+    const confirmModal = document.getElementById('confirm-translate-modal');
+    if (confirmModal) {
+        confirmModal.classList.add('hidden');
+    }
+}
+
+async function proceedImageTranslation() {
+    const confirmModal = document.getElementById('confirm-translate-modal');
+    if (confirmModal) {
+        confirmModal.classList.add('hidden');
+    }
+    
+    if (!pendingTranslationFile) return;
+    
+    // Open report modal in loading state
+    const reportModal = document.getElementById('translation-report-modal');
+    const modalLoading = document.getElementById('report-modal-loading');
+    const modalContent = document.getElementById('report-modal-content-container');
+    
+    if (reportModal) reportModal.classList.remove('hidden');
+    if (modalLoading) modalLoading.classList.remove('hidden');
+    if (modalContent) modalContent.classList.add('hidden');
+    
+    // Update language tag
+    const langLabels = { ko: '한국어', vi: 'Tiếng Việt', zh: '中文', en: 'English' };
+    const langTag = document.getElementById('report-modal-lang-tag');
+    if (langTag) langTag.textContent = langLabels[currentLanguage];
+    
+    try {
+        // 1. Run real OCR using backend API
+        const formData = new FormData();
+        formData.append("file", pendingTranslationFile);
+        
+        const ocrResponse = await fetch('/api/ocr', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!ocrResponse.ok) {
+            throw new Error("OCR API failed");
+        }
+        
+        const ocrData = await ocrResponse.json();
+        const extractedText = ocrData.text || "";
+        
+        // Store in input area just in case
+        document.getElementById('doc-text-input').value = extractedText;
+        
+        // 2. Run real RAG Analysis using backend API
+        const analyzeFormData = new FormData();
+        analyzeFormData.append("file", pendingTranslationFile);
+        analyzeFormData.append("text", extractedText);
+        analyzeFormData.append("lang", currentLanguage);
+        
+        const analyzeResponse = await fetch('/api/analyze', {
+            method: 'POST',
+            body: analyzeFormData
+        });
+        
+        if (!analyzeResponse.ok) {
+            throw new Error("RAG API failed");
+        }
+        
+        const data = await analyzeResponse.json();
+        latestAnalysisResult = data;
+        
+        // Render results inside modal content container
+        renderReportModalResult(data);
+        
+        // Hide loading, show content
+        if (modalLoading) modalLoading.classList.add('hidden');
+        if (modalContent) modalContent.classList.remove('hidden');
+        
+        const statusDocValEl = document.getElementById('txt-status-doc-val');
+        if (statusDocValEl) {
+            statusDocValEl.textContent = "분석 완료";
+        }
+        
+    } catch (error) {
+        console.error("Image translation workflow failed:", error);
+        triggerToast("분석 실패", "AI 분석 도중 서버 오류가 발생하였습니다. 시뮬레이션 결과로 대체합니다.", "error");
+        
+        // Fallback to simulation
+        latestAnalysisResult = null;
+        const fallbackData = getFallbackData(currentLanguage);
+        renderReportModalResult(fallbackData);
+        
+        if (modalLoading) modalLoading.classList.add('hidden');
+        if (modalContent) modalContent.classList.remove('hidden');
+    }
+}
+
+function removeUploadedImage() {
+    const fileInput = document.getElementById('doc-file-upload');
+    if (fileInput) {
+        fileInput.value = "";
+    }
+    
+    const previewContainer = document.getElementById('image-preview-container');
+    if (previewContainer) {
+        previewContainer.classList.add('hidden');
+    }
+    
+    const previewImg = document.getElementById('uploaded-image-preview');
+    if (previewImg) {
+        previewImg.src = "";
+    }
+    pendingTranslationFile = null;
+}
+
 
 // Simple text processing RAG pipeline simulation
 let latestRetrievedKnowledge = [];
 let latestInputText = "";
 
-function runDocumentRAG() {
+async function runDocumentRAG() {
     const textInput = document.getElementById('doc-text-input').value.trim();
     if (!textInput) {
         alert("분석할 텍스트를 입력해 주세요.");
@@ -658,76 +847,79 @@ function runDocumentRAG() {
     }
     
     latestInputText = textInput;
-    latestRetrievedKnowledge = [];
     
-    // Hide previous result
-    document.getElementById('helper-result-card').classList.add('hidden');
+    // Open report modal in loading state
+    const reportModal = document.getElementById('translation-report-modal');
+    const modalLoading = document.getElementById('report-modal-loading');
+    const modalContent = document.getElementById('report-modal-content-container');
     
-    // Show helper loading spinner
-    const loadingCard = document.getElementById('helper-loading');
-    if (loadingCard) {
-        loadingCard.classList.remove('hidden');
-    }
+    if (reportModal) reportModal.classList.remove('hidden');
+    if (modalLoading) modalLoading.classList.remove('hidden');
+    if (modalContent) modalContent.classList.add('hidden');
     
-    // Search keywords in Mock KB
-    mockKnowledgeBase.forEach(kb => {
-        if (textInput.includes(kb.keyword)) {
-            latestRetrievedKnowledge.push(kb);
-        }
-    });
+    // Update language tag
+    const langLabels = { ko: '한국어', vi: 'Tiếng Việt', zh: '中文', en: 'English' };
+    const langTag = document.getElementById('report-modal-lang-tag');
+    if (langTag) langTag.textContent = langLabels[currentLanguage];
     
-    // Default fallback if no keywords matched
-    if (latestRetrievedKnowledge.length === 0) {
-        latestRetrievedKnowledge.push({
-            keyword: "가정통신문 기본수칙",
-            category: "학교 행정",
-            content: "한국 초등학교의 가정통신문은 중요한 마감 기한(일정, 서류 제출)과 개별 준비물이 핵심입니다. 기한을 어기면 참여가 누락될 수 있습니다."
+    try {
+        const formData = new FormData();
+        formData.append("text", textInput);
+        formData.append("lang", currentLanguage);
+        
+        const response = await fetch('/api/analyze', {
+            method: 'POST',
+            body: formData
         });
-    }
-
-    // Emulate LLM Generation delay
-    setTimeout(() => {
-        if (loadingCard) {
-            loadingCard.classList.add('hidden');
+        
+        if (!response.ok) {
+            throw new Error("RAG API response error");
         }
         
-        updateRAGOutputText();
+        const data = await response.json();
+        latestAnalysisResult = data;
         
-        const resultCard = document.getElementById('helper-result-card');
-        if (resultCard) {
-            resultCard.classList.remove('remove');
-            resultCard.classList.remove('hidden');
-            resultCard.scrollIntoView({ behavior: 'smooth' });
-        }
+        // Render results inside modal content container
+        renderReportModalResult(data);
+        
+        // Hide loading, show content
+        if (modalLoading) modalLoading.classList.add('hidden');
+        if (modalContent) modalContent.classList.remove('hidden');
         
         const statusDocValEl = document.getElementById('txt-status-doc-val');
         if (statusDocValEl) {
             statusDocValEl.textContent = "분석 완료";
         }
-    }, 1200);
+    } catch (error) {
+        console.error("Text analysis failed:", error);
+        triggerToast("분석 실패", "AI 분석 도중 서버 오류가 발생하였습니다. 시뮬레이션 결과로 대체합니다.", "error");
+        
+        latestAnalysisResult = null;
+        const fallbackData = getFallbackData(currentLanguage);
+        renderReportModalResult(fallbackData);
+        
+        if (modalLoading) modalLoading.classList.add('hidden');
+        if (modalContent) modalContent.classList.remove('hidden');
+    }
 }
 
-function renderAnalysisResult(data) {
-    const contentBox = document.getElementById('result-body-content');
-    const langTag = document.getElementById('result-lang-tag');
-    
-    // Map lang code to UI label
-    const langLabels = { ko: '한국어', vi: 'Tiếng Việt', zh: '中文', en: 'English' };
-    langTag.textContent = langLabels[currentLanguage];
+function renderReportModalResult(data) {
+    const contentBox = document.getElementById('report-modal-content-container');
+    if (!contentBox) return;
     
     let outputHTML = "";
     
-    // Core Summaries
-    outputHTML += data.schedule || "";
-    outputHTML += data.materials || "";
+    // Core Summaries (Ordered: 1. Parent Submissions/Preparations, 2. Child Materials, 3. Key Schedule)
     outputHTML += data.submissions || "";
+    outputHTML += data.materials || "";
+    outputHTML += data.schedule || "";
     
     // Full Translation
     if (data.full_translation) {
         outputHTML += `
-            <div style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.05); border-left: 4px solid var(--accent-color); border-radius: 4px;">
-                <h4 style="margin-top: 0;"><i class="fa-solid fa-language"></i> 전체 번역본 (Full Translation)</h4>
-                <p style="white-space: pre-wrap; line-height: 1.6; font-size: 0.95rem;">${data.full_translation}</p>
+            <div style="margin-top: 10px; padding: 15px; background: rgba(0, 0, 0, 0.03); border-left: 4px solid var(--secondary); border-radius: 12px;">
+                <h4 style="margin-top: 0; color: var(--text-main); font-weight: 700;"><i class="fa-solid fa-language"></i> 전체 번역본 (Full Translation)</h4>
+                <p style="white-space: pre-wrap; line-height: 1.6; font-size: 0.95rem; margin: 0; color: var(--text-main);">${data.full_translation}</p>
             </div>
         `;
     }
@@ -740,114 +932,186 @@ function renderAnalysisResult(data) {
     contentBox.innerHTML = outputHTML;
 }
 
-function updateRAGOutputText() {
-    if (latestAnalysisResult) {
-        renderAnalysisResult(latestAnalysisResult);
-        return;
-    }
-    const contentBox = document.getElementById('result-body-content');
-    const langTag = document.getElementById('result-lang-tag');
-    
-    // Map lang code to UI label
-    const langLabels = { ko: '한국어', vi: 'Tiếng Việt', zh: '中文', en: 'English' };
-    langTag.textContent = langLabels[currentLanguage];
-    
-    // Pre-calculated high quality simulation translations
-    let outputHTML = "";
-    
-    if (currentLanguage === 'vi') { // Vietnamese
-        outputHTML = `
-            <h4>📅 Tóm tắt lịch trình (Lịch trình quan trọng)</h4>
-            <p><strong>Lịch trình:</strong> Kiểm tra các thông tin thời hạn nộp hồ sơ hoặc thời gian được đề xuất trong văn bản.</p>
-            <ul>
-                <li><strong>Hạn nộp đơn:</strong> Ngày 14 tháng 5 (Thứ Sáu) nộp lại tờ đồng ý cho Văn phòng hành chính trường học.</li>
-                <li><strong>Sự kiện:</strong> Cần gửi đơn phản hồi đúng hạn để không ảnh hưởng đến việc phục vụ suất ăn cho trẻ trong thời gian nghỉ hè.</li>
-            </ul>
-
-            <h4>🎒 Đồ dùng cần chuẩn bị</h4>
-            <ul>
-                <li>Bình nước cá nhân của học sinh.</li>
-                <li>Một đôi giày đi trong nhà (sil-nae-hwa) sạch sẽ để đi hàng ngày.</li>
-            </ul>
-
-            <div class="culture-note">
-                <h5><i class="fa-solid fa-lightbulb"></i> Bối cảnh văn hóa Hàn Quốc (Thông tin hữu ích)</h5>
-                <p><strong>Giày đi trong nhà (Sil-nae-hwa - 실내화):</strong> ${mockKnowledgeBase[0].content}</p>
-                <p><strong>주간학습안내장 (Bảng hướng dẫn học tập hàng tuần):</strong> ${mockKnowledgeBase[1].content}</p>
-            </div>
-        `;
-    } else if (currentLanguage === 'zh') { // Chinese
-        outputHTML = `
-            <h4>📅 重要日程摘要</h4>
-            <p><strong>日程提醒:</strong> 仔细确认材料提交截止日期或通知中的关键时间点。</p>
-            <ul>
-                <li><strong>提交截止日:</strong> 5月14日（星期五）前将同意书填写后交至学校行政室。</li>
-                <li><strong>备注事项:</strong> 请务必在截止日期前提交申请，否则可能会影响放学后托管班的餐食供应。</li>
-            </ul>
-
-            <h4>🎒 学生准备物品</h4>
-            <ul>
-                <li>学生个人水杯/水壶。</li>
-                <li>每天上学必须携带一双干净的室内鞋（Sil-nae-hwa）。</li>
-            </ul>
-
-            <div class="culture-note">
-                <h5><i class="fa-solid fa-lightbulb"></i> 韩国学校文化贴士</h5>
-                <p><strong>室内鞋 (실내화):</strong> ${mockKnowledgeBase[0].content}</p>
-                <p><strong>周间学习计划表 (주간학습안내):</strong> ${mockKnowledgeBase[1].content}</p>
-            </div>
-        `;
-    } else if (currentLanguage === 'en') { // English
-        outputHTML = `
-            <h4>📅 Key Schedule Summary</h4>
-            <p><strong>Checkpoints:</strong> Pay close attention to deadlines and special school schedules.</p>
-            <ul>
-                <li><strong>Submission Deadline:</strong> Return the signed consent form to the school administration office by May 14th (Friday).</li>
-                <li><strong>Note:</strong> Timely response is critical to ensure school lunch during the vacation care program.</li>
-            </ul>
-
-            <h4>🎒 Student Preparation List</h4>
-            <ul>
-                <li>Personal drinking water bottle.</li>
-                <li>Clean indoor shoes (Sil-nae-hwa) to wear inside the classroom daily.</li>
-            </ul>
-
-            <div class="culture-note">
-                <h5><i class="fa-solid fa-lightbulb"></i> Cultural Context Explained</h5>
-                <p><strong>Indoor Shoes (Sil-nae-hwa - 실내화):</strong> ${mockKnowledgeBase[0].content}</p>
-                <p><strong>Weekly Learning Notice (주간학습안내):</strong> ${mockKnowledgeBase[1].content}</p>
-            </div>
-        `;
-    } else { // Korean (Default)
-        outputHTML = `
-            <h4>📅 주요 일정 요약</h4>
-            <ul>
-                <li><strong>제출 마감:</strong> 5월 14일(금요일)까지 동의서 체크 후 행정실 제출 필수.</li>
-                <li><strong>행사/안내:</strong> 늘봄교실 급식 신청에 동의해야 방학 중 급식이 원활히 제공됩니다.</li>
-            </ul>
-
-            <h4>🎒 등교 준비물</h4>
-            <ul>
-                <li>개인 휴대용 물통.</li>
-                <li>매일 신을 수 있는 깨끗하게 세탁된 실내화.</li>
-            </ul>
-
-            <div class="culture-note">
-                <h5><i class="fa-solid fa-lightbulb"></i> 다온 RAG 지식 매칭 정보</h5>
-                <p><strong>실내화 문화:</strong> ${mockKnowledgeBase[0].content}</p>
-                <p><strong>주간학습안내 정보:</strong> ${mockKnowledgeBase[1].content}</p>
-            </div>
-        `;
+function closeTranslationReportModal() {
+    const reportModal = document.getElementById('translation-report-modal');
+    if (reportModal) {
+        reportModal.classList.add('hidden');
     }
     
-    contentBox.innerHTML = outputHTML;
+    // Reset file input and preview
+    removeUploadedImage();
 }
 
-function copyResultText() {
-    const text = document.getElementById('result-body-content').innerText;
-    navigator.clipboard.writeText(text).then(() => {
-        triggerToast("복사 완료", "분석 리포트 텍스트가 클립보드에 복사되었습니다.");
+function copyReportText() {
+    const data = latestAnalysisResult || getFallbackData(currentLanguage);
+    if (!data) return;
+    
+    const textToCopy = `
+[다온 AI 번역 분석 리포트]
+
+1. 부모 제출 및 서명할 것
+${stripHtml(data.submissions || "")}
+
+2. 아이가 챙겨야 할 준비물
+${stripHtml(data.materials || "")}
+
+3. 핵심 일정 및 안내 사항
+${stripHtml(data.schedule || "")}
+
+4. 전체 번역본 (Full Translation)
+${data.full_translation || ""}
+    `.trim();
+    
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        triggerToast("복사 성공", "번역 리포트 텍스트가 클립보드에 복사되었습니다.");
+    }).catch(err => {
+        console.error("Copy failed:", err);
+        triggerToast("복사 실패", "클립보드 접근에 실패했습니다.", "error");
     });
+}
+
+function stripHtml(html) {
+    const tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+}
+
+function updateRAGOutputText() {
+    if (latestAnalysisResult) {
+        renderReportModalResult(latestAnalysisResult);
+    } else {
+        const fallbackData = getFallbackData(currentLanguage);
+        renderReportModalResult(fallbackData);
+    }
+}
+
+function getFallbackData(lang) {
+    if (lang === 'vi') {
+        return {
+            submissions: `
+                <div style="padding: 16px; background: rgba(239, 68, 68, 0.05); border-left: 4px solid #ef4444; border-radius: 12px; margin-bottom: 12px;">
+                    <h4 style="margin: 0 0 8px 0; color: #ef4444; font-weight: 700;">✍️ Nộp hồ sơ và ký tên (Hạn nộp)</h4>
+                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">Hạn nộp đơn đăng ký: ngày 14 tháng 5 (Thứ sáu) nộp lại cho văn phòng hành chính nhà trường.</p>
+                </div>
+            `,
+            materials: `
+                <div style="padding: 16px; background: rgba(245, 158, 11, 0.05); border-left: 4px solid #f59e0b; border-radius: 12px; margin-bottom: 12px;">
+                    <h4 style="margin: 0 0 8px 0; color: #f59e0b; font-weight: 700;">🎒 Đồ dùng cần chuẩn bị</h4>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 0.95rem; line-height: 1.5;">
+                        <li>Bình nước cá nhân</li>
+                        <li>Giày đi trong lớp học (Sil-nae-hwa)</li>
+                    </ul>
+                </div>
+            `,
+            schedule: `
+                <div style="padding: 16px; background: rgba(16, 185, 129, 0.05); border-left: 4px solid #10b981; border-radius: 12px; margin-bottom: 12px;">
+                    <h4 style="margin: 0 0 8px 0; color: #10b981; font-weight: 700;">📅 Lịch trình chính</h4>
+                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">Đăng ký lớp chăm sóc kỳ nghỉ hè và nộp khảo sát nhu cầu ăn trưa.</p>
+                </div>
+            `,
+            full_translation: "Bảng thông báo lớp học - Trường tiểu học Mapo lớp 1\nTiêu đề: Hướng dẫn lớp chăm sóc kỳ nghỉ hè và phát đơn đăng ký\n- Đăng ký ăn trưa: Nộp đơn đồng ý cho văn phòng hành chính trước ngày 14 tháng 5.\n- Chuẩn bị: Mang theo bình nước cá nhân và giày đi trong nhà sạch sẽ mỗi ngày.",
+            cultural_notes: `
+                <div class="culture-note" style="padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; margin-top: 12px;">
+                    <h5 style="margin: 0 0 8px 0; color: #15803d; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> Bối cảnh văn hóa Hàn Quốc</h5>
+                    <p style="margin: 0; font-size: 0.9rem; line-height: 1.5;"><strong>Giày đi trong nhà (Sil-nae-hwa - 실내화):</strong> ${mockKnowledgeBase[0].content}</p>
+                </div>
+            `
+        };
+    } else if (lang === 'zh') {
+        return {
+            submissions: `
+                <div style="padding: 16px; background: rgba(239, 68, 68, 0.05); border-left: 4px solid #ef4444; border-radius: 12px; margin-bottom: 12px;">
+                    <h4 style="margin: 0 0 8px 0; color: #ef4444; font-weight: 700;">✍️ 需要提交和签字的事项</h4>
+                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">申请提交截止日期：5月14日（周五）之前交到学校行政室。</p>
+                </div>
+            `,
+            materials: `
+                <div style="padding: 16px; background: rgba(245, 158, 11, 0.05); border-left: 4px solid #f59e0b; border-radius: 12px; margin-bottom: 12px;">
+                    <h4 style="margin: 0 0 8px 0; color: #f59e0b; font-weight: 700;">🎒 孩子们需要准备的物品</h4>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 0.95rem; line-height: 1.5;">
+                        <li>个人水杯/水壶</li>
+                        <li>干净的室内鞋</li>
+                    </ul>
+                </div>
+            `,
+            schedule: `
+                <div style="padding: 16px; background: rgba(16, 185, 129, 0.05); border-left: 4px solid #10b981; border-radius: 12px; margin-bottom: 12px;">
+                    <h4 style="margin: 0 0 8px 0; color: #10b981; font-weight: 700;">📅 核心日程及内容</h4>
+                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">放学后托管班申请及午餐配送意向调查。</p>
+                </div>
+            `,
+            full_translation: "[通知栏 - 麻浦小学 一年级]\n标题：暑期托管班指南及申请表发放\n- 申请午餐：确认同意书后，于5月14日之前提交至行政室。\n- 准备物：携带个人水杯和每天穿的干净室内鞋。",
+            cultural_notes: `
+                <div class="culture-note" style="padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; margin-top: 12px;">
+                    <h5 style="margin: 0 0 8px 0; color: #15803d; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> 韩国文化背景解释</h5>
+                    <p style="margin: 0; font-size: 0.9rem; line-height: 1.5;"><strong>室内鞋 (Sil-nae-hwa - 실내화):</strong> ${mockKnowledgeBase[0].content}</p>
+                </div>
+            `
+        };
+    } else if (lang === 'en') {
+        return {
+            submissions: `
+                <div style="padding: 16px; background: rgba(239, 68, 68, 0.05); border-left: 4px solid #ef4444; border-radius: 12px; margin-bottom: 12px;">
+                    <h4 style="margin: 0 0 8px 0; color: #ef4444; font-weight: 700;">✍️ Submissions & Signatures (Deadlines)</h4>
+                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">Consent submission deadline: Submit to the school administration office by May 14 (Friday).</p>
+                </div>
+            `,
+            materials: `
+                <div style="padding: 16px; background: rgba(245, 158, 11, 0.05); border-left: 4px solid #f59e0b; border-radius: 12px; margin-bottom: 12px;">
+                    <h4 style="margin: 0 0 8px 0; color: #f59e0b; font-weight: 700;">🎒 Preparation Checklist for Kids</h4>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 0.95rem; line-height: 1.5;">
+                        <li>Personal water bottle</li>
+                        <li>Clean indoor shoes (Sil-nae-hwa)</li>
+                    </ul>
+                </div>
+            `,
+            schedule: `
+                <div style="padding: 16px; background: rgba(16, 185, 129, 0.05); border-left: 4px solid #10b981; border-radius: 12px; margin-bottom: 12px;">
+                    <h4 style="margin: 0 0 8px 0; color: #10b981; font-weight: 700;">📅 Key Schedule & Details</h4>
+                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">Summer break care class application and meal service survey submission.</p>
+                </div>
+            `,
+            full_translation: "[School Newsletter - Mapo Elementary School Grade 1]\nTitle: Summer Care Class Guide & Application Form Distribution\n- Lunch Application: Submit the consent form to the administration office by May 14.\n- Preparation: Personal water bottle and clean indoor shoes to wear every day.",
+            cultural_notes: `
+                <div class="culture-note" style="padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; margin-top: 12px;">
+                    <h5 style="margin: 0 0 8px 0; color: #15803d; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> Korean Cultural Context</h5>
+                    <p style="margin: 0; font-size: 0.9rem; line-height: 1.5;"><strong>Indoor Shoes (Sil-nae-hwa - 실내화):</strong> ${mockKnowledgeBase[0].content}</p>
+                </div>
+            `
+        };
+    } else { // ko (Korean)
+        return {
+            submissions: `
+                <div style="padding: 16px; background: rgba(239, 68, 68, 0.05); border-left: 4px solid #ef4444; border-radius: 12px; margin-bottom: 12px;">
+                    <h4 style="margin: 0 0 8px 0; color: #ef4444; font-weight: 700;">✍️ 부모 제출 및 서명할 것</h4>
+                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">급식 동의서 신청: 5월 14일(금)까지 행정실에 제출해 주세요.</p>
+                </div>
+            `,
+            materials: `
+                <div style="padding: 16px; background: rgba(245, 158, 11, 0.05); border-left: 4px solid #f59e0b; border-radius: 12px; margin-bottom: 12px;">
+                    <h4 style="margin: 0 0 8px 0; color: #f59e0b; font-weight: 700;">🎒 아이가 챙겨야 할 준비물</h4>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 0.95rem; line-height: 1.5;">
+                        <li>개인 물통</li>
+                        <li>매일 신을 깨끗한 실내화</li>
+                    </ul>
+                </div>
+            `,
+            schedule: `
+                <div style="padding: 16px; background: rgba(16, 185, 129, 0.05); border-left: 4px solid #10b981; border-radius: 12px; margin-bottom: 12px;">
+                    <h4 style="margin: 0 0 8px 0; color: #10b981; font-weight: 700;">📅 핵심 일정 및 안내 사항</h4>
+                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">방학 돌봄교실 신청서 안내 및 배부 관련 공지입니다.</p>
+                </div>
+            `,
+            full_translation: "[알림장 - 마포초등학교 1학년]\n제목: 방학 돌봄교실 안내 및 신청서 배부\n- 급식 신청: 동의서 체크 후 5월 14일까지 행정실 제출.\n- 준비물: 개인 물통 및 매일 신을 깨끗한 실내화 지참.",
+            cultural_notes: `
+                <div class="culture-note" style="padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; margin-top: 12px;">
+                    <h5 style="margin: 0 0 8px 0; color: #15803d; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> 한국 학교 문화 팁</h5>
+                    <p style="margin: 0; font-size: 0.9rem; line-height: 1.5;"><strong>실내화:</strong> ${mockKnowledgeBase[0].content}</p>
+                </div>
+            `
+        };
+    }
+});
 }
 
 // ==========================================
@@ -1601,6 +1865,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         changeLanguage(savedLang);
         simulateBenefitMatch(false);
         renderWelfareFeed();
+        setUploadMethod('photo');
         
         // Onboarding Check
         const overlay = document.getElementById('onboarding-overlay');

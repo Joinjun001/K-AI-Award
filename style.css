@@ -17,6 +17,10 @@
     --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
+.hidden {
+    display: none !important;
+}
+
 /* Global Reset & Base Styles */
 * {
     box-sizing: border-box;

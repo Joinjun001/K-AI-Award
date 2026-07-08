@@ -151,6 +151,36 @@ def call_gemini_api(payload, model_name="gemini-2.5-flash"):
             return call_gemini_api(payload, model_name="gemini-2.0-flash")
         raise e
 
+@app.post("/api/ocr")
+async def ocr_document(file: UploadFile = File(...)):
+    prompt = "Extract all readable Korean text from this document image. Do not translate, do not add explanation, just return the plain text."
+    file_bytes = await file.read()
+    base64_data = base64.b64encode(file_bytes).decode("utf-8")
+    mime_type = file.content_type or "image/jpeg"
+    
+    payload = {
+        "contents": [{
+            "parts": [
+                {"text": prompt},
+                {
+                    "inlineData": {
+                        "mimeType": mime_type,
+                        "data": base64_data
+                    }
+                }
+            ]
+        }]
+    }
+    
+    try:
+        res = call_gemini_api(payload)
+        candidate = res["candidates"][0]
+        text_response = candidate["content"]["parts"][0]["text"]
+        return {"text": text_response.strip()}
+    except Exception as e:
+        logger.error(f"Failed to perform OCR: {e}")
+        raise HTTPException(status_code=500, detail="OCR processing failed.")
+
 @app.post("/api/analyze")
 async def analyze_document(
     file: UploadFile = File(None),

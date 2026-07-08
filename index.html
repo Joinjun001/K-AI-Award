@@ -64,47 +64,53 @@
 
                 <div class="helper-layout">
                     <!-- Input Section -->
-                    <div class="card helper-input-card">
-                        <div class="input-header">
-                            <span class="input-title"><i class="fa-solid fa-keyboard"></i> <span id="txt-helper-input-title">문서 분석 및 번역</span></span>
-                            <div class="file-upload-btn">
-                                <label for="doc-file-upload" class="upload-label">
-                                    <i class="fa-solid fa-camera"></i> <span id="txt-btn-photo">사진 촬영/업로드</span>
-                                </label>
-                                <input type="file" id="doc-file-upload" accept="image/*" onchange="simulateOCR(this)">
-                            </div>
+                    <div class="card helper-input-card" style="display: flex; flex-direction: column;">
+                        <!-- Segmented Control to select method -->
+                        <div class="upload-method-selector" style="display: flex; gap: 4px; margin-bottom: 20px; background: var(--bg-secondary); padding: 4px; border-radius: 12px; border: 1px solid var(--border-color);">
+                            <button type="button" id="btn-method-photo" class="method-btn active" onclick="setUploadMethod('photo')" style="flex: 1; padding: 10px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; background-color: var(--bg-app); color: var(--toss-blue); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);">
+                                <i class="fa-solid fa-camera"></i> <span id="txt-method-photo-label">사진 업로드</span>
+                            </button>
+                            <button type="button" id="btn-method-text" class="method-btn" onclick="setUploadMethod('text')" style="flex: 1; padding: 10px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; background-color: transparent; color: var(--text-sub);">
+                                <i class="fa-solid fa-keyboard"></i> <span id="txt-method-text-label">텍스트 직접 입력</span>
+                            </button>
                         </div>
-                        <div class="textarea-wrapper">
-                            <textarea id="doc-text-input" placeholder="여기에 학교 통신문 텍스트를 붙여넣거나 사진을 업로드해 주세요.&#10;예: '준비물: 실내화 지참. 5월 10일 주간안내장 서명 후 제출 바랍니다.'"></textarea>
+
+                        <!-- 1. PHOTO METHOD CONTAINER -->
+                        <div id="method-photo-container" class="method-container" style="position: relative; width: 100%;">
+                            <div class="photo-upload-zone" style="border: 2px dashed var(--border-color); border-radius: 16px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: rgba(0, 0, 0, 0.01);" onclick="document.getElementById('doc-file-upload').click()">
+                                <i class="fa-solid fa-cloud-arrow-up" style="font-size: 32px; color: var(--text-sub); margin-bottom: 12px;"></i>
+                                <h4 style="margin: 0 0 6px 0; font-size: 0.95rem; font-weight: 600;" id="txt-upload-zone-title">가정통신문 사진을 올려주세요</h4>
+                                <p style="margin: 0; font-size: 0.8rem; color: var(--text-sub);" id="txt-upload-zone-desc">클릭하여 앨범에서 선택하거나 카메라 촬영</p>
+                                <input type="file" id="doc-file-upload" accept="image/*" onchange="simulateOCR(this)" style="display: none;">
+                            </div>
+                            
+                            <!-- Image preview inside photo container -->
+                            <div id="image-preview-container" class="image-preview-container hidden" style="margin-top: 16px; position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); max-height: 200px; display: flex; align-items: center; justify-content: center; background-color: var(--bg-secondary);">
+                                <img id="uploaded-image-preview" src="" alt="" style="max-width: 100%; max-height: 200px; object-fit: contain;">
+                                <button type="button" class="preview-remove-btn" onclick="removeUploadedImage()" style="position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; line-height: 1;">&times;</button>
+                            </div>
+                            
+                            <!-- OCR loading overlay (styled as absolute over photo container) -->
                             <div id="ocr-loading" class="ocr-loading-overlay hidden">
-                                <div class="spinner"></div>
-                                <p id="txt-ocr-loading-desc">이미지에서 한글 텍스트를 추출 중입니다 (OCR)...</p>
+                                <div class="spinner" style="width: 24px; height: 24px;"></div>
+                                <p id="txt-ocr-loading-desc" style="margin: 0; font-size: 0.85rem; color: var(--text-sub); font-weight: 500;">이미지에서 한글 텍스트를 추출 중입니다...</p>
                             </div>
                         </div>
-                        <button class="btn btn-primary btn-full" onclick="runDocumentRAG()">
+
+                        <!-- 2. TEXT METHOD CONTAINER (Hidden by default) -->
+                        <div id="method-text-container" class="method-container hidden" style="width: 100%;">
+                            <div class="textarea-wrapper" style="position: relative;">
+                                <textarea id="doc-text-input" placeholder="여기에 학교 통신문 텍스트를 붙여넣어 주세요.&#10;예: '준비물: 실내화 지참. 5월 10일 주간안내장 서명 후 제출 바랍니다.'" style="width: 100%; min-height: 120px; padding: 14px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 0.9rem; font-family: inherit; resize: vertical; outline: none; transition: border-color 0.2s; background: var(--bg-app); color: var(--text-main);"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- 3. RUN BUTTON (COMMON) -->
+                        <button class="btn btn-primary btn-full" onclick="runDocumentRAG()" style="margin-top: 16px;">
                             <i class="fa-solid fa-wand-magic-sparkles"></i> <span id="txt-btn-analyze">다온 AI RAG 분석 실행</span>
                         </button>
                     </div>
 
-                    <!-- Output Loading Spinner -->
-                    <div id="helper-loading" class="card result-card hidden" style="text-align: center; padding: 40px 20px;">
-                        <div class="spinner" style="margin: 0 auto 20px auto;"></div>
-                        <p style="font-weight: 500; color: var(--toss-grey-dark);" id="txt-helper-loading-desc">다온 AI가 문서를 해독하고 한국 문화적 맥락을 파악하고 있습니다...</p>
-                    </div>
 
-                    <!-- Output Output Section -->
-                    <div id="helper-result-card" class="card result-card hidden">
-                        <div class="result-header">
-                            <span class="result-title"><i class="fa-solid fa-square-poll-horizontal"></i> <span id="txt-report-title">다온 AI 맞춤 분석 리포트</span></span>
-                            <button class="btn-copy" onclick="copyResultText()"><i class="fa-regular fa-copy"></i> <span id="txt-btn-copy">복사하기</span></button>
-                        </div>
-                        <div class="result-lang-indicator">
-                            <span class="lang-tag" id="result-lang-tag">Tiếng Việt</span>
-                        </div>
-                        <div class="result-body" id="result-body-content">
-                            <!-- Dynamically Generated -->
-                        </div>
-                    </div>
                 </div>
             </section>
 
@@ -275,6 +281,68 @@
                 <button class="btn btn-secondary" onclick="fetchAdminWelfareList()" style="border-radius: 12px; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-arrows-rotate"></i>새로고침</button>
                 <button class="btn btn-outline" onclick="closeAdminDashboardModal()" style="border-radius: 12px;">닫기</button>
             </div>
+        </div>
+    </div>
+
+    <!-- 1. Confirmation Modal for Image Translation -->
+    <div id="confirm-translate-modal" class="modal-overlay hidden" onclick="cancelImageTranslation()">
+        <div class="modal-content anim-slide-up" onclick="event.stopPropagation();" style="max-width: 400px; width: 90%; border-radius: 24px; padding: 24px; text-align: center;">
+            <div style="margin-bottom: 20px;">
+                <div style="background-color: var(--secondary-light); color: var(--secondary); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; font-size: 28px;">
+                    <i class="fa-solid fa-language"></i>
+                </div>
+                <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; color: var(--text-main);" id="txt-confirm-title">이 이미지를 번역할까요?</h3>
+                <p style="font-size: 0.9rem; color: var(--text-sub); line-height: 1.4;" id="txt-confirm-desc">다온 AI가 문서의 내용과 준비물을 파악하여 요약해 드립니다.</p>
+            </div>
+            <div style="display: flex; gap: 10px; width: 100%;">
+                <button class="btn btn-outline" onclick="cancelImageTranslation()" style="flex: 1; border-radius: 14px; padding: 12px; font-weight: 600;" id="txt-confirm-no">아니요</button>
+                <button class="btn btn-primary" onclick="proceedImageTranslation()" style="flex: 1; border-radius: 14px; padding: 12px; font-weight: 600;" id="txt-confirm-yes">네</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Full-screen Translation & RAG Analysis Report Modal -->
+    <div id="translation-report-modal" class="modal-overlay hidden" style="z-index: 9999;">
+        <div class="modal-content anim-slide-up" style="width: 100%; max-width: 480px; height: 100%; max-height: 100%; border-radius: 0; display: flex; flex-direction: column; padding: 0; border: none; overflow: hidden; background: var(--bg-app);">
+            
+            <!-- Modal Header (Toss-style sticky header) -->
+            <div class="modal-header" style="padding: 16px 20px; background: var(--bg-card); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; z-index: 10;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="background-color: var(--primary-light); color: var(--primary); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </span>
+                    <h3 style="font-weight: 700; font-size: 1.1rem; margin: 0; color: var(--text-main);" id="txt-report-modal-title">다온 AI 번역 분석</h3>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span id="report-modal-lang-tag" style="background-color: var(--secondary-light); color: var(--secondary); font-size: 12px; font-weight: 600; padding: 4px 8px; border-radius: 6px;">한국어</span>
+                    <button onclick="closeTranslationReportModal()" style="background: none; border: none; font-size: 24px; color: var(--text-sub); cursor: pointer; padding: 4px; line-height: 1; display: flex; align-items: center; justify-content: center;">&times;</button>
+                </div>
+            </div>
+            
+            <!-- Modal Body (Scrollable content) -->
+            <div class="modal-body" style="flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column;">
+                
+                <!-- Loading State inside Modal -->
+                <div id="report-modal-loading" class="hidden" style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 40px 20px; text-align: center;">
+                    <div class="spinner" style="margin-bottom: 24px; width: 40px; height: 40px;"></div>
+                    <h4 style="font-weight: 700; margin-bottom: 8px; color: var(--text-main);" id="txt-report-loading-title">문서를 분석하는 중입니다</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-sub); line-height: 1.5; margin: 0;" id="txt-report-loading-desc">다온 AI가 글자를 해독하고 준비물과 맥락을 파악하고 있습니다...</p>
+                </div>
+                
+                <!-- Content State inside Modal -->
+                <div id="report-modal-content-container" class="hidden" style="display: flex; flex-direction: column; gap: 16px;">
+                    <!-- Submissions, Materials, Schedule, Translation, Cultural Notes will render here -->
+                </div>
+            </div>
+            
+            <!-- Modal Footer (Sticky actions) -->
+            <div class="modal-footer" style="padding: 16px 20px; background: var(--bg-card); border-top: 1px solid var(--border-color); display: flex; gap: 10px;">
+                <button class="btn btn-outline" onclick="copyReportText()" style="flex: 1; border-radius: 14px; padding: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <i class="fa-regular fa-copy"></i> <span id="txt-report-copy">복사하기</span>
+                </button>
+                <button class="btn btn-primary" onclick="closeTranslationReportModal()" style="flex: 1; border-radius: 14px; padding: 14px; font-weight: 600;" id="txt-report-close">닫기</button>
+            </div>
+            
         </div>
     </div>
 
