@@ -955,9 +955,8 @@ async function proceedImageTranslation() {
         // Store in input area just in case
         document.getElementById('doc-text-input').value = extractedText;
         
-        // 2. Run real RAG Analysis using backend API
+        // 2. Run real RAG Analysis using backend API - Send only text to avoid heavy image token cost
         const analyzeFormData = new FormData();
-        analyzeFormData.append("file", pendingTranslationFile);
         analyzeFormData.append("text", extractedText);
         analyzeFormData.append("lang", currentLanguage);
         
@@ -1156,7 +1155,72 @@ function stopLoadingProgress() {
     clearInterval(loadingInterval);
 }
 
-// Progressive HTML Typewriter Effect
+// Progressive HTML Typewriter Effect (Layout-safe HTML Parser)
+function getTextLength(htmlString) {
+    let textCount = 0;
+    let i = 0;
+    while (i < htmlString.length) {
+        if (htmlString[i] === '<') {
+            let tagEnd = htmlString.indexOf('>', i);
+            if (tagEnd !== -1) {
+                i = tagEnd + 1;
+            } else {
+                i++;
+            }
+        } else {
+            textCount++;
+            i++;
+        }
+    }
+    return textCount;
+}
+
+function getValidHTMLPrefix(htmlString, textCharCount) {
+    let output = "";
+    let openTags = [];
+    let textCount = 0;
+    let i = 0;
+    const selfClosingTags = ['br', 'hr', 'img', 'input', 'meta', 'link'];
+    
+    while (i < htmlString.length && textCount < textCharCount) {
+        if (htmlString[i] === '<') {
+            let tagEnd = htmlString.indexOf('>', i);
+            if (tagEnd === -1) {
+                output += htmlString.substring(i);
+                break;
+            }
+            let tag = htmlString.substring(i, tagEnd + 1);
+            output += tag;
+            
+            if (tag.startsWith('</')) {
+                openTags.pop();
+            } else if (tag.endsWith('/>') || tag.startsWith('<!--')) {
+                // self closing or comment
+            } else {
+                let tagNameMatch = tag.match(/<([a-zA-Z0-9]+)/);
+                if (tagNameMatch) {
+                    const name = tagNameMatch[1].toLowerCase();
+                    if (!selfClosingTags.includes(name)) {
+                        openTags.push(name);
+                    }
+                }
+            }
+            i = tagEnd + 1;
+        } else {
+            output += htmlString[i];
+            textCount++;
+            i++;
+        }
+    }
+    
+    // Close open tags in reverse
+    for (let j = openTags.length - 1; j >= 0; j--) {
+        output += `</${openTags[j]}>`;
+    }
+    
+    return output;
+}
+
 function typewriteHTML(elementId, htmlString, speed = 8, callback = null) {
     const container = document.getElementById(elementId);
     if (!container) {
@@ -1170,43 +1234,20 @@ function typewriteHTML(elementId, htmlString, speed = 8, callback = null) {
         return;
     }
     
-    // Parse HTML string into tokens (HTML tags or raw text characters)
-    const tokens = [];
-    let i = 0;
-    while (i < htmlString.length) {
-        if (htmlString[i] === '<') {
-            let tagEnd = htmlString.indexOf('>', i);
-            if (tagEnd !== -1) {
-                tokens.push(htmlString.substring(i, tagEnd + 1));
-                i = tagEnd + 1;
-            } else {
-                tokens.push(htmlString[i]);
-                i++;
-            }
-        } else {
-            tokens.push(htmlString[i]);
-            i++;
-        }
-    }
+    const totalLength = getTextLength(htmlString);
+    let currentLength = 0;
     
-    let tokenIndex = 0;
-    function next() {
-        if (tokenIndex < tokens.length) {
-            const token = tokens[tokenIndex];
-            if (token.startsWith('<')) {
-                container.innerHTML += token;
-                tokenIndex++;
-                next(); // Append HTML tags instantly
-            } else {
-                container.innerHTML += token;
-                tokenIndex++;
-                setTimeout(next, speed);
-            }
+    function step() {
+        if (currentLength <= totalLength) {
+            container.innerHTML = getValidHTMLPrefix(htmlString, currentLength);
+            currentLength += 2; // Typewrite 2 characters at a time for smoother/faster flow
+            setTimeout(step, speed);
         } else {
+            container.innerHTML = htmlString;
             if (callback) callback();
         }
     }
-    next();
+    step();
 }
 
 function renderReportModalResult(data) {
