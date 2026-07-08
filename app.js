@@ -696,25 +696,34 @@ function simulateOCR(input) {
     if (input.files && input.files[0]) {
         pendingTranslationFile = input.files[0];
         
-        // Show Image Preview on main page upload zone
         const reader = new FileReader();
         reader.onload = function(e) {
+            const imgData = e.target.result;
+
+            // Show Image Preview on main page upload zone
             const previewContainer = document.getElementById('image-preview-container');
             const previewImg = document.getElementById('uploaded-image-preview');
             if (previewImg && previewContainer) {
-                previewImg.src = e.target.result;
+                previewImg.src = imgData;
                 previewContainer.classList.remove('hidden');
             }
-        }
+
+            // Show image inside the confirm modal
+            const confirmModalImg = document.getElementById('confirm-modal-image-preview');
+            if (confirmModalImg) {
+                confirmModalImg.src = imgData;
+            }
+
+            // Open confirmation modal
+            const confirmModal = document.getElementById('confirm-translate-modal');
+            if (confirmModal) {
+                confirmModal.classList.remove('hidden');
+            }
+        };
         reader.readAsDataURL(pendingTranslationFile);
-        
-        // Open confirmation modal
-        const confirmModal = document.getElementById('confirm-translate-modal');
-        if (confirmModal) {
-            confirmModal.classList.remove('hidden');
-        }
     }
 }
+
 
 function cancelImageTranslation() {
     pendingTranslationFile = null;
@@ -1111,7 +1120,6 @@ function getFallbackData(lang) {
             `
         };
     }
-});
 }
 
 // ==========================================
