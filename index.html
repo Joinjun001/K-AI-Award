@@ -20,6 +20,22 @@
     <!-- Real-time Web Push Simulation Toast Container -->
     <div id="toast-container" class="toast-container"></div>
 
+    <!-- Coach Marks Guide Overlay -->
+    <div id="coachmark-overlay" class="coachmark-overlay">
+        <div id="coachmark-spotlight" class="coachmark-spotlight"></div>
+        <div id="coachmark-tooltip" class="coachmark-tooltip">
+            <p id="coachmark-text" class="coachmark-text"></p>
+            <div class="coachmark-buttons">
+                <button class="coachmark-btn coachmark-btn-skip" onclick="closeCoachGuide()">
+                    <span id="coachmark-skip-label">건너뛰기</span>
+                </button>
+                <button class="coachmark-btn coachmark-btn-next" onclick="nextCoachStep()">
+                    <span id="coachmark-next-label">다음</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="app-container">
         <!-- Onboarding Overlay (Toss style step-by-step interactive wizard) -->
         <div id="onboarding-overlay" class="onboarding-overlay" style="display: none;">

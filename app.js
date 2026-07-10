@@ -2064,11 +2064,12 @@ function finishOnboarding() {
     localStorage.setItem('daon_children', JSON.stringify(onboardData.children)); // Stringify child details
     
     overlay.classList.add('fade-out');
-    triggerToast("다온 가입 완료", "가족 프로필 맞춤 셋업이 완벽히 적용되었습니다.");
     
     setTimeout(() => {
         overlay.style.display = 'none';
-    }, 600);
+        // 온보딩 완료 직후 코치마크 가이드 시작
+        startCoachGuide();
+    }, 700);
 }
 
 function skipOnboarding() {
@@ -2917,3 +2918,145 @@ function initUsernameCheck() {
     if (pwConfirmEl) pwConfirmEl.addEventListener("input", validatePasswords);
 }
 
+
+// ==========================================
+// 9. COACH MARKS GUIDE CONTROLLER
+// ==========================================
+
+// 3단계 코치마크 정의
+const coachSteps = [
+    {
+        targetId: 'home-upload-card',
+        getText: () => ({
+            ko: '📄 가정통신문을 업로드하여 AI 번역을 시작하세요',
+            vi: '📄 Tải lên thông báo gia đình để bắt đầu dịch AI',
+            zh: '📄 上传家庭通知书，开始AI翻译',
+            en: '📄 Upload a school notice to start AI translation'
+        }),
+        arrow: 'arrow-bottom',
+        position: 'above'
+    },
+    {
+        targetId: 'history-section-card',
+        getText: () => ({
+            ko: '🕐 이전에 분석한 기록을 확인하세요',
+            vi: '🕐 Xem lại các bản dịch trước đây của bạn',
+            zh: '🕐 查看您之前的翻译记录',
+            en: '🕐 Check your previous translation records'
+        }),
+        arrow: 'arrow-bottom',
+        position: 'above'
+    },
+    {
+        targetId: 'nav-btn-alerts',
+        getText: () => ({
+            ko: '🎁 복지 혜택 소식을 확인해보세요',
+            vi: '🎁 Khám phá các tin tức phúc lợi dành cho bạn',
+            zh: '🎁 查看为您准备的福利资讯',
+            en: '🎁 Explore welfare benefits for your family'
+        }),
+        arrow: 'arrow-top',
+        position: 'above'
+    }
+];
+
+let currentCoachStep = 0;
+
+function startCoachGuide() {
+    // 이미 가이드를 완료한 사용자는 표시하지 않음
+    if (localStorage.getItem('daon_guide_completed') === 'true') return;
+
+    currentCoachStep = 0;
+    const overlay = document.getElementById('coachmark-overlay');
+    if (!overlay) return;
+
+    overlay.style.display = 'block';
+    showCoachStep(currentCoachStep);
+}
+
+function showCoachStep(stepIndex) {
+    const step = coachSteps[stepIndex];
+    if (!step) { closeCoachGuide(); return; }
+
+    const targetEl = document.getElementById(step.targetId);
+    const spotlight = document.getElementById('coachmark-spotlight');
+    const tooltip = document.getElementById('coachmark-tooltip');
+    const textEl = document.getElementById('coachmark-text');
+    const nextLabel = document.getElementById('coachmark-next-label');
+    const skipLabel = document.getElementById('coachmark-skip-label');
+
+    if (!targetEl || !spotlight || !tooltip || !textEl) return;
+
+    // 타겟 요소의 위치 및 크기 계산
+    const rect = targetEl.getBoundingClientRect();
+    const padding = 8;
+
+    // 스포트라이트 위치 설정
+    spotlight.style.top    = `${rect.top - padding}px`;
+    spotlight.style.left   = `${rect.left - padding}px`;
+    spotlight.style.width  = `${rect.width + padding * 2}px`;
+    spotlight.style.height = `${rect.height + padding * 2}px`;
+
+    // 텍스트 설정 (다국어)
+    const texts = step.getText();
+    textEl.textContent = texts[currentLanguage] || texts['ko'];
+
+    // 마지막 단계 버튼 텍스트
+    const isLast = stepIndex === coachSteps.length - 1;
+    const finishLabel = { ko: '완료', vi: 'Xong', zh: '完成', en: 'Done' };
+    const nextLabelText = { ko: '다음', vi: 'Tiếp', zh: '下一步', en: 'Next' };
+    const skipLabelText = { ko: '건너뛰기', vi: 'Bỏ qua', zh: '跳过', en: 'Skip' };
+
+    if (nextLabel) nextLabel.textContent = isLast
+        ? (finishLabel[currentLanguage] || '완료')
+        : (nextLabelText[currentLanguage] || '다음');
+    if (skipLabel) skipLabel.textContent = skipLabelText[currentLanguage] || '건너뛰기';
+
+    // 툴팁 화살표 방향 초기화 후 재설정
+    tooltip.className = `coachmark-tooltip ${step.arrow}`;
+
+    // 툴팁 위치: 타겟 위 or 아래
+    const tooltipWidth = 280;
+    const tooltipHeight = 90;
+    let tipTop, tipLeft;
+
+    const viewportW = window.innerWidth;
+
+    if (step.position === 'above') {
+        tipTop = rect.top - padding - tooltipHeight - 16;
+        if (tipTop < 8) tipTop = rect.bottom + padding + 8; // 화면 위가 잘리면 아래로
+    } else {
+        tipTop = rect.bottom + padding + 16;
+    }
+
+    // 수평 중앙 정렬 (화면 밖 넘침 방지)
+    tipLeft = rect.left + rect.width / 2 - tooltipWidth / 2;
+    tipLeft = Math.max(10, Math.min(tipLeft, viewportW - tooltipWidth - 10));
+
+    tooltip.style.top  = `${tipTop}px`;
+    tooltip.style.left = `${tipLeft}px`;
+    tooltip.style.width = `${tooltipWidth}px`;
+}
+
+function nextCoachStep() {
+    currentCoachStep++;
+    if (currentCoachStep >= coachSteps.length) {
+        closeCoachGuide();
+    } else {
+        showCoachStep(currentCoachStep);
+    }
+}
+
+function closeCoachGuide() {
+    const overlay = document.getElementById('coachmark-overlay');
+    if (overlay) {
+        overlay.style.opacity = '0';
+        overlay.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            overlay.style.opacity = '';
+            overlay.style.transition = '';
+        }, 300);
+    }
+    localStorage.setItem('daon_guide_completed', 'true');
+}
