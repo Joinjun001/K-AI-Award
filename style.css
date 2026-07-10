@@ -29,6 +29,13 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Block global browser-level scrolling */
+}
+
 body {
     font-family: 'Inter', 'Noto Sans KR', sans-serif;
     background-color: #E2E8F0; /* Soft desktop gray */
@@ -36,16 +43,16 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    overflow-x: hidden;
+    min-height: 100%;
+    min-height: -webkit-fill-available;
 }
 
 /* App Wrapper - Simulating a premium smartphone/tablet mockup */
 .app-container {
     width: 100%;
     max-width: 480px; /* Standard premium mobile view */
-    height: 100vh;
-    height: 100dvh; /* Dynamic viewport height to prevent browser toolbar overlapping */
+    height: 100%;
+    height: 100dvh; /* Dynamic viewport height to prevent address bar overflow */
     max-height: 920px;
     background-color: var(--bg-app);
     display: flex;
@@ -60,6 +67,7 @@ body {
         border-radius: 32px;
         border: 8px solid #1E293B; /* Frame border */
         height: 850px;
+        max-height: 850px;
     }
 }
 
@@ -72,6 +80,8 @@ body {
     align-items: center;
     border-bottom: 1px solid var(--border-color);
     z-index: 10;
+    margin: -20px -20px 20px -20px; /* Offset parent .app-main padding to span edge-to-edge */
+    border-radius: 0;
 }
 
 .logo-area {
@@ -175,7 +185,7 @@ body {
     flex: 1;
     overflow-y: auto;
     padding: 20px;
-    padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)); /* Space for bottom nav + safe area */
+    padding-bottom: 24px; /* Reduced space since bottom nav is now a flex item, not absolute overlay */
 }
 
 /* Hide webkit scrollbar */
@@ -980,10 +990,6 @@ body {
 
 /* Bottom Nav bar styling */
 .app-nav {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
     height: calc(70px + env(safe-area-inset-bottom, 0px));
     padding-bottom: env(safe-area-inset-bottom, 0px);
     background-color: var(--bg-card);
@@ -992,6 +998,7 @@ body {
     justify-content: space-around;
     align-items: center;
     z-index: 10;
+    flex-shrink: 0; /* Prevent shrinking when input keyboard pops up */
     box-sizing: border-box;
 }
 
@@ -1947,4 +1954,148 @@ body {
     border-radius: 6px;
     font-weight: 600;
 }
+
+/* --- Coach Marks Walkthrough --- */
+.coachmark-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10000;
+    pointer-events: auto;
+    display: none;
+    overflow: hidden;
+}
+
+.coachmark-spotlight {
+    position: absolute;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: 10001;
+}
+
+.coachmark-tooltip {
+    position: absolute;
+    z-index: 10002;
+    background: var(--bg-card);
+    color: var(--text-main);
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg), 0 10px 30px rgba(0,0,0,0.15);
+    width: 280px;
+    max-width: 90vw;
+    font-size: 0.9rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid var(--border-color);
+}
+
+.coachmark-tooltip::after {
+    content: '';
+    position: absolute;
+    border: 8px solid transparent;
+}
+
+/* Arrow placements */
+.coachmark-tooltip.arrow-top::after {
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-color: var(--bg-card);
+}
+.coachmark-tooltip.arrow-bottom::after {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top-color: var(--bg-card);
+}
+.coachmark-tooltip.arrow-left::after {
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-right-color: var(--bg-card);
+}
+.coachmark-tooltip.arrow-right::after {
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left-color: var(--bg-card);
+}
+
+.coachmark-text {
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--text-main);
+    margin-bottom: 12px;
+}
+
+.coachmark-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.coachmark-btn {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+
+.coachmark-btn-next {
+    background-color: #0064FF;
+    color: #ffffff;
+    padding: 8px 18px;
+}
+.coachmark-btn-next:hover {
+    background-color: #0052d6;
+}
+
+.coachmark-btn-skip {
+    background-color: rgba(0, 0, 0, 0.08);
+    color: #555;
+    padding: 8px 14px;
+}
+.coachmark-btn-skip:hover {
+    background-color: rgba(0, 0, 0, 0.14);
+    color: #222;
+}
+
+/* Custom Toast Notification */
+.daon-toast {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background-color: rgba(33, 37, 41, 0.9);
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    z-index: 11000;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+    text-align: center;
+    max-width: 90%;
+    width: max-content;
+}
+.daon-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+[data-theme="dark"] .daon-toast {
+    background-color: rgba(248, 249, 250, 0.95);
+    color: #212529;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
 

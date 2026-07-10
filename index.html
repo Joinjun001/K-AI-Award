@@ -13,44 +13,97 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css?v=3.1">
+    <!-- Google Identity Services (OAuth 2.0) -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <!-- Real-time Web Push Simulation Toast Container -->
     <div id="toast-container" class="toast-container"></div>
 
-    <div class="app-container">
-        <!-- Sidebar/Navbar Header -->
-        <header class="app-header">
-            <div class="logo-area">
-                <div class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></div>
-                <div class="logo-text">
-                    <span class="brand-name">다온</span>
-                    <span class="brand-sub">Daon</span>
-                </div>
+    <!-- Coach Marks Guide Overlay -->
+    <div id="coachmark-overlay" class="coachmark-overlay">
+        <div id="coachmark-spotlight" class="coachmark-spotlight"></div>
+        <div id="coachmark-tooltip" class="coachmark-tooltip">
+            <p id="coachmark-text" class="coachmark-text"></p>
+            <div class="coachmark-buttons">
+                <button class="coachmark-btn coachmark-btn-skip" onclick="closeCoachGuide()">
+                    <span id="coachmark-skip-label">건너뛰기</span>
+                </button>
+                <button class="coachmark-btn coachmark-btn-next" onclick="nextCoachStep()">
+                    <span id="coachmark-next-label">다음</span>
+                </button>
             </div>
-            <div class="header-controls">
-                <!-- Global Language Selector -->
-                <div class="lang-selector">
-                    <i class="fa-solid fa-globe"></i>
-                    <select id="global-lang" onchange="changeLanguage(this.value)">
-                        <option value="ko">한국어 (Korean)</option>
-                        <option value="vi">Tiếng Việt (Vietnamese)</option>
-                        <option value="zh">中文 (Chinese)</option>
-                        <option value="en">English (English)</option>
-                    </select>
-                </div>
-            </div>
-        </header>
+        </div>
+    </div>
 
+    <div class="app-container">
+        <!-- Onboarding Overlay (Toss style step-by-step interactive wizard) -->
+        <div id="onboarding-overlay" class="onboarding-overlay" style="display: none;">
+            <div class="onboarding-container">
+                <!-- Top Progress Bar (Toss style) -->
+                <div class="onboard-progress-bar">
+                    <div id="onboard-progress-fill" class="progress-fill" style="width: 50%;"></div>
+                </div>
+                
+                <div class="onboarding-wizard" id="onboarding-wizard">
+                    <!-- Step 0: Welcome -->
+                    <div class="wizard-step active" id="onboard-step-0">
+                        <div class="onboarding-graphic">
+                            <i class="fa-solid fa-hands-holding-child anim-float"></i>
+                        </div>
+                        <h2 id="txt-ob-title-0">다문화 가정을 위한<br>따뜻한 AI 비서, 다온</h2>
+                        <p id="txt-ob-desc-0">우리 자녀들의 즐거운 학교생활과 지원 혜택을 다온이 맞춤형으로 챙겨 드릴게요.</p>
+                    </div>
+                    
+                    <!-- Step 1: Language selection -->
+                    <div class="wizard-step" id="onboard-step-1">
+                        <h2 id="txt-ob-title-1">어떤 언어를<br>사용하시나요?</h2>
+                        <p class="step-guide" id="txt-ob-desc-1">선택하시는 모국어로 모든 안내가 즉시 번역됩니다.</p>
+                        <div class="language-grid-options">
+                            <button class="btn btn-outline lang-opt-btn" onclick="selectOnboardLanguage('ko')">한국어 (Korean)</button>
+                            <button class="btn btn-outline lang-opt-btn" onclick="selectOnboardLanguage('vi')">Tiếng Việt (Vietnamese)</button>
+                            <button class="btn btn-outline lang-opt-btn" onclick="selectOnboardLanguage('zh')">中文 (Chinese)</button>
+                            <button class="btn btn-outline lang-opt-btn" onclick="selectOnboardLanguage('en')">English (English)</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="onboarding-footer">
+                    <button id="btn-onboarding-next" class="btn btn-primary btn-full" onclick="nextOnboardStep()" style="border-radius: 16px; padding: 16px; font-weight: 600; font-size: 1rem;">다음</button>
+                </div>
+            </div>
+        </div>
         <!-- Main Content Area -->
         <main class="app-main">
+            <!-- Sidebar/Navbar Header -->
+            <header class="app-header">
+                <div class="logo-area">
+                    <div class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                    <div class="logo-text">
+                        <span class="brand-name">다온</span>
+                        <span class="brand-sub">Daon</span>
+                    </div>
+                </div>
+                <div class="header-controls">
+                    <!-- Global Language Selector -->
+                    <div class="lang-selector">
+                        <i class="fa-solid fa-globe"></i>
+                        <select id="global-lang" onchange="changeLanguage(this.value)">
+                            <option value="ko">한국어 (Korean)</option>
+                            <option value="vi">Tiếng Việt (Vietnamese)</option>
+                            <option value="zh">中文 (Chinese)</option>
+                            <option value="en">English (English)</option>
+                        </select>
+                    </div>
+                </div>
+            </header>
             
             <!-- TAB 1: DASHBOARD HOME & RAG DOCUMENT HELPER -->
             <section id="tab-home" class="tab-content active">
                 <div class="welcome-card">
                     <div class="welcome-text">
-                        <h1 id="txt-welcome-title">안녕하세요, 다온 부모님!</h1>
-                        <p id="txt-welcome-desc">오늘도 자녀들의 행복한 학교생활을 다온이 돕겠습니다.</p>
+                        <h1 id="txt-welcome-title">AI 비서 다온</h1>
+                        <p id="txt-welcome-desc"></p>
                     </div>
                     <div class="welcome-img">
                         <i class="fa-solid fa-hands-holding-child"></i>
@@ -58,13 +111,13 @@
                 </div>
 
                 <div class="section-title" style="margin-top: 24px;">
-                    <h2><i class="fa-solid fa-file-signature"></i> <span id="txt-helper-title">RAG 서류·행정 도우미</span></h2>
-                    <p id="txt-helper-subtitle">가정통신문, 안내장 등을 입력하거나 업로드하면 한국 문화적 배경과 함께 모국어로 쉽게 설명합니다.</p>
+                    <h2><i class="fa-solid fa-file-signature"></i> <span id="txt-helper-title">가정통신문 번역하기</span></h2>
+                    <p id="txt-helper-subtitle"></p>
                 </div>
 
                 <div class="helper-layout">
                     <!-- Input Section -->
-                    <div class="card helper-input-card" style="display: flex; flex-direction: column;">
+                    <div class="card helper-input-card" id="home-upload-card" style="display: flex; flex-direction: column;">
                         <!-- Segmented Control to select method -->
                         <div class="upload-method-selector" style="display: flex; gap: 4px; margin-bottom: 20px; background: var(--bg-secondary); padding: 4px; border-radius: 12px; border: 1px solid var(--border-color);">
                             <button type="button" id="btn-method-photo" class="method-btn active" onclick="setUploadMethod('photo')" style="flex: 1; padding: 10px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; background-color: var(--bg-app); color: var(--toss-blue); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);">
@@ -77,10 +130,10 @@
 
                         <!-- 1. PHOTO METHOD CONTAINER -->
                         <div id="method-photo-container" class="method-container" style="position: relative; width: 100%;">
-                            <div class="photo-upload-zone" style="border: 2px dashed var(--border-color); border-radius: 16px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: rgba(0, 0, 0, 0.01);" onclick="document.getElementById('doc-file-upload').click()">
-                                <i class="fa-solid fa-cloud-arrow-up" style="font-size: 32px; color: var(--text-sub); margin-bottom: 12px;"></i>
-                                <h4 style="margin: 0 0 6px 0; font-size: 0.95rem; font-weight: 600;" id="txt-upload-zone-title">가정통신문 사진을 올려주세요</h4>
-                                <p style="margin: 0; font-size: 0.8rem; color: var(--text-sub);" id="txt-upload-zone-desc">클릭하여 앨범에서 선택하거나 카메라 촬영</p>
+                            <div class="photo-upload-zone" style="border: 2px dashed var(--border-color); border-radius: 16px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: rgba(0, 0, 0, 0.01);" onclick="handlePhotoUploadZoneClick()">
+                                <i id="icon-upload-zone" class="fa-solid fa-cloud-arrow-up" style="font-size: 32px; color: var(--text-sub); margin-bottom: 12px;"></i>
+                                <h4 style="margin: 0 0 6px 0; font-size: 0.95rem; font-weight: 600;" id="txt-upload-zone-title">사진 올리기</h4>
+                                <p style="margin: 0; font-size: 0.8rem; color: var(--text-sub);" id="txt-upload-zone-desc">여기를 눌러 사진 선택</p>
                                 <input type="file" id="doc-file-upload" accept="image/*" onchange="simulateOCR(this)" style="display: none;">
                             </div>
                             
@@ -105,12 +158,25 @@
                         </div>
 
                         <!-- 3. RUN BUTTON (COMMON) -->
-                        <button class="btn btn-primary btn-full" onclick="runDocumentRAG()" style="margin-top: 16px;">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i> <span id="txt-btn-analyze">다온 AI RAG 분석 실행</span>
+                        <button id="btn-run-rag-container" class="btn btn-primary btn-full" onclick="runDocumentRAG()" style="margin-top: 16px;">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> <span id="txt-btn-analyze">번역 시작</span>
                         </button>
                     </div>
 
-
+                    <!-- Translation History Section (Toss Style) -->
+                    <div class="card" id="history-section-card" style="margin-top: 16px; padding: 16px 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <h3 style="font-size: 1rem; font-weight: 700; margin: 0; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-clock-rotate-left" style="color: var(--toss-blue);"></i> 
+                                <span id="txt-history-title">최근 기록</span>
+                            </h3>
+                            <button onclick="clearTranslationHistory()" style="background: none; border: none; font-size: 0.8rem; color: var(--text-sub); cursor: pointer; text-decoration: underline;" id="txt-history-clear">전체 삭제</button>
+                        </div>
+                        <div id="translation-history-list" style="display: flex; flex-direction: column; gap: 10px;">
+                            <!-- Dynamically populated via JS -->
+                            <p style="text-align: center; color: var(--text-sub); font-size: 0.85rem; margin: 10px 0;" id="txt-history-empty">아직 번역 분석 기록이 없습니다.</p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -126,33 +192,77 @@
                 </div>
             </section>
 
-            <!-- TAB 3: PROFILE / SETTINGS (Dummy for mockup completeness) -->
+            <!-- TAB 3: PROFILE / SETTINGS -->
             <section id="tab-profile" class="tab-content">
                 <div class="section-title">
                     <h2><i class="fa-solid fa-id-card"></i> <span id="txt-myprofile-title">마이 페이지 & 계정 정보</span></h2>
                 </div>
                 <div class="card text-center pad-lg">
-                    <div class="user-avatar-large">
-                        <i class="fa-solid fa-user-tie"></i>
+                    <div class="user-avatar-large" id="user-avatar-container" style="position: relative; margin: 0 auto 16px auto; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: var(--bg-secondary); border-radius: 50%; width: 90px; height: 90px; border: 3px solid var(--toss-blue);">
+                        <img id="user-avatar-img" src="assets/basic_profile.png" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <h3 id="txt-myprofile-username">다온 패밀리</h3>
-                    <p>daon_family@example.com</p>
+                    <p id="txt-myprofile-email" style="color: var(--text-secondary); margin-bottom: 12px;">daon_family@example.com</p>
+                    
+                    <!-- ID/Password Local Auth Forms (Toss Style) -->
+                    <div id="local-auth-container" style="width: 100%; max-width: 320px; margin: 15px auto 10px auto;">
+                        <!-- Login form -->
+                        <div id="local-login-form">
+                            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; text-align: left;">
+                                <input type="text" id="auth-login-username" placeholder="아이디 (ID)" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 0.9rem; outline: none; background: var(--bg-app); color: var(--text-main);">
+                                <input type="password" id="auth-login-password" placeholder="비밀번호 (Password)" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 0.9rem; outline: none; background: var(--bg-app); color: var(--text-main);">
+                            </div>
+                            <button class="btn btn-primary btn-full" onclick="handleLocalLogin()" style="border-radius: 12px; padding: 12px; font-weight: 600; font-size: 0.95rem;">로그인 (Log In)</button>
+                            <div style="margin-top: 10px; font-size: 0.85rem; text-align: center;">
+                                <span style="color: var(--text-sub);" id="txt-no-account">계정이 없으신가요?</span>
+                                <a href="#" onclick="toggleAuthForm('register', event)" style="color: var(--toss-blue); font-weight: 600; margin-left: 4px; text-decoration: underline;" id="txt-go-register">회원가입</a>
+                            </div>
+                        </div>
+
+                        <!-- Register form (hidden by default) -->
+                        <div id="local-register-form" class="hidden">
+                            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; text-align: left;">
+                                <input type="text" id="auth-reg-username" placeholder="아이디 (ID)" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 0.9rem; outline: none; background: var(--bg-app); color: var(--text-main);">
+                                <div id="reg-username-message" style="font-size: 0.8rem; margin: -4px 4px 4px 4px; text-align: left; display: none; font-weight: 500;"></div>
+                                <input type="text" id="auth-reg-name" placeholder="이름 (Full Name)" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 0.9rem; outline: none; background: var(--bg-app); color: var(--text-main);">
+                                <input type="email" id="auth-reg-email" placeholder="이메일 (Email)" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 0.9rem; outline: none; background: var(--bg-app); color: var(--text-main);">
+                                <div id="reg-email-message" style="font-size: 0.8rem; margin: -4px 4px 4px 4px; text-align: left; display: none; font-weight: 500;"></div>
+                                <input type="password" id="auth-reg-password" placeholder="비밀번호 (Password)" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 0.9rem; outline: none; background: var(--bg-app); color: var(--text-main);">
+                                <input type="password" id="auth-reg-password-confirm" placeholder="비밀번호 확인 (Confirm Password)" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 0.9rem; outline: none; background: var(--bg-app); color: var(--text-main);">
+                                <div id="reg-password-message" style="font-size: 0.8rem; margin: -4px 4px 4px 4px; text-align: left; display: none; font-weight: 500;"></div>
+                                
+                                <div style="display: flex; align-items: flex-start; gap: 8px; margin: 4px 4px 12px 4px; font-size: 0.82rem; text-align: left; line-height: 1.3;">
+                                    <input type="checkbox" id="auth-reg-privacy-agree" style="margin-top: 2px; cursor: pointer;">
+                                    <label for="auth-reg-privacy-agree" style="color: var(--text-main); cursor: pointer;" id="txt-privacy-agree">
+                                        개인정보 수집 및 이용 동의 [필수]
+                                    </label>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary btn-full" onclick="handleLocalRegister()" style="border-radius: 12px; padding: 12px; font-weight: 600; font-size: 0.95rem;">회원가입 완료</button>
+                            <div style="margin-top: 10px; font-size: 0.85rem; text-align: center;">
+                                <span style="color: var(--text-sub);" id="txt-have-account">이미 계정이 있으신가요?</span>
+                                <a href="#" onclick="toggleAuthForm('login', event)" style="color: var(--toss-blue); font-weight: 600; margin-left: 4px; text-decoration: underline;" id="txt-go-login">로그인</a>
+                            </div>
+                        </div>
+                        
+                        <div id="auth-divider" style="margin: 15px 0 10px 0; color: var(--text-sub); font-size: 0.8rem; text-align: center; position: relative;">
+                            <span style="background: var(--bg-card); padding: 0 8px; position: relative; z-index: 1;" id="txt-or-label">또는 (Or)</span>
+                            <div style="position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--border-color); z-index: 0;"></div>
+                        </div>
+                    </div>
+                    
+                    <div id="google-login-container" style="display: flex; justify-content: center; margin: 15px 0;">
+                        <div id="btn-google-login"></div>
+                    </div>
+                    <button id="btn-logout" class="btn btn-outline hidden" onclick="handleLogout()" style="margin: 10px auto; max-width: 150px; font-size: 13px; font-weight: 500; padding: 8px 16px; border-radius: 10px;">로그아웃</button>
                     <hr class="divider">
                     <div class="settings-list">
-                        <div class="setting-item admin-item" onclick="openAdminLoginModal()" style="border-left: 3px solid var(--toss-blue);">
-                            <span style="font-weight: 600; color: var(--toss-blue);"><i class="fa-solid fa-user-shield"></i> 관리자 대시보드 (조회)</span>
-                            <i class="fa-solid fa-angle-right" style="color: var(--toss-blue);"></i>
-                        </div>
-                        <div class="setting-item">
-                            <span id="txt-setting-security"><i class="fa-solid fa-shield-halved"></i> 보안 및 개인정보 관리</span>
+                        <div class="setting-item" onclick="resetOnboarding()">
+                            <span id="txt-setting-guide"><i class="fa-solid fa-circle-info"></i> 온보딩 가이드 다시 보기</span>
                             <i class="fa-solid fa-angle-right"></i>
                         </div>
-                        <div class="setting-item">
-                            <span id="txt-setting-feedback"><i class="fa-solid fa-language"></i> 번역 품질 피드백 및 기여</span>
-                            <i class="fa-solid fa-angle-right"></i>
-                        </div>
-                        <div class="setting-item">
-                            <span id="txt-setting-api"><i class="fa-solid fa-circle-nodes"></i> 공용 데이터 연동 관리 (보조금24 API)</span>
+                        <div class="setting-item" onclick="resetCoachGuide()">
+                            <span id="txt-setting-coachmark"><i class="fa-solid fa-hand-pointer"></i> 앱 사용 가이드 다시 보기</span>
                             <i class="fa-solid fa-angle-right"></i>
                         </div>
                     </div>
@@ -166,7 +276,7 @@
                 <i class="fa-solid fa-house"></i>
                 <span id="nav-txt-home">홈</span>
             </button>
-            <button class="nav-item" onclick="switchTab('tab-alerts', this)">
+            <button class="nav-item" id="nav-btn-alerts" onclick="switchTab('tab-alerts', this)">
                 <i class="fa-solid fa-square-rss"></i>
                 <span id="nav-txt-alerts">혜택 피드</span>
             </button>
@@ -203,7 +313,6 @@
                 <!-- Explicit Source URL Link -->
                 <div class="modal-source-info" id="modal-benefit-source-wrapper">
                     <span id="txt-modal-source-label" class="source-label">출처: 복지로 및 공식 기관</span>
-                    <a id="modal-benefit-source-url" href="#" target="_blank" class="source-url-text">https://www.bokjiro.go.kr</a>
                 </div>
             </div>
             <div class="modal-footer">
@@ -217,22 +326,22 @@
     <div id="admin-login-modal" class="modal-overlay hidden" onclick="closeAdminLoginModal(event)">
         <div class="modal-content anim-slide-up" onclick="event.stopPropagation();" style="max-width: 400px; border-radius: 20px;">
             <div class="modal-header" style="border-bottom: none; padding-bottom: 10px;">
-                <h3 style="font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--text-primary);"><i class="fa-solid fa-user-shield" style="color: var(--toss-blue); margin-right: 8px;"></i>관리자 로그인</h3>
+                <h3 style="font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--text-primary);"><i class="fa-solid fa-user-shield" style="color: var(--toss-blue); margin-right: 8px;"></i><span id="txt-admin-login-title">관리자 로그인</span></h3>
                 <button class="modal-close-btn" onclick="closeAdminLoginModal()">&times;</button>
             </div>
             <div class="modal-body" style="padding-top: 10px;">
                 <div class="form-group" style="margin-bottom: 15px;">
-                    <label for="admin-username" style="font-weight: 500; font-size: 14px; color: var(--text-primary); margin-bottom: 6px; display: block;">관리자 아이디</label>
+                    <label for="admin-username" id="txt-admin-username-label" style="font-weight: 500; font-size: 14px; color: var(--text-primary); margin-bottom: 6px; display: block;">관리자 아이디</label>
                     <input type="text" id="admin-username" placeholder="아이디를 입력하세요" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 15px; outline: none; background-color: var(--bg-secondary);">
                 </div>
                 <div class="form-group" style="margin-bottom: 10px;">
-                    <label for="admin-password" style="font-weight: 500; font-size: 14px; color: var(--text-primary); margin-bottom: 6px; display: block;">비밀번호</label>
+                    <label for="admin-password" id="txt-admin-password-label" style="font-weight: 500; font-size: 14px; color: var(--text-primary); margin-bottom: 6px; display: block;">비밀번호</label>
                     <input type="password" id="admin-password" placeholder="비밀번호를 입력하세요" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 15px; outline: none; background-color: var(--bg-secondary);">
                 </div>
                 <p id="admin-login-error" class="error-text hidden" style="color: var(--toss-red); font-size: 13px; margin: 10px 0 0 0; font-weight: 500;"></p>
             </div>
             <div class="modal-footer" style="border-top: none; padding-top: 10px;">
-                <button class="btn btn-primary btn-full" onclick="submitAdminLogin()" style="border-radius: 14px; padding: 14px; font-weight: 600;">로그인</button>
+                <button id="btn-admin-login-submit" class="btn btn-primary btn-full" onclick="submitAdminLogin()" style="border-radius: 14px; padding: 14px; font-weight: 600;">로그인</button>
             </div>
         </div>
     </div>
@@ -244,8 +353,8 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <span style="background-color: rgba(49, 130, 246, 0.1); color: var(--toss-blue); padding: 8px 12px; border-radius: 10px; font-size: 18px;"><i class="fa-solid fa-chart-line"></i></span>
                     <div>
-                        <h3 style="font-family: 'Outfit', sans-serif; font-weight: 700; margin: 0; color: var(--text-primary);">다온 복지 혜택 관리자 대시보드</h3>
-                        <p style="font-size: 13px; color: var(--text-secondary); margin: 2px 0 0 0;">welfare_benefits 테이블 데이터 실시간 조회 (조회 전용)</p>
+                        <h3 id="txt-admin-dashboard-title" style="font-family: 'Outfit', sans-serif; font-weight: 700; margin: 0; color: var(--text-primary);">다온 복지 혜택 관리자 대시보드</h3>
+                        <p id="txt-admin-dashboard-subtitle" style="font-size: 13px; color: var(--text-secondary); margin: 2px 0 0 0;">welfare_benefits 테이블 데이터 실시간 조회 (조회 전용)</p>
                     </div>
                 </div>
                 <button class="modal-close-btn" onclick="closeAdminDashboardModal()">&times;</button>
@@ -255,20 +364,20 @@
                     <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;" class="admin-table">
                         <thead>
                             <tr style="background-color: var(--bg-secondary); border-bottom: 1px solid var(--border-color); color: var(--text-secondary); font-weight: 600; white-space: nowrap;">
-                                <th style="padding: 14px 16px;">ID</th>
-                                <th style="padding: 14px 16px; min-width: 180px;">제목</th>
-                                <th style="padding: 14px 16px;">카테고리</th>
-                                <th style="padding: 14px 16px; text-align: center;">온라인 신청</th>
-                                <th style="padding: 14px 16px; text-align: center;">대상자 분류</th>
-                                <th style="padding: 14px 16px; text-align: center;">생애주기</th>
-                                <th style="padding: 14px 16px;">지역</th>
-                                <th style="padding: 14px 16px; min-width: 200px;">설명 요약 (국문)</th>
-                                <th style="padding: 14px 16px; min-width: 200px;">설명 (베트남어)</th>
-                                <th style="padding: 14px 16px; min-width: 200px;">설명 (중국어)</th>
-                                <th style="padding: 14px 16px; min-width: 200px;">설명 (영어)</th>
-                                <th style="padding: 14px 16px; min-width: 200px;">상세 지원 대상 (한글 원문)</th>
-                                <th style="padding: 14px 16px; text-align: center;">원본 링크</th>
-                                <th style="padding: 14px 16px; min-width: 150px;">수정일시</th>
+                                <th id="th-id" style="padding: 14px 16px;">ID</th>
+                                <th id="th-title" style="padding: 14px 16px; min-width: 180px;">제목</th>
+                                <th id="th-category" style="padding: 14px 16px;">카테고리</th>
+                                <th id="th-online" style="padding: 14px 16px; text-align: center;">온라인 신청</th>
+                                <th id="th-target" style="padding: 14px 16px; text-align: center;">대상자 분류</th>
+                                <th id="th-lifecycle" style="padding: 14px 16px; text-align: center;">생애주기</th>
+                                <th id="th-region" style="padding: 14px 16px;">지역</th>
+                                <th id="th-desc-ko" style="padding: 14px 16px; min-width: 200px;">설명 요약 (국문)</th>
+                                <th id="th-desc-vi" style="padding: 14px 16px; min-width: 200px;">설명 (베트남어)</th>
+                                <th id="th-desc-zh" style="padding: 14px 16px; min-width: 200px;">설명 (중국어)</th>
+                                <th id="th-desc-en" style="padding: 14px 16px; min-width: 200px;">설명 (영어)</th>
+                                <th id="th-elig-ko" style="padding: 14px 16px; min-width: 200px;">상세 지원 대상 (한글 원문)</th>
+                                <th id="th-link" style="padding: 14px 16px; text-align: center;">원본 링크</th>
+                                <th id="th-updated" style="padding: 14px 16px; min-width: 150px;">수정일시</th>
                             </tr>
                         </thead>
                         <tbody id="admin-welfare-tbody">
@@ -278,25 +387,36 @@
                 </div>
             </div>
             <div class="modal-footer" style="border-top: 1px solid var(--border-color); padding-top: 16px; margin-top: 16px; justify-content: flex-end; gap: 10px;">
-                <button class="btn btn-secondary" onclick="fetchAdminWelfareList()" style="border-radius: 12px; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-arrows-rotate"></i>새로고침</button>
-                <button class="btn btn-outline" onclick="closeAdminDashboardModal()" style="border-radius: 12px;">닫기</button>
+                <button class="btn btn-secondary" onclick="fetchAdminWelfareList()" style="border-radius: 12px; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-arrows-rotate"></i><span id="txt-admin-refresh">새로고침</span></button>
+                <button id="btn-admin-close" class="btn btn-outline" onclick="closeAdminDashboardModal()" style="border-radius: 12px;">닫기</button>
             </div>
         </div>
     </div>
 
     <!-- 1. Confirmation Modal for Image Translation -->
     <div id="confirm-translate-modal" class="modal-overlay hidden" onclick="cancelImageTranslation()">
-        <div class="modal-content anim-slide-up" onclick="event.stopPropagation();" style="max-width: 400px; width: 90%; border-radius: 24px; padding: 24px; text-align: center;">
-            <div style="margin-bottom: 20px;">
-                <div style="background-color: var(--secondary-light); color: var(--secondary); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; font-size: 28px;">
-                    <i class="fa-solid fa-language"></i>
-                </div>
-                <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; color: var(--text-main);" id="txt-confirm-title">이 이미지를 번역할까요?</h3>
-                <p style="font-size: 0.9rem; color: var(--text-sub); line-height: 1.4;" id="txt-confirm-desc">다온 AI가 문서의 내용과 준비물을 파악하여 요약해 드립니다.</p>
+        <div class="modal-content anim-slide-up" onclick="event.stopPropagation();" style="max-width: 420px; width: 92%; border-radius: 24px; padding: 0; overflow: hidden; text-align: center;">
+
+            <!-- 이미지 미리보기 영역 -->
+            <div style="position: relative; width: 100%; background: #000; max-height: 320px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                <img id="confirm-modal-image-preview" src="" alt="업로드된 이미지" style="width: 100%; max-height: 320px; object-fit: contain; display: block;">
+                <!-- 닫기 버튼 -->
+                <button onclick="cancelImageTranslation()" style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-size: 18px; line-height: 1; display: flex; align-items: center; justify-content: center;">&times;</button>
             </div>
-            <div style="display: flex; gap: 10px; width: 100%;">
-                <button class="btn btn-outline" onclick="cancelImageTranslation()" style="flex: 1; border-radius: 14px; padding: 12px; font-weight: 600;" id="txt-confirm-no">아니요</button>
-                <button class="btn btn-primary" onclick="proceedImageTranslation()" style="flex: 1; border-radius: 14px; padding: 12px; font-weight: 600;" id="txt-confirm-yes">네</button>
+
+            <!-- 텍스트 + 버튼 영역 -->
+            <div style="padding: 24px;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;">
+                    <div style="background-color: var(--secondary-light); color: var(--secondary); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;">
+                        <i class="fa-solid fa-language"></i>
+                    </div>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0; color: var(--text-main);" id="txt-confirm-title">이 이미지를 번역할까요?</h3>
+                </div>
+                <p style="font-size: 0.88rem; color: var(--text-sub); line-height: 1.5; margin: 0 0 20px 0;" id="txt-confirm-desc">다온 AI가 문서의 내용과 준비물을 파악하여 요약해 드립니다.</p>
+                <div style="display: flex; gap: 10px; width: 100%;">
+                    <button class="btn btn-outline" onclick="cancelImageTranslation()" style="flex: 1; border-radius: 14px; padding: 12px; font-weight: 600;" id="txt-confirm-no">아니요</button>
+                    <button class="btn btn-primary" onclick="proceedImageTranslation()" style="flex: 1; border-radius: 14px; padding: 12px; font-weight: 600;" id="txt-confirm-yes">번역하기</button>
+                </div>
             </div>
         </div>
     </div>

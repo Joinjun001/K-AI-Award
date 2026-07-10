@@ -11,3 +11,6 @@ __pycache__/
 *.log
 fetch.log
 daon-welfare-sync.service
+
+# Scratch / one-off debug scripts
+scratch/

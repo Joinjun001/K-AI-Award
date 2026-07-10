@@ -2,13 +2,14 @@ import urllib.request
 import urllib.parse
 import json
 import sys
+import ssl
 
 def test_frontend():
     print("Testing Frontend (port 8400)...")
     try:
-        url = "http://localhost:8400/"
+        url = "https://localhost/"
         req = urllib.request.Request(url)
-        with urllib.request.urlopen(req, timeout=5) as res:
+        with urllib.request.urlopen(req, timeout=5, context=ssl._create_unverified_context()) as res:
             status = res.status
             if status == 200:
                 print("✅ Pass: Frontend is up and running (200 OK)")
@@ -23,9 +24,9 @@ def test_frontend():
 def test_db_welfare_api():
     print("\nTesting Database Welfare API (/api/welfare)...")
     try:
-        url = "http://localhost:8400/api/welfare"
+        url = "https://localhost/api/welfare"
         req = urllib.request.Request(url)
-        with urllib.request.urlopen(req, timeout=5) as res:
+        with urllib.request.urlopen(req, timeout=5, context=ssl._create_unverified_context()) as res:
             status = res.status
             if status == 200:
                 data = json.loads(res.read().decode('utf-8'))
@@ -45,7 +46,7 @@ def test_db_welfare_api():
 def test_gemini_analyze_api():
     print("\nTesting Gemini Document Analysis API (/api/analyze)...")
     try:
-        url = "http://localhost:8400/api/analyze"
+        url = "https://localhost/api/analyze"
         # Test text
         post_data = urllib.parse.urlencode({
             'text': '[가정통신문]\n준비물: 실내화 지참.\n일정: 5월 10일 하교 시까지 행정실에 신청서 제출 바랍니다.',
@@ -53,7 +54,7 @@ def test_gemini_analyze_api():
         }).encode('utf-8')
         
         req = urllib.request.Request(url, data=post_data, method='POST')
-        with urllib.request.urlopen(req, timeout=20) as res:
+        with urllib.request.urlopen(req, timeout=20, context=ssl._create_unverified_context()) as res:
             status = res.status
             if status == 200:
                 result = json.loads(res.read().decode('utf-8'))

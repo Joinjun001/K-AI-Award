@@ -50,13 +50,13 @@ def save_to_db(items):
         
         upsert_query = """
         INSERT INTO welfare_benefits (
-            id, title, category, region, source_url,
+            id, title, title_vi, title_zh, title_en, category, region, source_url,
             desc_ko, desc_vi, desc_zh, desc_en,
             desc_outline, eligibility_dtl, selection_crit, welfare_content,
             trgter_indvdl, life_array, onap_psblt_yn,
             download_forms, apply_method, related_websites, inquiry_contacts, updated_at
         ) VALUES (
-            %s, %s, %s, %s, %s,
+            %s, %s, %s, %s, %s, %s, %s, %s,
             %s, %s, %s, %s,
             %s, %s, %s, %s,
             %s, %s, %s,
@@ -64,6 +64,9 @@ def save_to_db(items):
         )
         ON CONFLICT (id) DO UPDATE SET
             title = EXCLUDED.title,
+            title_vi = EXCLUDED.title_vi,
+            title_zh = EXCLUDED.title_zh,
+            title_en = EXCLUDED.title_en,
             category = EXCLUDED.category,
             region = EXCLUDED.region,
             source_url = EXCLUDED.source_url,
@@ -89,6 +92,9 @@ def save_to_db(items):
             cur.execute(upsert_query, (
                 item["id"],
                 item["title"],
+                item.get("title_vi", ""),
+                item.get("title_zh", ""),
+                item.get("title_en", ""),
                 item["category"],
                 item["region"],
                 item["sourceUrl"],
@@ -242,11 +248,19 @@ def fetch_and_cache():
                 desc_zh = translate_text(desc_text, 'zh-CN')
                 desc_en = translate_text(desc_text, 'en')
                 
+                # Translate titles
+                title_vi = translate_text(title, 'vi')
+                title_zh = translate_text(title, 'zh-CN')
+                title_en = translate_text(title, 'en')
+                
                 source_url = item.find('servDtlLink').text if item.find('servDtlLink') is not None else 'https://www.bokjiro.go.kr'
                 
                 filtered_items.append({
                     "id": serv_id,
                     "title": title,
+                    "title_vi": title_vi,
+                    "title_zh": title_zh,
+                    "title_en": title_en,
                     "category": category,
                     "region": region,
                     "sourceUrl": source_url,

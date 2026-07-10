@@ -3,9 +3,11 @@ services:
     build: .
     container_name: k-ai-award-web
     ports:
-      - "8400:8400"
+      - "80:80"
+      - "443:443"
     volumes:
       - ./welfare_data.json:/usr/share/nginx/html/welfare_data.json
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       - backend
     restart: always
@@ -17,13 +19,8 @@ services:
     container_name: k-ai-award-backend
     ports:
       - "8000:8000"
-    environment:
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
+    env_file:
+      - .env
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: always

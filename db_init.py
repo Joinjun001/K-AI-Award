@@ -17,6 +17,9 @@ def init_db():
     CREATE TABLE welfare_benefits (
         id VARCHAR(50) PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
+        title_vi VARCHAR(255),
+        title_zh VARCHAR(255),
+        title_en VARCHAR(255),
         category VARCHAR(100),
         region VARCHAR(100) DEFAULT '전국',
         source_url VARCHAR(512),
@@ -53,12 +56,25 @@ def init_db():
     create_user_table_query = """
     CREATE TABLE IF NOT EXISTS user_account (
         username VARCHAR(50) PRIMARY KEY,
-        password_hash VARCHAR(255) NOT NULL,
+        password_hash VARCHAR(255),
         role VARCHAR(20) DEFAULT 'user',
+        email VARCHAR(100) UNIQUE,
+        full_name VARCHAR(100),
+        profile_pic VARCHAR(255),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
     """
     cur.execute(create_user_table_query)
+    
+    # Run migrations to add columns if user_account table already existed
+    try:
+        cur.execute("ALTER TABLE user_account ADD COLUMN IF NOT EXISTS email VARCHAR(100) UNIQUE;")
+        cur.execute("ALTER TABLE user_account ADD COLUMN IF NOT EXISTS full_name VARCHAR(100);")
+        cur.execute("ALTER TABLE user_account ADD COLUMN IF NOT EXISTS profile_pic VARCHAR(255);")
+        cur.execute("ALTER TABLE user_account ALTER COLUMN password_hash DROP NOT NULL;")
+    except Exception as e:
+        print("Migration warning on user_account table:", e)
+        conn.rollback() # Rollback in case of failure so transaction remains valid
     
     # Create default admin account if not exists
     admin_username = 'admin'
