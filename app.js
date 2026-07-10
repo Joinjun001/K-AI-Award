@@ -125,7 +125,15 @@ const translations = {
         confirmTitle: "이 이미지를 번역할까요?",
         confirmDesc: "다온 AI가 문서의 내용과 준비물을 파악하여 요약해 드립니다.",
         confirmNo: "아니요",
-        confirmYes: "번역하기"
+        confirmYes: "번역하기",
+        historyTitle: "최근 번역 분석 기록",
+        historyClear: "전체 삭제",
+        historyEmpty: "아직 번역 분석 기록이 없습니다.",
+        noAccount: "계정이 없으신가요?",
+        goRegister: "회원가입",
+        haveAccount: "이미 계정이 있으신가요?",
+        goLogin: "로그인",
+        orLabel: "또는 (Or)"
     },
     vi: {
         // Navigation
@@ -242,7 +250,15 @@ const translations = {
         confirmTitle: "Bạn có muốn dịch hình ảnh này không?",
         confirmDesc: "Daon AI sẽ phân tích nội dung tài liệu và tóm tắt các đồ dùng cần chuẩn bị.",
         confirmNo: "Không",
-        confirmYes: "Dịch ngay"
+        confirmYes: "Dịch ngay",
+        historyTitle: "Lịch sử dịch & phân tích gần đây",
+        historyClear: "Xóa tất cả",
+        historyEmpty: "Chưa có lịch sử dịch và phân tích.",
+        noAccount: "Bạn chưa có tài khoản?",
+        goRegister: "Đăng ký",
+        haveAccount: "Bạn đã có tài khoản?",
+        goLogin: "Đăng nhập",
+        orLabel: "Hoặc (Or)"
     },
     zh: {
         // Navigation
@@ -359,7 +375,15 @@ const translations = {
         confirmTitle: "是否翻译此图片？",
         confirmDesc: "多稳 AI 将分析文件内容并为您总结所需物品。",
         confirmNo: "取消",
-        confirmYes: "翻译"
+        confirmYes: "翻译",
+        historyTitle: "最近翻译分析记录",
+        historyClear: "全部删除",
+        historyEmpty: "还没有翻译分析记录。",
+        noAccount: "没有账号吗？",
+        goRegister: "注册",
+        haveAccount: "已经有账号吗？",
+        goLogin: "登录",
+        orLabel: "或者 (Or)"
     },
     en: {
         // Navigation
@@ -476,7 +500,15 @@ const translations = {
         confirmTitle: "Translate this image?",
         confirmDesc: "Daon AI will analyze the document and summarize the required items for you.",
         confirmNo: "Cancel",
-        confirmYes: "Translate"
+        confirmYes: "Translate",
+        historyTitle: "Recent Translations History",
+        historyClear: "Clear All",
+        historyEmpty: "No translation history yet.",
+        noAccount: "Don't have an account?",
+        goRegister: "Sign Up",
+        haveAccount: "Already have an account?",
+        goLogin: "Log In",
+        orLabel: "Or"
     }};// Mock RAG Knowledge Base (Vector Database emulation)
 const mockKnowledgeBase = [
     {
@@ -752,7 +784,14 @@ function changeLanguage(langCode) {
         'txt-confirm-title': translations[langCode].confirmTitle,
         'txt-confirm-desc': translations[langCode].confirmDesc,
         'txt-confirm-no': translations[langCode].confirmNo,
-        'txt-confirm-yes': translations[langCode].confirmYes
+        'txt-confirm-yes': translations[langCode].confirmYes,
+        'txt-history-title': translations[langCode].historyTitle,
+        'txt-history-clear': translations[langCode].historyClear,
+        'txt-no-account': translations[langCode].noAccount,
+        'txt-go-register': translations[langCode].goRegister,
+        'txt-have-account': translations[langCode].haveAccount,
+        'txt-go-login': translations[langCode].goLogin,
+        'txt-or-label': translations[langCode].orLabel
     };
     
     for (const [id, text] of Object.entries(elements)) {
@@ -980,6 +1019,9 @@ async function proceedImageTranslation() {
         // Render results inside modal content container
         renderReportModalResult(data);
         
+        // Save to local storage history
+        saveTranslationToHistory(extractedText, data, currentLanguage);
+        
         // Hide loading, show content
         if (modalLoading) modalLoading.classList.add('hidden');
         if (modalContent) modalContent.classList.remove('hidden');
@@ -991,7 +1033,7 @@ async function proceedImageTranslation() {
         
     } catch (error) {
         console.error("Image translation workflow failed:", error);
-        triggerToast("분석 실패", "AI 분석 도중 서버 오류가 발생하였습니다. 시뮬레이션 결과로 대체합니다.", "error");
+        triggerToast("분석 실패", "AI 분석 도중 서버 오류가 발생하였습니다. API 설정 및 상태를 확인하세요.", "error");
         
         stopLoadingProgress();
         
@@ -1077,6 +1119,9 @@ async function runDocumentRAG() {
         // Render results inside modal content container
         renderReportModalResult(data);
         
+        // Save to local storage history
+        saveTranslationToHistory(textInput, data, currentLanguage);
+        
         // Hide loading, show content
         if (modalLoading) modalLoading.classList.add('hidden');
         if (modalContent) modalContent.classList.remove('hidden');
@@ -1087,7 +1132,7 @@ async function runDocumentRAG() {
         }
     } catch (error) {
         console.error("Text analysis failed:", error);
-        triggerToast("분석 실패", "AI 분석 도중 서버 오류가 발생하였습니다. 시뮬레이션 결과로 대체합니다.", "error");
+        triggerToast("분석 실패", "AI 분석 도중 서버 오류가 발생하였습니다. API 설정 및 상태를 확인하세요.", "error");
         
         stopLoadingProgress();
         
@@ -1356,131 +1401,58 @@ function updateRAGOutputText() {
 }
 
 function getFallbackData(lang) {
-    if (lang === 'vi') {
-        return {
+    const errorMessages = {
+        ko: {
             submissions: `
                 <div style="padding: 16px; background: rgba(239, 68, 68, 0.05); border-left: 4px solid #ef4444; border-radius: 12px; margin-bottom: 12px;">
-                    <h4 style="margin: 0 0 8px 0; color: #ef4444; font-weight: 700;">✍️ Nộp hồ sơ và ký tên (Hạn nộp)</h4>
-                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">Hạn nộp đơn đăng ký: ngày 14 tháng 5 (Thứ sáu) nộp lại cho văn phòng hành chính nhà trường.</p>
+                    <h4 style="margin: 0 0 8px 0; color: #ef4444; font-weight: 700;">🚨 오류 발생</h4>
+                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">AI 분석 및 번역 도중 오류가 발생하여 데이터를 가져올 수 없습니다.</p>
                 </div>
             `,
-            materials: `
-                <div style="padding: 16px; background: rgba(245, 158, 11, 0.05); border-left: 4px solid #f59e0b; border-radius: 12px; margin-bottom: 12px;">
-                    <h4 style="margin: 0 0 8px 0; color: #f59e0b; font-weight: 700;">🎒 Đồ dùng cần chuẩn bị</h4>
-                    <ul style="margin: 0; padding-left: 20px; font-size: 0.95rem; line-height: 1.5;">
-                        <li>Bình nước cá nhân</li>
-                        <li>Giày đi trong lớp học (Sil-nae-hwa)</li>
-                    </ul>
-                </div>
-            `,
-            schedule: `
-                <div style="padding: 16px; background: rgba(16, 185, 129, 0.05); border-left: 4px solid #10b981; border-radius: 12px; margin-bottom: 12px;">
-                    <h4 style="margin: 0 0 8px 0; color: #10b981; font-weight: 700;">📅 Lịch trình chính</h4>
-                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">Đăng ký lớp chăm sóc kỳ nghỉ hè và nộp khảo sát nhu cầu ăn trưa.</p>
-                </div>
-            `,
-            full_translation: "Bảng thông báo lớp học - Trường tiểu học Mapo lớp 1\nTiêu đề: Hướng dẫn lớp chăm sóc kỳ nghỉ hè và phát đơn đăng ký\n- Đăng ký ăn trưa: Nộp đơn đồng ý cho văn phòng hành chính trước ngày 14 tháng 5.\n- Chuẩn bị: Mang theo bình nước cá nhân và giày đi trong nhà sạch sẽ mỗi ngày.",
-            cultural_notes: `
-                <div class="culture-note" style="padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; margin-top: 12px;">
-                    <h5 style="margin: 0 0 8px 0; color: #15803d; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> Bối cảnh văn hóa Hàn Quốc</h5>
-                    <p style="margin: 0; font-size: 0.9rem; line-height: 1.5;"><strong>Giày đi trong nhà (Sil-nae-hwa - 실내화):</strong> ${mockKnowledgeBase[0].content}</p>
-                </div>
-            `
-        };
-    } else if (lang === 'zh') {
-        return {
+            materials: "",
+            schedule: "",
+            full_translation: "AI 분석 도중 서버 오류가 발생하였습니다. API 설정 및 네트워크 상태를 확인해 주세요.",
+            cultural_notes: ""
+        },
+        vi: {
             submissions: `
                 <div style="padding: 16px; background: rgba(239, 68, 68, 0.05); border-left: 4px solid #ef4444; border-radius: 12px; margin-bottom: 12px;">
-                    <h4 style="margin: 0 0 8px 0; color: #ef4444; font-weight: 700;">✍️ 需要提交和签字的事项</h4>
-                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">申请提交截止日期：5月14日（周五）之前交到学校行政室。</p>
+                    <h4 style="margin: 0 0 8px 0; color: #ef4444; font-weight: 700;">🚨 Đã xảy ra lỗi</h4>
+                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">Đã xảy ra lỗi trong quá trình phân tích và dịch thuật AI, không thể lấy dữ liệu.</p>
                 </div>
             `,
-            materials: `
-                <div style="padding: 16px; background: rgba(245, 158, 11, 0.05); border-left: 4px solid #f59e0b; border-radius: 12px; margin-bottom: 12px;">
-                    <h4 style="margin: 0 0 8px 0; color: #f59e0b; font-weight: 700;">🎒 孩子们需要准备的物品</h4>
-                    <ul style="margin: 0; padding-left: 20px; font-size: 0.95rem; line-height: 1.5;">
-                        <li>个人水杯/水壶</li>
-                        <li>干净的室内鞋</li>
-                    </ul>
-                </div>
-            `,
-            schedule: `
-                <div style="padding: 16px; background: rgba(16, 185, 129, 0.05); border-left: 4px solid #10b981; border-radius: 12px; margin-bottom: 12px;">
-                    <h4 style="margin: 0 0 8px 0; color: #10b981; font-weight: 700;">📅 核心日程及内容</h4>
-                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">放学后托管班申请及午餐配送意向调查。</p>
-                </div>
-            `,
-            full_translation: "[通知栏 - 麻浦小学 一年级]\n标题：暑期托管班指南及申请表发放\n- 申请午餐：确认同意书后，于5月14日之前提交至行政室。\n- 准备物：携带个人水杯和每天穿的干净室内鞋。",
-            cultural_notes: `
-                <div class="culture-note" style="padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; margin-top: 12px;">
-                    <h5 style="margin: 0 0 8px 0; color: #15803d; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> 韩国文化背景解释</h5>
-                    <p style="margin: 0; font-size: 0.9rem; line-height: 1.5;"><strong>室内鞋 (Sil-nae-hwa - 실내화):</strong> ${mockKnowledgeBase[0].content}</p>
-                </div>
-            `
-        };
-    } else if (lang === 'en') {
-        return {
+            materials: "",
+            schedule: "",
+            full_translation: "Đã xảy ra lỗi hệ thống trong quá trình phân tích AI. Vui lòng kiểm tra lại thiết lập API hoặc trạng thái mạng.",
+            cultural_notes: ""
+        },
+        zh: {
             submissions: `
                 <div style="padding: 16px; background: rgba(239, 68, 68, 0.05); border-left: 4px solid #ef4444; border-radius: 12px; margin-bottom: 12px;">
-                    <h4 style="margin: 0 0 8px 0; color: #ef4444; font-weight: 700;">✍️ Submissions & Signatures (Deadlines)</h4>
-                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">Consent submission deadline: Submit to the school administration office by May 14 (Friday).</p>
+                    <h4 style="margin: 0 0 8px 0; color: #ef4444; font-weight: 700;">🚨 发生错误</h4>
+                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">AI 분석과 번역 도중 서버 에러가 발생하여 데이터를 가져올 수 없습니다.</p>
                 </div>
             `,
-            materials: `
-                <div style="padding: 16px; background: rgba(245, 158, 11, 0.05); border-left: 4px solid #f59e0b; border-radius: 12px; margin-bottom: 12px;">
-                    <h4 style="margin: 0 0 8px 0; color: #f59e0b; font-weight: 700;">🎒 Preparation Checklist for Kids</h4>
-                    <ul style="margin: 0; padding-left: 20px; font-size: 0.95rem; line-height: 1.5;">
-                        <li>Personal water bottle</li>
-                        <li>Clean indoor shoes (Sil-nae-hwa)</li>
-                    </ul>
-                </div>
-            `,
-            schedule: `
-                <div style="padding: 16px; background: rgba(16, 185, 129, 0.05); border-left: 4px solid #10b981; border-radius: 12px; margin-bottom: 12px;">
-                    <h4 style="margin: 0 0 8px 0; color: #10b981; font-weight: 700;">📅 Key Schedule & Details</h4>
-                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">Summer break care class application and meal service survey submission.</p>
-                </div>
-            `,
-            full_translation: "[School Newsletter - Mapo Elementary School Grade 1]\nTitle: Summer Care Class Guide & Application Form Distribution\n- Lunch Application: Submit the consent form to the administration office by May 14.\n- Preparation: Personal water bottle and clean indoor shoes to wear every day.",
-            cultural_notes: `
-                <div class="culture-note" style="padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; margin-top: 12px;">
-                    <h5 style="margin: 0 0 8px 0; color: #15803d; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> Korean Cultural Context</h5>
-                    <p style="margin: 0; font-size: 0.9rem; line-height: 1.5;"><strong>Indoor Shoes (Sil-nae-hwa - 실내화):</strong> ${mockKnowledgeBase[0].content}</p>
-                </div>
-            `
-        };
-    } else { // ko (Korean)
-        return {
+            materials: "",
+            schedule: "",
+            full_translation: "AI 분석 중 서버 에러가 발생했습니다. API 설정과 네트워크 상태를 확인해 주세요.",
+            cultural_notes: ""
+        },
+        en: {
             submissions: `
                 <div style="padding: 16px; background: rgba(239, 68, 68, 0.05); border-left: 4px solid #ef4444; border-radius: 12px; margin-bottom: 12px;">
-                    <h4 style="margin: 0 0 8px 0; color: #ef4444; font-weight: 700;">✍️ 부모 제출 및 서명할 것</h4>
-                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">급식 동의서 신청: 5월 14일(금)까지 행정실에 제출해 주세요.</p>
+                    <h4 style="margin: 0 0 8px 0; color: #ef4444; font-weight: 700;">🚨 Error Occurred</h4>
+                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">An error occurred during AI analysis and translation. Could not retrieve data.</p>
                 </div>
             `,
-            materials: `
-                <div style="padding: 16px; background: rgba(245, 158, 11, 0.05); border-left: 4px solid #f59e0b; border-radius: 12px; margin-bottom: 12px;">
-                    <h4 style="margin: 0 0 8px 0; color: #f59e0b; font-weight: 700;">🎒 아이가 챙겨야 할 준비물</h4>
-                    <ul style="margin: 0; padding-left: 20px; font-size: 0.95rem; line-height: 1.5;">
-                        <li>개인 물통</li>
-                        <li>매일 신을 깨끗한 실내화</li>
-                    </ul>
-                </div>
-            `,
-            schedule: `
-                <div style="padding: 16px; background: rgba(16, 185, 129, 0.05); border-left: 4px solid #10b981; border-radius: 12px; margin-bottom: 12px;">
-                    <h4 style="margin: 0 0 8px 0; color: #10b981; font-weight: 700;">📅 핵심 일정 및 안내 사항</h4>
-                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">방학 돌봄교실 신청서 안내 및 배부 관련 공지입니다.</p>
-                </div>
-            `,
-            full_translation: "[알림장 - 마포초등학교 1학년]\n제목: 방학 돌봄교실 안내 및 신청서 배부\n- 급식 신청: 동의서 체크 후 5월 14일까지 행정실 제출.\n- 준비물: 개인 물통 및 매일 신을 깨끗한 실내화 지참.",
-            cultural_notes: `
-                <div class="culture-note" style="padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; margin-top: 12px;">
-                    <h5 style="margin: 0 0 8px 0; color: #15803d; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> 한국 학교 문화 팁</h5>
-                    <p style="margin: 0; font-size: 0.9rem; line-height: 1.5;"><strong>실내화:</strong> ${mockKnowledgeBase[0].content}</p>
-                </div>
-            `
-        };
-    }
+            materials: "",
+            schedule: "",
+            full_translation: "A server error occurred during AI analysis. Please check your API settings and network status.",
+            cultural_notes: ""
+        }
+    };
+    
+    return errorMessages[lang] || errorMessages['ko'];
 }
 
 // ==========================================
@@ -1732,24 +1704,7 @@ function triggerToast(title, body) {
 
 // Notification sound simulator using browser Web Audio API (so no external files are needed)
 function playNotificationBeep() {
-    try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        
-        oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5 note
-        gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
-        
-        oscillator.start();
-        oscillator.stop(audioCtx.currentTime + 0.35);
-    } catch (e) {
-        console.log("Audio play blocked by browser autoplay policy.");
-    }
+    // Sound disabled by user request
 }
 
 // ==========================================
@@ -1763,8 +1718,8 @@ let onboardData = {
     rawIncome: 300
 };
 
-// Wizard progress bar milestones for 4 steps (0, 1, 2, 3)
-const progressMilestones = [25, 50, 75, 100];
+// Wizard progress bar milestones for 2 steps (0, 1)
+const progressMilestones = [50, 100];
 
 function updateOnboardProgress() {
     const fill = document.getElementById('onboard-progress-fill');
@@ -1929,31 +1884,6 @@ function nextOnboardStep() {
                   currentLanguage === 'zh' ? '请选择您的语言。' : 'Please select your language.');
             return;
         }
-    }
-    
-    if (onboardStep === 2) {
-        // Validate children list is non-empty and ages are valid
-        if (!onboardData.children || onboardData.children.length === 0) {
-            alert(currentLanguage === 'ko' ? '최소 1명 이상의 자녀 정보를 입력해야 합니다.' : 
-                  currentLanguage === 'vi' ? 'Vui lòng nhập thông tin của ít nhất một trẻ.' :
-                  currentLanguage === 'zh' ? '请至少输入一个孩子的信息。' : 'Please enter info for at least one child.');
-            return;
-        }
-    }
-    
-    if (onboardStep === 3) {
-        // Read raw monthly income input
-        const incomeInput = document.getElementById('onboard-income-val');
-        const incomeVal = parseInt(incomeInput ? incomeInput.value : "") || 0;
-        if (incomeVal <= 0) {
-            const warningMsg = currentLanguage === 'vi' ? 'Vui lòng nhập thu nhập hàng tháng.' : (currentLanguage === 'zh' ? '请输入月收入。' : (currentLanguage === 'en' ? 'Please enter monthly income.' : '가구 월평균 소득을 입력해 주세요.'));
-            alert(warningMsg);
-            return;
-        }
-        // Save computed bracket
-        const familyCount = 2 + (onboardData.children ? onboardData.children.length : 1);
-        onboardData.income = getMedianIncomePercent(incomeVal, familyCount);
-        onboardData.rawIncome = incomeVal;
         
         finishOnboarding();
         return;
@@ -1971,17 +1901,8 @@ function nextOnboardStep() {
     // Update Progress Bar
     updateOnboardProgress();
     
-    // Special Actions per step
-    if (onboardStep === 2) {
-        renderOnboardChildrenInputs();
-    }
-    
-    // Footer Button Text controller
-    if (onboardStep === 3) {
-        nextBtn.textContent = translations[currentLanguage].btnStart || "다온 시작하기";
-    } else {
-        nextBtn.textContent = translations[currentLanguage].btnNext || "다음";
-    }
+    // Footer Button Text controller (Step 1 is the final step now)
+    nextBtn.textContent = translations[currentLanguage].btnStart || "다온 시작하기";
 }
 // Select Native Language Option (Step 1)
 function selectOnboardLanguage(langCode) {
@@ -2113,13 +2034,18 @@ function finishOnboarding() {
     currentLanguage = onboardData.lang;
     
     // Primary child age maps to first child's input
-    const primaryChildAge = onboardData.children[0] ? onboardData.children[0].age : 8;
+    // Primary child age maps to first child's input
+    const primaryChildAge = (onboardData.children && onboardData.children[0]) ? onboardData.children[0].age : 8;
     activeProfile.childAge = primaryChildAge;
-    activeProfile.incomeBracket = onboardData.income;
+    activeProfile.incomeBracket = onboardData.income || 80;
     
     // Synchronize filters
-    document.getElementById('global-lang').value = onboardData.lang;
-    document.getElementById('prof-child-age').value = primaryChildAge;
+    const globalLangEl = document.getElementById('global-lang');
+    if (globalLangEl) globalLangEl.value = onboardData.lang;
+    
+    const profChildAgeEl = document.getElementById('prof-child-age');
+    if (profChildAgeEl) profChildAgeEl.value = primaryChildAge;
+    
     const incomeValEl = document.getElementById('prof-income-val');
     if (incomeValEl) {
         incomeValEl.value = onboardData.rawIncome || 300;
@@ -2133,7 +2059,7 @@ function finishOnboarding() {
     localStorage.setItem('daon_onboarded', 'true');
     localStorage.setItem('daon_lang', onboardData.lang);
     localStorage.setItem('daon_child_age', primaryChildAge);
-    localStorage.setItem('daon_income', onboardData.income);
+    localStorage.setItem('daon_income', onboardData.income || 80);
     localStorage.setItem('daon_raw_income', onboardData.rawIncome || 300);
     localStorage.setItem('daon_children', JSON.stringify(onboardData.children)); // Stringify child details
     
@@ -2235,6 +2161,8 @@ window.addEventListener('DOMContentLoaded', async () => {
         simulateBenefitMatch(false);
         renderWelfareFeed();
         setUploadMethod('photo');
+        renderTranslationHistory();
+        initUsernameCheck();
         
         // Initialize Google Login
         await initGoogleLogin();
@@ -2242,8 +2170,22 @@ window.addEventListener('DOMContentLoaded', async () => {
         // Onboarding Check
         const overlay = document.getElementById('onboarding-overlay');
         if (overlay) {
-            overlay.style.display = 'none';
-            overlay.classList.add('fade-out');
+            if (localStorage.getItem('daon_onboarded') === 'true') {
+                overlay.style.display = 'none';
+                overlay.classList.add('fade-out');
+            } else {
+                overlay.style.display = 'flex';
+                onboardStep = 0;
+                updateOnboardProgress();
+                
+                const sysLang = navigator.language || navigator.userLanguage;
+                let recommended = 'ko';
+                if (sysLang.includes('vi')) recommended = 'vi';
+                else if (sysLang.includes('zh')) recommended = 'zh';
+                else if (sysLang.includes('en')) recommended = 'en';
+                
+                selectOnboardLanguage(recommended);
+            }
         }
     } catch (err) {
         console.error("Daon load initialization error:", err);
@@ -2507,7 +2449,7 @@ function applyUserSession(userData) {
     if (nameEl) nameEl.textContent = userData.name || userData.username;
     
     const emailEl = document.getElementById("txt-myprofile-email");
-    if (emailEl) emailEl.textContent = userData.username;
+    if (emailEl) emailEl.textContent = userData.email || userData.username;
     
     // Update Profile Image
     const defaultIcon = document.getElementById("user-avatar-default-icon");
@@ -2518,7 +2460,10 @@ function applyUserSession(userData) {
         avatarImg.classList.remove("hidden");
     }
     
-    // Toggle Login button and Logout button visibility
+    // Hide auth forms and Google login, show logout
+    const localAuthContainer = document.getElementById("local-auth-container");
+    if (localAuthContainer) localAuthContainer.classList.add("hidden");
+    
     const googleBtnContainer = document.getElementById("google-login-container");
     if (googleBtnContainer) googleBtnContainer.classList.add("hidden");
     
@@ -2545,7 +2490,10 @@ function resetUserSessionUI() {
         avatarImg.classList.add("hidden");
     }
     
-    // Toggle buttons
+    // Show auth forms and Google login, hide logout
+    const localAuthContainer = document.getElementById("local-auth-container");
+    if (localAuthContainer) localAuthContainer.classList.remove("hidden");
+    
     const googleBtnContainer = document.getElementById("google-login-container");
     if (googleBtnContainer) googleBtnContainer.classList.remove("hidden");
     
@@ -2564,5 +2512,408 @@ function handleLogout() {
     renderGoogleLoginButton();
     
     triggerToast("로그아웃 완료", "성공적으로 로그아웃 되었습니다.", "info");
+}
+
+// Local Auth Form Controllers
+function toggleAuthForm(mode, event) {
+    if (event) event.preventDefault();
+    const loginForm = document.getElementById("local-login-form");
+    const registerForm = document.getElementById("local-register-form");
+    
+    if (mode === "register") {
+        if (loginForm) loginForm.classList.add("hidden");
+        if (registerForm) registerForm.classList.remove("hidden");
+    } else {
+        if (loginForm) loginForm.classList.remove("hidden");
+        if (registerForm) registerForm.classList.add("hidden");
+    }
+}
+
+async function handleLocalLogin() {
+    const usernameInput = document.getElementById("auth-login-username");
+    const passwordInput = document.getElementById("auth-login-password");
+    
+    if (!usernameInput || !passwordInput) return;
+    
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value;
+    
+    if (!username || !password) {
+        triggerToast("입력 오류", "아이디와 비밀번호를 모두 입력해 주세요.", "error");
+        return;
+    }
+    
+    try {
+        const res = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+        });
+        
+        if (!res.ok) {
+            const errData = await res.json();
+            throw new Error(errData.detail || "로그인 실패");
+        }
+        
+        const userData = await res.json();
+        if (userData.status === "success") {
+            localStorage.setItem("daon_user_session", JSON.stringify(userData));
+            applyUserSession(userData);
+            triggerToast("로그인 성공", `${userData.name || username}님, 반갑습니다!`, "success");
+            
+            // Clear inputs
+            usernameInput.value = "";
+            passwordInput.value = "";
+        }
+    } catch (err) {
+        console.error("Local login error:", err);
+        triggerToast("로그인 실패", err.message || "아이디 또는 비밀번호를 확인하세요.", "error");
+    }
+}
+
+async function handleLocalRegister() {
+    const usernameInput = document.getElementById("auth-reg-username");
+    const nameInput = document.getElementById("auth-reg-name");
+    const emailInput = document.getElementById("auth-reg-email");
+    const passwordInput = document.getElementById("auth-reg-password");
+    const passwordConfirmInput = document.getElementById("auth-reg-password-confirm");
+    
+    if (!usernameInput || !nameInput || !emailInput || !passwordInput || !passwordConfirmInput) return;
+    
+    const username = usernameInput.value.trim();
+    const fullName = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+    const passwordConfirm = passwordConfirmInput.value;
+    
+    if (!username || !fullName || !email || !password || !passwordConfirm) {
+        triggerToast("입력 오류", "모든 항목을 입력해 주세요.", "error");
+        return;
+    }
+    
+    const usernameRegex = /^[a-zA-Z0-9_-]{3,20}$/;
+    if (!usernameRegex.test(username)) {
+        triggerToast("입력 오류", "아이디 형식이 올바르지 않습니다.", "error");
+        return;
+    }
+    
+    if (fullName.length < 2) {
+        triggerToast("입력 오류", "이름은 2글자 이상 입력해 주세요.", "error");
+        return;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        triggerToast("입력 오류", "유효한 이메일 주소를 입력해 주세요.", "error");
+        return;
+    }
+    
+    if (password.length < 6) {
+        triggerToast("입력 오류", "비밀번호는 6자 이상이어야 합니다.", "error");
+        return;
+    }
+    
+    if (password !== passwordConfirm) {
+        triggerToast("입력 오류", "비밀번호가 일치하지 않습니다.", "error");
+        return;
+    }
+    
+    try {
+        const res = await fetch("/api/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: username,
+                full_name: fullName,
+                email: email,
+                password: password
+            })
+        });
+        
+        if (!res.ok) {
+            const errData = await res.json();
+            throw new Error(errData.detail || "회원가입 실패");
+        }
+        
+        triggerToast("회원가입 성공", "회원가입이 완료되었습니다! 로그인해 주세요.", "success");
+        
+        // Clear inputs
+        usernameInput.value = "";
+        nameInput.value = "";
+        emailInput.value = "";
+        passwordInput.value = "";
+        passwordConfirmInput.value = "";
+        
+        // Hide messages
+        const msgUsername = document.getElementById("reg-username-message");
+        const msgEmail = document.getElementById("reg-email-message");
+        const msgPassword = document.getElementById("reg-password-message");
+        if (msgUsername) msgUsername.style.display = "none";
+        if (msgEmail) msgEmail.style.display = "none";
+        if (msgPassword) msgPassword.style.display = "none";
+        
+        // Switch to login form
+        toggleAuthForm("login");
+    } catch (err) {
+        console.error("Local register error:", err);
+        triggerToast("회원가입 실패", err.message || "가입 정보를 다시 확인해 주세요.", "error");
+    }
+}
+
+// Local Translation History (localStorage)
+function saveTranslationToHistory(sourceText, resultData, langCode) {
+    try {
+        let history = JSON.parse(localStorage.getItem("daon_translation_history") || "[]");
+        
+        // Create new record
+        const newRecord = {
+            timestamp: new Date().toISOString(),
+            sourceText: sourceText,
+            lang: langCode,
+            result: resultData
+        };
+        
+        // Prepend and limit size to 20
+        history.unshift(newRecord);
+        if (history.length > 20) {
+            history = history.slice(0, 20);
+        }
+        
+        localStorage.setItem("daon_translation_history", JSON.stringify(history));
+        renderTranslationHistory();
+    } catch (e) {
+        console.error("Failed to save translation to history:", e);
+    }
+}
+
+function renderTranslationHistory() {
+    const listContainer = document.getElementById("translation-history-list");
+    if (!listContainer) return;
+    
+    try {
+        const history = JSON.parse(localStorage.getItem("daon_translation_history") || "[]");
+        
+        if (history.length === 0) {
+            const emptyText = (translations[currentLanguage] && translations[currentLanguage].historyEmpty) 
+                ? translations[currentLanguage].historyEmpty 
+                : "아직 번역 분석 기록이 없습니다.";
+            listContainer.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 0.85rem; margin: 10px 0;" id="txt-history-empty">${emptyText}</p>`;
+            return;
+        }
+        
+        let html = "";
+        history.forEach((record, index) => {
+            const date = new Date(record.timestamp);
+            const dateStr = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+            
+            let title = record.sourceText.replace(/\n/g, ' ').trim();
+            if (title.length > 28) {
+                title = title.substring(0, 28) + "...";
+            }
+            
+            const langLabels = { ko: 'KO', vi: 'VI', zh: 'ZH', en: 'EN' };
+            const langLabel = langLabels[record.lang] || 'KO';
+            
+            html += `
+                <div class="history-item-card" onclick="loadHistoryItem(${index})" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: rgba(0, 0, 0, 0.02); border-radius: 12px; border: 1px solid var(--border-color); cursor: pointer; transition: all 0.2s;">
+                    <div style="flex: 1; text-align: left; overflow: hidden; padding-right: 10px;">
+                        <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-main); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${title}</div>
+                        <div style="display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--text-sub);">
+                            <span>${dateStr}</span>
+                            <span style="background: var(--border-color); width: 1px; height: 8px;"></span>
+                            <span style="background: var(--secondary-light); color: var(--secondary); font-weight: 700; padding: 1px 4px; border-radius: 3px; font-size: 0.65rem;">${langLabel}</span>
+                        </div>
+                    </div>
+                    <button onclick="deleteHistoryItem(${index}, event)" style="background: none; border: none; font-size: 1rem; color: var(--text-sub); cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;" onmouseover="this.style.color='var(--toss-red)'" onmouseout="this.style.color='var(--text-sub)'">
+                        <i class="fa-regular fa-trash-can"></i>
+                    </button>
+                </div>
+            `;
+        });
+        
+        listContainer.innerHTML = html;
+    } catch (e) {
+        console.error("Failed to render translation history:", e);
+    }
+}
+
+function clearTranslationHistory() {
+    if (confirm("번역 기록을 모두 삭제하시겠습니까?")) {
+        localStorage.removeItem("daon_translation_history");
+        renderTranslationHistory();
+        triggerToast("기록 삭제", "모든 번역 분석 기록이 삭제되었습니다.", "info");
+    }
+}
+
+function deleteHistoryItem(index, event) {
+    if (event) event.stopPropagation();
+    
+    try {
+        let history = JSON.parse(localStorage.getItem("daon_translation_history") || "[]");
+        history.splice(index, 1);
+        localStorage.setItem("daon_translation_history", JSON.stringify(history));
+        renderTranslationHistory();
+        triggerToast("기록 삭제", "해당 번역 기록이 삭제되었습니다.", "info");
+    } catch (e) {
+        console.error("Failed to delete history item:", e);
+    }
+}
+
+function loadHistoryItem(index) {
+    try {
+        const history = JSON.parse(localStorage.getItem("daon_translation_history") || "[]");
+        const record = history[index];
+        if (!record) return;
+        
+        const reportModal = document.getElementById('translation-report-modal');
+        const modalLoading = document.getElementById('report-modal-loading');
+        const modalContent = document.getElementById('report-modal-content-container');
+        
+        if (reportModal) reportModal.classList.remove('hidden');
+        if (modalLoading) modalLoading.classList.add('hidden');
+        if (modalContent) modalContent.classList.remove('hidden');
+        
+        const langLabels = { ko: '한국어', vi: 'Tiếng Việt', zh: '中文', en: 'English' };
+        const langTag = document.getElementById('report-modal-lang-tag');
+        if (langTag) langTag.textContent = langLabels[record.lang];
+        
+        document.getElementById('doc-text-input').value = record.sourceText;
+        renderReportModalResult(record.result);
+        triggerToast("기록 로드", "이전 분석 데이터를 불러왔습니다.", "success");
+    } catch (e) {
+        console.error("Failed to load history item:", e);
+        triggerToast("기록 로드 실패", "번역 데이터를 불러오지 못했습니다.", "error");
+    }
+}
+
+let usernameCheckTimeout = null;
+function initUsernameCheck() {
+    const inputEl = document.getElementById("auth-reg-username");
+    if (!inputEl) return;
+    
+    inputEl.addEventListener("input", function() {
+        const username = this.value.trim();
+        const msgEl = document.getElementById("reg-username-message");
+        if (!msgEl) return;
+        
+        if (!username) {
+            msgEl.style.display = "none";
+            msgEl.textContent = "";
+            return;
+        }
+        
+        const usernameRegex = /^[a-zA-Z0-9_-]{3,20}$/;
+        if (!usernameRegex.test(username)) {
+            msgEl.style.display = "block";
+            msgEl.style.color = "#f04452"; // Toss Red
+            if (currentLanguage === "ko") {
+                msgEl.textContent = "아이디는 3~20자의 영문, 숫자, 밑줄(_), 붙임표(-)만 사용할 수 있습니다.";
+            } else if (currentLanguage === "vi") {
+                msgEl.textContent = "Tên đăng nhập phải từ 3-20 ký tự, chỉ chứa chữ cái, số, gạch dưới (_) và gạch ngang (-).";
+            } else if (currentLanguage === "zh") {
+                msgEl.textContent = "用户名必须为3~20个字符，且只能包含英文字母、数字、下划线(_)或连字符(-)。";
+            } else {
+                msgEl.textContent = "Username must be 3-20 characters, containing only letters, numbers, underscores, and hyphens.";
+            }
+            return;
+        }
+        
+        clearTimeout(usernameCheckTimeout);
+        usernameCheckTimeout = setTimeout(async () => {
+            try {
+                const res = await fetch(`/api/auth/check-username?username=${encodeURIComponent(username)}`);
+                if (!res.ok) throw new Error("Failed to check username");
+                const data = await res.json();
+                
+                msgEl.style.display = "block";
+                if (data.available) {
+                    msgEl.style.color = "#22bb66"; // Toss Green
+                    msgEl.textContent = currentLanguage === "ko" 
+                        ? "사용 가능한 아이디입니다." 
+                        : (currentLanguage === "vi" ? "Tên đăng nhập khả dụng." : "Username is available.");
+                } else {
+                    msgEl.style.color = "#f04452"; // Toss Red
+                    msgEl.textContent = currentLanguage === "ko" 
+                        ? "이미 존재하는 아이디입니다." 
+                        : (currentLanguage === "vi" ? "Tên đăng nhập đã tồn tại." : "Username is already taken.");
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }, 300);
+    });
+
+    // Email Validation Listener
+    const emailEl = document.getElementById("auth-reg-email");
+    if (emailEl) {
+        emailEl.addEventListener("input", function() {
+            const email = this.value.trim();
+            const msgEl = document.getElementById("reg-email-message");
+            if (!msgEl) return;
+            
+            if (!email) {
+                msgEl.style.display = "none";
+                msgEl.textContent = "";
+                return;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            msgEl.style.display = "block";
+            if (emailRegex.test(email)) {
+                msgEl.style.color = "#22bb66"; // Toss Green
+                msgEl.textContent = currentLanguage === "ko" 
+                    ? "올바른 이메일 형식입니다." 
+                    : (currentLanguage === "vi" ? "Định dạng email hợp lệ." : "Valid email format.");
+            } else {
+                msgEl.style.color = "#f04452"; // Toss Red
+                msgEl.textContent = currentLanguage === "ko" 
+                    ? "이메일 형식이 올바르지 않습니다." 
+                    : (currentLanguage === "vi" ? "Định dạng email không hợp lệ." : "Invalid email format.");
+            }
+        });
+    }
+
+    // Password Match Validation Listener
+    const pwEl = document.getElementById("auth-reg-password");
+    const pwConfirmEl = document.getElementById("auth-reg-password-confirm");
+    
+    function validatePasswords() {
+        if (!pwEl || !pwConfirmEl) return;
+        const msgEl = document.getElementById("reg-password-message");
+        if (!msgEl) return;
+        
+        const pw = pwEl.value;
+        const pwConfirm = pwConfirmEl.value;
+        
+        if (!pw && !pwConfirm) {
+            msgEl.style.display = "none";
+            msgEl.textContent = "";
+            return;
+        }
+        
+        msgEl.style.display = "block";
+        if (pw.length < 6) {
+            msgEl.style.color = "#f04452"; // Toss Red
+            msgEl.textContent = currentLanguage === "ko" 
+                ? "비밀번호는 6자 이상이어야 합니다." 
+                : (currentLanguage === "vi" ? "Mật khẩu phải dài ít nhất 6 ký tự." : "Password must be at least 6 characters.");
+            return;
+        }
+        
+        if (pw === pwConfirm) {
+            msgEl.style.color = "#22bb66"; // Toss Green
+            msgEl.textContent = currentLanguage === "ko" 
+                ? "비밀번호가 일치합니다." 
+                : (currentLanguage === "vi" ? "Mật khẩu khớp." : "Passwords match.");
+        } else {
+            msgEl.style.color = "#f04452"; // Toss Red
+            msgEl.textContent = currentLanguage === "ko" 
+                ? "비밀번호가 일치하지 않습니다." 
+                : (currentLanguage === "vi" ? "Mật khẩu không khớp." : "Passwords do not match.");
+        }
+    }
+    
+    if (pwEl) pwEl.addEventListener("input", validatePasswords);
+    if (pwConfirmEl) pwConfirmEl.addEventListener("input", validatePasswords);
 }
 
