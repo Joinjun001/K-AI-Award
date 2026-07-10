@@ -17,11 +17,11 @@ const translations = {
         navProfile: "마이페이지",
         
         // General Welcome Panel
-        welcomeTitle: "다문화 가정을 위한<br>따뜻한 AI 비서, 다온",
-        welcomeDesc: "복지 신청 서류 번역부터 나에게 딱 맞는 혜택 알림까지, 다온이 한국 생활을 함께합니다.",
+        welcomeTitle: "AI 비서 다온",
+        welcomeDesc: "",
         
         // Tab Headers & Buttons
-        helperSubtitle: "사진을 찍거나 텍스트를 붙여넣으면 바로 번역해드립니다.",
+        helperSubtitle: "",
         btnPhoto: "사진 촬영/업로드",
         btnAnalyze: "번역 시작",
         alertsSubtitle: "가족 구성 정보에 부합하는 새로운 지원 혜택이 복지로에 등록되면 모국어로 실시간 알림을 보냅니다.",
@@ -37,7 +37,7 @@ const translations = {
         modalSourceLabel: "출처: 복지로 및 공식 기관",
         
         // Extra localization
-        helperTitle: "학교 안내장 번역",
+        helperTitle: "가정통신문 번역하기",
         helperInputTitle: "문서 분석 및 번역",
         ocrLoadingDesc: "이미지에서 한글 텍스트를 추출 중입니다 (OCR)...",
         helperLoadingDesc: "다온 AI가 문서를 해독하고 한국 문화적 맥락을 파악하고 있습니다...",
@@ -121,20 +121,24 @@ const translations = {
         counterUnit: "명",
         methodPhotoLabel: "사진 업로드",
         methodTextLabel: "텍스트 직접 입력",
-        uploadZoneTitle: "가정통신문 사진을 올려주세요",
-        uploadZoneDesc: "클릭하여 앨범에서 선택하거나 카메라 촬영",
+        uploadZoneTitle: "사진 올리기",
+        uploadZoneDesc: "여기를 눌러 사진 선택",
+        uploadZoneTitleLoggedOut: "로그인 후 이용 가능합니다",
+        uploadZoneDescLoggedOut: "여기를 눌러 로그인하기",
         confirmTitle: "이 이미지를 번역할까요?",
         confirmDesc: "다온 AI가 문서의 내용과 준비물을 파악하여 요약해 드립니다.",
         confirmNo: "아니요",
         confirmYes: "번역하기",
-        historyTitle: "최근 번역 분석 기록",
+        historyTitle: "최근 기록",
         historyClear: "전체 삭제",
         historyEmpty: "아직 번역 분석 기록이 없습니다.",
         noAccount: "계정이 없으신가요?",
         goRegister: "회원가입",
         haveAccount: "이미 계정이 있으신가요?",
         goLogin: "로그인",
-        orLabel: "또는 (Or)"
+        orLabel: "또는 (Or)",
+        loginRequiredAlert: "사진 번역 기능을 이용하시려면 먼저 로그인해주세요.",
+        privacyAgree: "개인정보 수집 및 이용 동의 [필수]"
     },
     vi: {
         // Navigation
@@ -143,11 +147,11 @@ const translations = {
         navProfile: "Trang cá nhân",
         
         // General Welcome Panel
-        welcomeTitle: "Daon, Trợ lý AI ấm áp<br>cho các gia đình đa văn hóa",
-        welcomeDesc: "Từ dịch thuật hồ sơ hành chính đến thông báo trợ cấp phù hợp nhất cho bạn, Daon đồng hành cùng cuộc sống Hàn Quốc.",
+        welcomeTitle: "Trợ lý AI Daon",
+        welcomeDesc: "",
         
         // Tab Headers & Buttons
-        helperSubtitle: "Chụp ảnh hoặc dán văn bản vào là xong, chúng tôi dịch ngay cho bạ.",
+        helperSubtitle: "",
         btnPhoto: "Chụp ảnh/Tải lên",
         btnAnalyze: "Bắt đầu dịch",
         alertsSubtitle: "Khi chính sách phúc lợi mới phù hợp với thông tin gia đình được đăng ký trên Bokjiro, hệ thống sẽ gửi thông báo đẩy thời gian thực bằng ngôn ngữ mẹ đẻ.",
@@ -247,20 +251,24 @@ const translations = {
         counterUnit: "trẻ",
         methodPhotoLabel: "Tải ảnh lên",
         methodTextLabel: "Nhập văn bản",
-        uploadZoneTitle: "Tải ảnh thư báo lên",
-        uploadZoneDesc: "Nhấp để chọn từ thư viện hoặc chụp ảnh",
+        uploadZoneTitle: "Tải ảnh lên",
+        uploadZoneDesc: "Nhấn vào đây để chọn ảnh",
+        uploadZoneTitleLoggedOut: "Vui lòng đăng nhập để sử dụng",
+        uploadZoneDescLoggedOut: "Nhấn vào đây để đăng nhập",
         confirmTitle: "Bạn có muốn dịch hình ảnh này không?",
         confirmDesc: "Daon AI sẽ phân tích nội dung tài liệu và tóm tắt các đồ dùng cần chuẩn bị.",
         confirmNo: "Không",
         confirmYes: "Dịch ngay",
-        historyTitle: "Lịch sử dịch & phân tích gần đây",
+        historyTitle: "Lịch sử gần đây",
         historyClear: "Xóa tất cả",
         historyEmpty: "Chưa có lịch sử dịch và phân tích.",
         noAccount: "Bạn chưa có tài khoản?",
         goRegister: "Đăng ký",
         haveAccount: "Bạn đã có tài khoản?",
         goLogin: "Đăng nhập",
-        orLabel: "Hoặc (Or)"
+        orLabel: "Hoặc (Or)",
+        loginRequiredAlert: "Vui lòng đăng nhập trước để sử dụng tính năng dịch ảnh thông báo.",
+        privacyAgree: "Đồng ý thu thập và sử dụng thông tin cá nhân [Bắt buộc]"
     },
     zh: {
         // Navigation
@@ -269,13 +277,13 @@ const translations = {
         navProfile: "个人主页",
         
         // General Welcome Panel
-        welcomeTitle: "多稳 (Daon)，多文化家庭的<br>贴心 AI 秘书",
-        welcomeDesc: "从翻译政府办事文件，到推荐最适合您家庭의福利通知，多稳与您的韩国生活一路相随。",
+        welcomeTitle: "AI 秘书多稳",
+        welcomeDesc: "",
         
         // Tab Headers & Buttons
-        helperSubtitle: "您可以拍摄难以理解 of 政府通知、公文或输入文本。多稳 AI 将结合韩国文化背景，用母语为您通俗易懂地翻译和解读。",
+        helperSubtitle: "",
         btnPhoto: "拍摄照片/上传",
-        btnAnalyze: "运行 Daon AI RAG 分析",
+        btnAnalyze: "开始翻译",
         alertsSubtitle: "当福利路注册了符合您家庭构成的新福利政策时，系统将以母语发送实时后台推送通知。",
         btnNext: "下一步",
         btnStart: "开始多稳",
@@ -373,20 +381,24 @@ const translations = {
         counterUnit: "名",
         methodPhotoLabel: "上传照片",
         methodTextLabel: "直接输入文本",
-        uploadZoneTitle: "请上传学校通知书照片",
-        uploadZoneDesc: "点击选择相册 or 拍照",
+        uploadZoneTitle: "上传图片",
+        uploadZoneTitleLoggedOut: "请先登录后使用",
+        uploadZoneDesc: "点击此处选择图片",
+        uploadZoneDescLoggedOut: "点击此处进行登录",
         confirmTitle: "是否翻译此图片？",
         confirmDesc: "多稳 AI 将分析文件内容并为您总结所需物品。",
         confirmNo: "取消",
         confirmYes: "翻译",
-        historyTitle: "最近翻译分析记录",
+        historyTitle: "最近记录",
         historyClear: "全部删除",
         historyEmpty: "还没有翻译分析记录。",
         noAccount: "没有账号吗？",
         goRegister: "注册",
         haveAccount: "已经有账号吗？",
         goLogin: "登录",
-        orLabel: "或者 (Or)"
+        orLabel: "或者 (Or)",
+        loginRequiredAlert: "请先登录以使用通知照片翻译功能。",
+        privacyAgree: "同意收集及使用个人信息 [必填]"
     },
     en: {
         // Navigation
@@ -395,11 +407,11 @@ const translations = {
         navProfile: "My Page",
         
         // General Welcome Panel
-        welcomeTitle: "Daon, a Warm AI Assistant<br>for Multicultural Families",
-        welcomeDesc: "From translating complex administration documents to matching customized benefits just for you, Daon accompanies your life in Korea.",
+        welcomeTitle: "AI Assistant Daon",
+        welcomeDesc: "",
         
         // Tab Headers & Buttons
-        helperSubtitle: "Take a photo or paste the text — we'll translate it right away.",
+        helperSubtitle: "",
         btnPhoto: "Take Photo/Upload",
         btnAnalyze: "Start Translation",
         alertsSubtitle: "When a new welfare benefit matching your family profile is registered on Bokjiro, a real-time push notification is sent in your native language.",
@@ -415,7 +427,7 @@ const translations = {
         modalSourceLabel: "Source: Bokjiro & Official Agencies",
         
         // Extra localization
-        helperTitle: "RAG Document & Admin Helper",
+        helperTitle: "Translate Notice",
         helperInputTitle: "Document Analysis & Translation",
         ocrLoadingDesc: "Extracting Korean text from image (OCR)...",
         helperLoadingDesc: "Daon AI is analyzing the document and identifying the Korean cultural context...",
@@ -499,20 +511,24 @@ const translations = {
         counterUnit: "child",
         methodPhotoLabel: "Upload Photo",
         methodTextLabel: "Enter Text",
-        uploadZoneTitle: "Upload a school newsletter photo",
-        uploadZoneDesc: "Click to select from gallery or take a photo",
+        uploadZoneTitle: "Upload Photo",
+        uploadZoneTitleLoggedOut: "Please log in first",
+        uploadZoneDesc: "Tap here to select photo",
+        uploadZoneDescLoggedOut: "Tap here to log in",
         confirmTitle: "Translate this image?",
         confirmDesc: "Daon AI will analyze the document and summarize the required items for you.",
         confirmNo: "Cancel",
         confirmYes: "Translate",
-        historyTitle: "Recent Translations History",
+        historyTitle: "Recent History",
         historyClear: "Clear All",
         historyEmpty: "No translation history yet.",
         noAccount: "Don't have an account?",
         goRegister: "Sign Up",
         haveAccount: "Already have an account?",
         goLogin: "Log In",
-        orLabel: "Or"
+        orLabel: "Or",
+        loginRequiredAlert: "Please log in first to use the notice photo translation feature.",
+        privacyAgree: "Consent to Collection and Use of Personal Information [Required]"
     }};// Mock RAG Knowledge Base (Vector Database emulation)
 const mockKnowledgeBase = [
     {
@@ -784,8 +800,12 @@ function changeLanguage(langCode) {
         'th-updated': translations[langCode].thUpdated,
         'txt-method-photo-label': translations[langCode].methodPhotoLabel,
         'txt-method-text-label': translations[langCode].methodTextLabel,
-        'txt-upload-zone-title': translations[langCode].uploadZoneTitle,
-        'txt-upload-zone-desc': translations[langCode].uploadZoneDesc,
+        'txt-upload-zone-title': (localStorage.getItem("daon_user_session") || userSessionToken)
+            ? translations[langCode].uploadZoneTitle
+            : (translations[langCode].uploadZoneTitleLoggedOut || translations[langCode].uploadZoneTitle),
+        'txt-upload-zone-desc': (localStorage.getItem("daon_user_session") || userSessionToken)
+            ? translations[langCode].uploadZoneDesc
+            : (translations[langCode].uploadZoneDescLoggedOut || translations[langCode].uploadZoneDesc),
         'txt-confirm-title': translations[langCode].confirmTitle,
         'txt-confirm-desc': translations[langCode].confirmDesc,
         'txt-confirm-no': translations[langCode].confirmNo,
@@ -796,12 +816,24 @@ function changeLanguage(langCode) {
         'txt-go-register': translations[langCode].goRegister,
         'txt-have-account': translations[langCode].haveAccount,
         'txt-go-login': translations[langCode].goLogin,
-        'txt-or-label': translations[langCode].orLabel
+        'txt-or-label': translations[langCode].orLabel,
+        'txt-privacy-agree': translations[langCode].privacyAgree
     };
     
     for (const [id, text] of Object.entries(elements)) {
         const el = document.getElementById(id);
         if (el) el.innerHTML = text;
+    }
+
+    // Update photo upload zone icon depending on login state
+    const isLogged = localStorage.getItem("daon_user_session") || userSessionToken;
+    const uploadIcon = document.getElementById('icon-upload-zone');
+    if (uploadIcon) {
+        if (isLogged) {
+            uploadIcon.className = 'fa-solid fa-cloud-arrow-up';
+        } else {
+            uploadIcon.className = 'fa-solid fa-lock';
+        }
     }
     
     // Update select option translations
@@ -1006,6 +1038,12 @@ async function proceedImageTranslation() {
         analyzeFormData.append("text", extractedText);
         analyzeFormData.append("lang", currentLanguage);
         
+        const session = localStorage.getItem("daon_user_session");
+        if (session) {
+            const userData = JSON.parse(session);
+            analyzeFormData.append("username", userData.username || userData.email || "");
+        }
+        
         const analyzeResponse = await fetch('/api/analyze', {
             method: 'POST',
             body: analyzeFormData
@@ -1078,7 +1116,13 @@ let latestInputText = "";
 async function runDocumentRAG() {
     const textInput = document.getElementById('doc-text-input').value.trim();
     if (!textInput) {
-        alert("분석할 텍스트를 입력해 주세요.");
+        const msg = {
+            ko: "분석할 텍스트를 입력해 주세요.",
+            vi: "Vui lòng nhập văn bản cần dịch.",
+            zh: "请输入要翻译的文本。",
+            en: "Please enter the text to analyze."
+        };
+        showToast(msg[currentLanguage] || msg['ko']);
         return;
     }
     
@@ -1105,6 +1149,12 @@ async function runDocumentRAG() {
         const formData = new FormData();
         formData.append("text", textInput);
         formData.append("lang", currentLanguage);
+        
+        const session = localStorage.getItem("daon_user_session");
+        if (session) {
+            const userData = JSON.parse(session);
+            formData.append("username", userData.username || userData.email || "");
+        }
         
         const response = await fetch('/api/analyze', {
             method: 'POST',
@@ -1517,23 +1567,29 @@ function renderWelfareFeed() {
     
     const lang = translations[currentLanguage] ? currentLanguage : 'ko';
     
-    container.innerHTML = mockWelfareDatabase.map(benefit => `
-        <div class="welfare-list-card" onclick="viewBenefitDetail('${benefit.id}')">
-            <div class="card-header">
-                <span class="benefit-cat-tag">${getLocalizedCategory(benefit.category, lang)}</span>
-                ${benefit.sourceUrl ? `
-                    <a href="${benefit.sourceUrl}" target="_blank" class="feed-source-link" onclick="event.stopPropagation();">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    </a>` : ''
-                }
+    container.innerHTML = mockWelfareDatabase.map(benefit => {
+        const titleText = typeof benefit.title === 'object'
+            ? (benefit.title[lang] || benefit.title['ko'] || '')
+            : (benefit.title || '');
+            
+        return `
+            <div class="welfare-list-card" onclick="viewBenefitDetail('${benefit.id}')">
+                <div class="card-header">
+                    <span class="benefit-cat-tag">${getLocalizedCategory(benefit.category, lang)}</span>
+                    ${benefit.sourceUrl ? `
+                        <a href="${benefit.sourceUrl}" target="_blank" class="feed-source-link" onclick="event.stopPropagation();">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>` : ''
+                    }
+                </div>
+                <h4>${titleText}</h4>
+                <p class="desc">${benefit.desc[lang] || benefit.desc['ko']}</p>
+                <div class="meta-info">
+                    <span class="region-tag">${getLocalizedRegion(benefit.region, lang)}</span>
+                </div>
             </div>
-            <h4>${benefit.title}</h4>
-            <p class="desc">${benefit.desc[lang] || benefit.desc['ko']}</p>
-            <div class="meta-info">
-                <span class="region-tag">${getLocalizedRegion(benefit.region, lang)}</span>
-            </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 // Navigate to benefits tab and auto-filter matching results
@@ -1547,8 +1603,12 @@ function viewBenefitDetail(benefitId) {
     const lang = translations[currentLanguage] ? currentLanguage : 'ko';
     
     // Populate modal content
+    const titleText = typeof benefit.title === 'object'
+        ? (benefit.title[lang] || benefit.title['ko'] || '')
+        : (benefit.title || '');
+        
     document.getElementById('modal-benefit-cat').textContent = benefit.category;
-    document.getElementById('modal-benefit-title').textContent = benefit.title;
+    document.getElementById('modal-benefit-title').textContent = titleText;
     document.getElementById('modal-benefit-desc').textContent = benefit.desc[lang] || benefit.desc['ko'];
     
 
@@ -1567,15 +1627,11 @@ function viewBenefitDetail(benefitId) {
     
     // Action Link
     const linkEl = document.getElementById('modal-benefit-link');
-    const sourceUrlEl = document.getElementById('modal-benefit-source-url');
     const sourceWrapperEl = document.getElementById('modal-benefit-source-wrapper');
     
     if (benefit.sourceUrl) {
         linkEl.href = benefit.sourceUrl;
         linkEl.style.display = 'flex';
-        
-        sourceUrlEl.href = benefit.sourceUrl;
-        sourceUrlEl.textContent = benefit.sourceUrl;
         sourceWrapperEl.style.display = 'flex';
     } else {
         linkEl.style.display = 'none';
@@ -1884,9 +1940,9 @@ function nextOnboardStep() {
     // Step Validations
     if (onboardStep === 1) {
         if (!onboardData.lang) {
-            alert(currentLanguage === 'ko' ? '사용하실 언어를 선택해 주세요.' : 
-                  currentLanguage === 'vi' ? 'Vui lòng chọn ngôn ngữ của bạn.' :
-                  currentLanguage === 'zh' ? '请选择您的语言。' : 'Please select your language.');
+            showToast(currentLanguage === 'ko' ? '사용하실 언어를 선택해 주세요.' : 
+                      currentLanguage === 'vi' ? 'Vui lòng chọn ngôn ngữ của bạn.' :
+                      currentLanguage === 'zh' ? '请选择您的语言。' : 'Please select your language.');
             return;
         }
         
@@ -2458,12 +2514,9 @@ function applyUserSession(userData) {
     if (emailEl) emailEl.textContent = userData.email || userData.username;
     
     // Update Profile Image
-    const defaultIcon = document.getElementById("user-avatar-default-icon");
     const avatarImg = document.getElementById("user-avatar-img");
-    if (defaultIcon) defaultIcon.classList.add("hidden");
     if (avatarImg) {
-        avatarImg.src = userData.picture || "";
-        avatarImg.classList.remove("hidden");
+        avatarImg.src = userData.picture || "assets/basic_profile.png";
     }
     
     // Hide auth forms and Google login, show logout
@@ -2475,6 +2528,9 @@ function applyUserSession(userData) {
     
     const logoutBtn = document.getElementById("btn-logout");
     if (logoutBtn) logoutBtn.classList.remove("hidden");
+
+    // Dynamically update UI translations and states (e.g. photo upload zone)
+    changeLanguage(currentLanguage);
 }
 
 function resetUserSessionUI() {
@@ -2488,12 +2544,9 @@ function resetUserSessionUI() {
     if (emailEl) emailEl.textContent = "daon_family@example.com";
     
     // Reset Avatar
-    const defaultIcon = document.getElementById("user-avatar-default-icon");
     const avatarImg = document.getElementById("user-avatar-img");
-    if (defaultIcon) defaultIcon.classList.remove("hidden");
     if (avatarImg) {
-        avatarImg.src = "";
-        avatarImg.classList.add("hidden");
+        avatarImg.src = "assets/basic_profile.png";
     }
     
     // Show auth forms and Google login, hide logout
@@ -2505,6 +2558,9 @@ function resetUserSessionUI() {
     
     const logoutBtn = document.getElementById("btn-logout");
     if (logoutBtn) logoutBtn.classList.add("hidden");
+
+    // Dynamically update UI translations and states (e.g. photo upload zone)
+    changeLanguage(currentLanguage);
 }
 
 function handleLogout() {
@@ -2583,8 +2639,9 @@ async function handleLocalRegister() {
     const emailInput = document.getElementById("auth-reg-email");
     const passwordInput = document.getElementById("auth-reg-password");
     const passwordConfirmInput = document.getElementById("auth-reg-password-confirm");
+    const privacyAgreeInput = document.getElementById("auth-reg-privacy-agree");
     
-    if (!usernameInput || !nameInput || !emailInput || !passwordInput || !passwordConfirmInput) return;
+    if (!usernameInput || !nameInput || !emailInput || !passwordInput || !passwordConfirmInput || !privacyAgreeInput) return;
     
     const username = usernameInput.value.trim();
     const fullName = nameInput.value.trim();
@@ -2624,6 +2681,17 @@ async function handleLocalRegister() {
         return;
     }
     
+    if (!privacyAgreeInput.checked) {
+        const agreeMsg = {
+            ko: "개인정보 수집 및 이용에 동의해야 회원가입이 가능합니다.",
+            vi: "Bạn phải đồng ý với việc thu thập và sử dụng thông tin cá nhân để đăng ký.",
+            zh: "您必须同意收集及使用个人信息才能注册。",
+            en: "You must consent to the collection and use of personal information to register."
+        };
+        triggerToast("동의 필요", agreeMsg[currentLanguage] || agreeMsg['ko'], "error");
+        return;
+    }
+    
     try {
         const res = await fetch("/api/auth/register", {
             method: "POST",
@@ -2649,6 +2717,7 @@ async function handleLocalRegister() {
         emailInput.value = "";
         passwordInput.value = "";
         passwordConfirmInput.value = "";
+        privacyAgreeInput.checked = false;
         
         // Hide messages
         const msgUsername = document.getElementById("reg-username-message");
@@ -3084,4 +3153,45 @@ function resetCoachGuide() {
         overlay.style.transition = '';
         showCoachStep(0);
     }, 150);
+}
+
+function handlePhotoUploadZoneClick() {
+    const isLogged = localStorage.getItem("daon_user_session") || userSessionToken;
+    if (!isLogged) {
+        showToast(translations[currentLanguage].loginRequiredAlert || "사진 번역 기능을 이용하시려면 먼저 로그인해주세요.");
+        // 마이페이지 탭으로 전환
+        const profileTabBtn = document.querySelector('button[onclick*="tab-profile"]');
+        switchTab('tab-profile', profileTabBtn);
+        return;
+    }
+    const fileInput = document.getElementById('doc-file-upload');
+    if (fileInput) {
+        fileInput.click();
+    }
+}
+
+function showToast(message) {
+    // Remove existing toast if present
+    const existing = document.querySelector('.daon-toast');
+    if (existing) {
+        existing.remove();
+    }
+    
+    const toast = document.createElement('div');
+    toast.className = 'daon-toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    // Trigger animation
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 50);
+    
+    // Hide and remove
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            toast.remove();
+        }, 300);
+    }, 2500);
 }

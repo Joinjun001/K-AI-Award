@@ -2,6 +2,9 @@
     {
         "id": "WLF00000072",
         "title": "에너지바우처",
+        "title_vi": "Phiếu năng lượng",
+        "title_zh": "能源券",
+        "title_en": "Energy Voucher",
         "category": "기후에너지환경부",
         "region": "전국",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000072&wlfareInfoReldBztpCd=01",
@@ -26,6 +29,9 @@
     {
         "id": "WLF00000888",
         "title": "영구임대주택공급",
+        "title_vi": "Cung cấp nhà ở cho thuê lâu dài",
+        "title_zh": "永久租赁住房供应",
+        "title_en": "Permanent rental housing supply",
         "category": "국토교통부",
         "region": "전국",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000888&wlfareInfoReldBztpCd=01",
@@ -50,6 +56,9 @@
     {
         "id": "WLF00001098",
         "title": "온가족보듬사업",
+        "title_vi": "Dự án chăm sóc cả gia đình",
+        "title_zh": "全家关怀项目",
+        "title_en": "Whole family care project",
         "category": "성평등가족부",
         "region": "전국",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00001098&wlfareInfoReldBztpCd=01",
@@ -74,6 +83,9 @@
     {
         "id": "WLF00000751",
         "title": "청소년복지시설 운영 지원",
+        "title_vi": "Hỗ trợ vận hành các cơ sở phúc lợi thanh thiếu niên",
+        "title_zh": "支持青少年福利设施的运营",
+        "title_en": "Support for operation of youth welfare facilities",
         "category": "성평등가족부",
         "region": "전국",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000751&wlfareInfoReldBztpCd=01",
@@ -98,6 +110,9 @@
     {
         "id": "WLF00000063",
         "title": "(북한이탈주민)교육비 지원",
+        "title_vi": "(Người đào thoát Bắc Triều Tiên) Hỗ trợ chi phí giáo dục",
+        "title_zh": "（脱北者）教育费用支援",
+        "title_en": "(North Korean defectors) Educational expenses support",
         "category": "통일부",
         "region": "전국",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000063&wlfareInfoReldBztpCd=01",
@@ -122,6 +137,9 @@
     {
         "id": "WLF00000921",
         "title": "(북한이탈주민)상담 지원",
+        "title_vi": "(Người đào thoát Bắc Triều Tiên) Hỗ trợ tư vấn",
+        "title_zh": "（脱北者）咨询支援",
+        "title_en": "(North Korean defectors) Counseling support",
         "category": "통일부",
         "region": "전국",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000921&wlfareInfoReldBztpCd=01",
@@ -146,14 +164,17 @@
     {
         "id": "WLF00001068",
         "title": "한부모가족 아동양육비 지원",
+        "title_vi": "Hỗ trợ cấp dưỡng nuôi con cho các gia đình cha mẹ đơn thân",
+        "title_zh": "为单亲家庭提供子女抚养费支持",
+        "title_en": "Support for child support for single-parent families",
         "category": "성평등가족부",
         "region": "전국",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00001068&wlfareInfoReldBztpCd=01",
         "desc": {
             "ko": "저소득 한부모가족 및 조손가족이 가족의 기능을 유지하고 안정된 생활을 할 수 있도록 아동 양육비를 지원합니다.",
-            "vi": "Chúng tôi cung cấp hỗ trợ nuôi con cho các gia đình cha mẹ đơn thân có thu nhập thấp và gia đình ông bà để họ có thể duy trì chức năng gia đình và có cuộc sống ổn định.",
+            "vi": "Chúng tôi hỗ trợ hỗ trợ nuôi con cho các gia đình cha mẹ đơn thân có thu nhập thấp và gia đình ông bà để họ duy trì chức năng gia đình và có cuộc sống ổn định.",
             "zh": "我们为低收入单亲家庭和祖父母家庭提供子女抚养费，使他们能够维持家庭功能并过上稳定的生活。",
-            "en": "We provide child support to low-income single-parent families and grandparents' families so that they can maintain family function and live a stable life."
+            "en": "We support child support for low-income single-parent families and grandparents' families so that they can maintain family function and live a stable life."
         },
         "descOutline": "저소득 한부모가족 및 조손가족이 가족의 기능을 유지하고 안정된 생활을 할 수 있도록 아동 양육비를 지원합니다.",
         "eligibilityDtl": "",
@@ -170,6 +191,9 @@
     {
         "id": "WLF00000076",
         "title": "스포츠강좌이용권",
+        "title_vi": "Voucher khóa học thể thao",
+        "title_zh": "体育课程券",
+        "title_en": "Sports course voucher",
         "category": "문화체육관광부",
         "region": "전국",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000076&wlfareInfoReldBztpCd=01",
@@ -194,12 +218,15 @@
     {
         "id": "WLF00000032",
         "title": "실종아동 등 보호 및 지원",
+        "title_vi": "Bảo vệ và hỗ trợ trẻ em mất tích, v.v.",
+        "title_zh": "对失踪儿童的保护和支持等",
+        "title_en": "Protection and support for missing children, etc.",
         "category": "보건복지부",
         "region": "전국",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000032&wlfareInfoReldBztpCd=01",
         "desc": {
             "ko": "아동 및 장애인(지적·자폐성·정신)의 실종예방 교육 및 홍보, 장기실종 가족지원을 통해 가족해체를 예방합니다.",
-            "vi": "Chúng tôi ngăn chặn sự tan vỡ gia đình thông qua giáo dục và khuyến khích ngăn ngừa mất tích cho trẻ em và người khuyết tật (trí tuệ, tự kỷ và tâm thần) cũng như hỗ trợ gia đình của những người mất tích lâu dài.",
+            "vi": "Chúng tôi ngăn chặn sự tan vỡ gia đình thông qua giáo dục và khuyến khích phòng chống mất tích cho trẻ em và người khuyết tật (trí tuệ, tự kỷ và tâm thần) cũng như hỗ trợ gia đình của những người mất tích lâu dài.",
             "zh": "我们通过针对儿童和残疾人（智力、自闭症和精神障碍）的预防失踪教育和宣传以及对长期失踪人员家庭的支持来防止家庭破裂。",
             "en": "We prevent family breakup through disappearance prevention education and promotion for children and disabled people (intellectual, autistic, and mental), and support for families of long-term missing persons."
         },
@@ -218,6 +245,9 @@
     {
         "id": "WLF00000056",
         "title": "의료급여(요양비)",
+        "title_vi": "Phúc lợi y tế (chi phí y tế)",
+        "title_zh": "医疗福利（医疗费用）",
+        "title_en": "Medical benefits (medical expenses)",
         "category": "보건복지부",
         "region": "전국",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000056&wlfareInfoReldBztpCd=01",
@@ -242,14 +272,17 @@
     {
         "id": "WLF00000061",
         "title": "의료급여임신.출산진료비지원",
+        "title_vi": "Quyền lợi y tế, hỗ trợ chi phí y tế khi mang thai và sinh con",
+        "title_zh": "医疗补助、孕产医疗费补助",
+        "title_en": "Medical benefits, pregnancy and childbirth medical expenses support",
         "category": "보건복지부",
         "region": "전국",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000061&wlfareInfoReldBztpCd=01",
         "desc": {
             "ko": "임신 또는 출산한 의료급여 수급자와 2세미만 자녀에게 의료비를 지원하여 저소득층 국민보건 향상과 사회복지 증진에 기여합니다.",
-            "vi": "Chúng tôi góp phần cải thiện sức khỏe cộng đồng và phúc lợi xã hội ở các nhóm thu nhập thấp bằng cách hỗ trợ chi phí y tế cho những người nhận trợ cấp y tế đang mang thai hoặc đang mang thai và con cái của họ dưới 2 tuổi.",
-            "zh": "我们通过向怀孕或怀孕医疗福利受益人及其 2 岁以下子女提供医疗费用支持，为改善低收入群体的公共卫生和社会福利做出贡献。",
-            "en": "We contribute to improving public health and social welfare in low-income groups by providing medical expenses support to pregnant or pregnant medical benefit recipients and their children under 2 years of age."
+            "vi": "Chúng tôi góp phần cải thiện sức khỏe của người thu nhập thấp và phúc lợi xã hội bằng cách hỗ trợ chi phí y tế cho người mang thai hoặc sinh con và trẻ em dưới 2 tuổi.",
+            "zh": "我们通过支持孕妇、分娩者和2岁以下儿童的医疗费用，为改善低收入人群的健康和社会福利做出贡献。",
+            "en": "We contribute to improving the health of low-income people and social welfare by supporting medical expenses for pregnant or childbirth recipients and children under 2 years of age."
         },
         "descOutline": "임신 또는 출산한 의료급여 수급자와 2세미만 자녀에게 의료비를 지원하여 저소득층 국민보건 향상과 사회복지 증진에 기여합니다.",
         "eligibilityDtl": "",
@@ -266,6 +299,9 @@
     {
         "id": "WLF00000782",
         "title": "(북한이탈주민)사회보장 지원(수급권자 범위의 특례)",
+        "title_vi": "(Người đào thoát Bắc Triều Tiên) Hỗ trợ an sinh xã hội (điều khoản đặc biệt dành cho người thụ hưởng)",
+        "title_zh": "(脱北者) 社会保障支援(受益人的特别规定)",
+        "title_en": "(North Korean defectors) Social security support (special provisions for beneficiaries)",
         "category": "통일부",
         "region": "전국",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000782&wlfareInfoReldBztpCd=01",
@@ -290,6 +326,9 @@
     {
         "id": "WLF00000040",
         "title": "선천성대사이상 검사 및 환아관리",
+        "title_vi": "Xét nghiệm bất thường chuyển hóa bẩm sinh và quản lý bệnh nhân",
+        "title_zh": "先天性代谢异常检测和患者管理",
+        "title_en": "Congenital metabolic abnormality testing and patient management",
         "category": "보건복지부",
         "region": "전국",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00000040&wlfareInfoReldBztpCd=01",
@@ -314,6 +353,9 @@
     {
         "id": "WLF00001088",
         "title": "고위험 임산부 의료비 지원",
+        "title_vi": "Hỗ trợ chi phí y tế cho phụ nữ mang thai có nguy cơ cao",
+        "title_zh": "高危孕妇医疗费支援",
+        "title_en": "Support for medical expenses for high-risk pregnant women",
         "category": "보건복지부",
         "region": "전국",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00001088&wlfareInfoReldBztpCd=01",
@@ -338,6 +380,9 @@
     {
         "id": "WLF00001094",
         "title": "어린이집지원(교사근무환경개선비,교사겸직원장지원비)",
+        "title_vi": "Hỗ trợ trung tâm giữ trẻ (chi phí cải thiện môi trường làm việc của giáo viên, chi phí hỗ trợ giáo viên và lãnh đạo nhân viên)",
+        "title_zh": "保育中心支援（教师工作环境改善费、教师及教职员领导支援费）",
+        "title_en": "Daycare center support (teacher working environment improvement expenses, teacher and staff leader support expenses)",
         "category": "교육부",
         "region": "전국",
         "sourceUrl": "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00001094&wlfareInfoReldBztpCd=01",

@@ -8,6 +8,7 @@ import psycopg2
 import requests
 import io
 import re
+import time
 from PIL import Image
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -57,6 +58,26 @@ def compress_image(image_bytes: bytes, max_size=(1024, 1024), quality=75) -> byt
     except Exception as e:
         logger.warning(f"Image compression failed, using original bytes: {e}")
         return image_bytes
+
+def mask_personal_info(text: str) -> str:
+    if not text:
+        return text
+    
+    # 1. RRN / ARC (주민등록번호/외국인등록번호) masking: 6 digits - 7 digits
+    rrn_pattern = re.compile(r'\b\d{6}[-/\s]\d{7}\b')
+    text = rrn_pattern.sub("[주민등록번호 마스킹]", text)
+    
+    # 2. Phone number masking (matches common Korean phone formats)
+    phone_pattern = re.compile(
+        r'\b(?:0\d{1,2}[-.\s]?\d{3,4}[-.\s]?\d{4})|(?:\+?82[-.\s]?\d{1,2}[-.\s]?\d{3,4}[-.\s]?\d{4})\b'
+    )
+    text = phone_pattern.sub("[전화번호 마스킹]", text)
+    
+    # 3. Email masking
+    email_pattern = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
+    text = email_pattern.sub("[이메일 마스킹]", text)
+    
+    return text
 
 LLM_PROVIDER = os.getenv("LLM_PROVIDER", "gemini").lower()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -117,6 +138,22 @@ def startup_db_migration():
                 );
             """)
             
+            # Check if translation_logs table exists
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS translation_logs (
+                    id SERIAL PRIMARY KEY,
+                    username VARCHAR(50) REFERENCES user_account(username) ON DELETE SET NULL,
+                    input_type VARCHAR(10) NOT NULL,
+                    raw_text TEXT,
+                    translated_text TEXT,
+                    target_language VARCHAR(5) NOT NULL,
+                    ocr_latency_ms INTEGER,
+                    llm_latency_ms INTEGER,
+                    total_latency_ms INTEGER,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+            """)
+            
             # Apply schema migrations
             cur.execute("ALTER TABLE user_account ADD COLUMN IF NOT EXISTS email VARCHAR(100) UNIQUE;")
             cur.execute("ALTER TABLE user_account ADD COLUMN IF NOT EXISTS full_name VARCHAR(100);")
@@ -143,7 +180,7 @@ def get_welfare_benefits():
     cur = conn.cursor()
     try:
         cur.execute("""
-            SELECT id, title, category, region, source_url,
+            SELECT id, title, title_vi, title_zh, title_en, category, region, source_url,
                    desc_ko, desc_vi, desc_zh, desc_en,
                    desc_outline, eligibility_dtl, selection_crit, welfare_content,
                    trgter_indvdl, life_array, onap_psblt_yn,
@@ -155,38 +192,43 @@ def get_welfare_benefits():
         benefits = []
         for r in rows:
             # Reconstruct eligibility summary
-            elig_raw = r[10] if r[10] else ""
+            elig_raw = r[13] if r[13] else ""
             elig_summary = elig_raw[:120] + ("..." if len(elig_raw) > 120 else "")
             
             benefits.append({
                 "id": r[0],
-                "title": r[1],
-                "category": r[2],
+                "title": {
+                    "ko": r[1] if r[1] else "",
+                    "vi": r[2] if r[2] else (r[1] if r[1] else ""),
+                    "zh": r[3] if r[3] else (r[1] if r[1] else ""),
+                    "en": r[4] if r[4] else (r[1] if r[1] else "")
+                },
+                "category": r[5],
                 "minAge": 0,       # For backward compatibility
                 "maxAge": 18,      # For backward compatibility
                 "maxIncome": 150,  # For backward compatibility
-                "region": r[3] if r[3] else "전국",
-                "sourceUrl": r[4],
+                "region": r[6] if r[6] else "전국",
+                "sourceUrl": r[7],
                 "desc": {
-                    "ko": r[5] if r[5] else "",
-                    "vi": r[6] if r[6] else "",
-                    "zh": r[7] if r[7] else "",
-                    "en": r[8] if r[8] else ""
+                    "ko": r[8] if r[8] else "",
+                    "vi": r[9] if r[9] else "",
+                    "zh": r[10] if r[10] else "",
+                    "en": r[11] if r[11] else ""
                 },
                 "eligibility": elig_summary,
                 
                 # Detailed raw fields
-                "descOutline": r[9],
-                "eligibilityDtl": r[10],
-                "selectionCrit": r[11],
-                "welfareContent": r[12],
-                "trgterIndvdl": r[13],
-                "lifeArray": r[14],
-                "onapPsbltYn": r[15],
-                "downloadForms": r[16],
-                "applyMethod": r[17],
-                "relatedWebsites": r[18],
-                "inquiryContacts": r[19]
+                "descOutline": r[12],
+                "eligibilityDtl": r[13],
+                "selectionCrit": r[14],
+                "welfareContent": r[15],
+                "trgterIndvdl": r[16],
+                "lifeArray": r[17],
+                "onapPsbltYn": r[18],
+                "downloadForms": r[19],
+                "applyMethod": r[20],
+                "relatedWebsites": r[21],
+                "inquiryContacts": r[22]
             })
         return benefits
     except Exception as e:
@@ -318,10 +360,15 @@ async def ocr_document(file: UploadFile = File(...)):
 async def analyze_document(
     file: UploadFile = File(None),
     text: str = Form(None),
-    lang: str = Form("ko")
+    lang: str = Form("ko"),
+    username: str = Form(None)
 ):
+    start_time = time.time()
+    
     if not file and not text:
         raise HTTPException(status_code=400, detail="Either file or text must be provided.")
+    
+    input_type = "photo" if file else "text"
     
     # Map lang to human readable
     lang_map = {
@@ -399,15 +446,20 @@ async def analyze_document(
     mime_type = "image/jpeg"
     full_prompt = prompt
     
+    ocr_start = time.time()
     if file:
         file_bytes = await file.read()
         file_bytes = compress_image(file_bytes)
         mime_type = "image/jpeg"
-    elif text:
+    ocr_latency_ms = int((time.time() - ocr_start) * 1000) if file else 0
+    
+    if not file and text:
         full_prompt = f"{prompt}\n\nHere is the text to analyze:\n{text}"
         
     try:
+        llm_start = time.time()
         text_response = call_llm(prompt=full_prompt, file_bytes=file_bytes, mime_type=mime_type, force_json=True)
+        llm_latency_ms = int((time.time() - llm_start) * 1000)
         
         # Clean potential markdown or conversational wrappers by slicing to the JSON boundaries
         cleaned = text_response.strip()
@@ -417,6 +469,46 @@ async def analyze_document(
             cleaned = cleaned[start_idx:end_idx+1]
         
         result = json.loads(cleaned)
+        
+        # Calculate total latency
+        total_latency_ms = int((time.time() - start_time) * 1000)
+        
+        # Extract and de-identify text
+        raw_text_to_save = result.get("extracted_text", "")
+        if input_type == "text" and text:
+            raw_text_to_save = text
+        translated_text_to_save = result.get("full_translation", "")
+        
+        masked_raw = mask_personal_info(raw_text_to_save)
+        masked_translated = mask_personal_info(translated_text_to_save)
+        
+        # Database insertion
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
+            try:
+                valid_username = None
+                if username:
+                    cur.execute("SELECT username FROM user_account WHERE username = %s;", (username,))
+                    if cur.fetchone():
+                        valid_username = username
+                        
+                cur.execute("""
+                    INSERT INTO translation_logs 
+                    (username, input_type, raw_text, translated_text, target_language, ocr_latency_ms, llm_latency_ms, total_latency_ms) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+                """, (valid_username, input_type, masked_raw, masked_translated, lang, ocr_latency_ms, llm_latency_ms, total_latency_ms))
+                conn.commit()
+                logger.info(f"Successfully saved translation log. Latencies (OCR/LLM/Total): {ocr_latency_ms}/{llm_latency_ms}/{total_latency_ms} ms")
+            except Exception as db_err:
+                logger.error(f"Failed to insert translation log to DB: {db_err}")
+                conn.rollback()
+            finally:
+                cur.close()
+                conn.close()
+        except Exception as conn_err:
+            logger.error(f"Failed to connect to database for logging: {conn_err}")
+            
         return result
     except Exception as e:
         logger.error(f"Failed to generate translation from LLM: {e}")
@@ -622,7 +714,7 @@ def get_admin_welfare_benefits(token: str = None):
     cur = conn.cursor()
     try:
         cur.execute("""
-            SELECT id, title, category, region, source_url,
+            SELECT id, title, title_vi, title_zh, title_en, category, region, source_url,
                    desc_ko, desc_vi, desc_zh, desc_en,
                    desc_outline, eligibility_dtl, selection_crit, welfare_content,
                    trgter_indvdl, life_array, onap_psblt_yn,
@@ -633,39 +725,44 @@ def get_admin_welfare_benefits(token: str = None):
         rows = cur.fetchall()
         benefits = []
         for r in rows:
-            elig_raw = r[10] if r[10] else ""
+            elig_raw = r[13] if r[13] else ""
             elig_summary = elig_raw[:120] + ("..." if len(elig_raw) > 120 else "")
             
             benefits.append({
                 "id": r[0],
-                "title": r[1],
-                "category": r[2],
+                "title": {
+                    "ko": r[1] if r[1] else "",
+                    "vi": r[2] if r[2] else (r[1] if r[1] else ""),
+                    "zh": r[3] if r[3] else (r[1] if r[1] else ""),
+                    "en": r[4] if r[4] else (r[1] if r[1] else "")
+                },
+                "category": r[5],
                 "minAge": 0,       # For backward compatibility
                 "maxAge": 18,      # For backward compatibility
                 "maxIncome": 150,  # For backward compatibility
-                "region": r[3] if r[3] else "전국",
-                "sourceUrl": r[4],
+                "region": r[6] if r[6] else "전국",
+                "sourceUrl": r[7],
                 "desc": {
-                    "ko": r[5] if r[5] else "",
-                    "vi": r[6] if r[6] else "",
-                    "zh": r[7] if r[7] else "",
-                    "en": r[8] if r[8] else ""
+                    "ko": r[8] if r[8] else "",
+                    "vi": r[9] if r[9] else "",
+                    "zh": r[10] if r[10] else "",
+                    "en": r[11] if r[11] else ""
                 },
                 "eligibility": elig_summary,
                 
                 # Detailed raw fields
-                "descOutline": r[9],
-                "eligibilityDtl": r[10],
-                "selectionCrit": r[11],
-                "welfareContent": r[12],
-                "trgterIndvdl": r[13],
-                "lifeArray": r[14],
-                "onapPsbltYn": r[15],
-                "downloadForms": r[16],
-                "applyMethod": r[17],
-                "relatedWebsites": r[18],
-                "inquiryContacts": r[19],
-                "updatedAt": r[20].strftime("%Y-%m-%d %H:%M:%S") if r[20] else ""
+                "descOutline": r[12],
+                "eligibilityDtl": r[13],
+                "selectionCrit": r[14],
+                "welfareContent": r[15],
+                "trgterIndvdl": r[16],
+                "lifeArray": r[17],
+                "onapPsbltYn": r[18],
+                "downloadForms": r[19],
+                "applyMethod": r[20],
+                "relatedWebsites": r[21],
+                "inquiryContacts": r[22],
+                "updatedAt": r[23].strftime("%Y-%m-%d %H:%M:%S") if r[23] else ""
             })
         return benefits
     except Exception as e:

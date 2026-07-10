@@ -17,6 +17,9 @@ def init_db():
     CREATE TABLE welfare_benefits (
         id VARCHAR(50) PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
+        title_vi VARCHAR(255),
+        title_zh VARCHAR(255),
+        title_en VARCHAR(255),
         category VARCHAR(100),
         region VARCHAR(100) DEFAULT '전국',
         source_url VARCHAR(512),

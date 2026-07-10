@@ -3,9 +3,11 @@ services:
     build: .
     container_name: k-ai-award-web
     ports:
-      - "8400:8400"
+      - "80:80"
+      - "443:443"
     volumes:
       - ./welfare_data.json:/usr/share/nginx/html/welfare_data.json
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       - backend
     restart: always
