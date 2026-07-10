@@ -6,6 +6,9 @@ import urllib.request
 import urllib.parse
 import psycopg2
 import requests
+import io
+import re
+from PIL import Image
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -37,9 +40,32 @@ def load_env():
 
 load_env()
 
+def compress_image(image_bytes: bytes, max_size=(1024, 1024), quality=75) -> bytes:
+    try:
+        img = Image.open(io.BytesIO(image_bytes))
+        # Convert RGBA to RGB for JPEG compatibility
+        if img.mode in ("RGBA", "P"):
+            img = img.convert("RGB")
+        # Resize image retaining aspect ratio
+        img.thumbnail(max_size, Image.Resampling.LANCZOS)
+        
+        out_io = io.BytesIO()
+        img.save(out_io, format="JPEG", quality=quality)
+        compressed_bytes = out_io.getvalue()
+        logger.info(f"Image compressed successfully: {len(image_bytes)} bytes -> {len(compressed_bytes)} bytes")
+        return compressed_bytes
+    except Exception as e:
+        logger.warning(f"Image compression failed, using original bytes: {e}")
+        return image_bytes
+
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "gemini").lower()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-if not GEMINI_API_KEY:
-    logger.warning("GEMINI_API_KEY environment variable is not set. Gemini API features will fail.")
+OCI_API_KEY = os.getenv("OCI_API_KEY")
+
+if LLM_PROVIDER == "gemini" and not GEMINI_API_KEY:
+    logger.warning("GEMINI_API_KEY is not set. Gemini API features will fail.")
+elif LLM_PROVIDER == "oci" and not OCI_API_KEY:
+    logger.warning("OCI_API_KEY is not set. OCI Generative AI features will fail.")
 
 DB_HOST = os.getenv("DB_HOST", "host.docker.internal")
 DB_PORT = int(os.getenv("DB_PORT", "5432"))
@@ -189,31 +215,100 @@ def call_gemini_api(payload, model_name="gemini-3.5-flash"):
             return call_gemini_api(payload, model_name="gemini-2.5-flash")
         raise e
 
+def call_llm(prompt: str, file_bytes: bytes = None, mime_type: str = "image/jpeg", force_json: bool = False):
+    provider = os.getenv("LLM_PROVIDER", "gemini").lower()
+    
+    if provider == "oci":
+        oci_key = os.getenv("OCI_API_KEY")
+        oci_region = os.getenv("OCI_REGION", "ap-osaka-1")
+        oci_compartment = os.getenv("OCI_COMPARTMENT_ID")
+        oci_model = os.getenv("OCI_MODEL_ID", "meta.llama-3.2-90b-vision-instruct")
+        
+        if not oci_key or not oci_compartment:
+            logger.error("OCI_API_KEY or OCI_COMPARTMENT_ID is missing.")
+            raise HTTPException(status_code=500, detail="OCI Generative AI configuration is missing.")
+            
+        url = f"https://inference.generativeai.{oci_region}.oci.oraclecloud.com/openai/v1/chat/completions"
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {oci_key}",
+            "OpenAI-Project": oci_compartment
+        }
+        
+        content_parts = [{"type": "text", "text": prompt}]
+        if file_bytes:
+            base64_data = base64.b64encode(file_bytes).decode("utf-8")
+            content_parts.append({
+                "type": "image_url",
+                "image_url": {
+                    "url": f"data:{mime_type};base64,{base64_data}"
+                }
+            })
+            
+        payload = {
+            "model": oci_model,
+            "messages": [
+                {
+                    "role": "user",
+                    "content": content_parts
+                }
+            ],
+            "temperature": 0.2
+        }
+        if force_json:
+            payload["response_format"] = {"type": "json_object"}
+            
+        
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode("utf-8"),
+            headers=headers,
+            method="POST"
+        )
+        
+        try:
+            with urllib.request.urlopen(req, timeout=90) as response:
+                res_data = json.loads(response.read().decode("utf-8"))
+                return res_data["choices"][0]["message"]["content"]
+        except Exception as e:
+            logger.error(f"OCI Generative AI error: {e}")
+            if hasattr(e, "read"):
+                try:
+                    logger.error(f"OCI Error body: {e.read().decode('utf-8')}")
+                except Exception:
+                    pass
+            raise e
+    else:
+        # Default Gemini mode
+        parts = [{"text": prompt}]
+        if file_bytes:
+            base64_data = base64.b64encode(file_bytes).decode("utf-8")
+            parts.append({
+                "inlineData": {
+                    "mimeType": mime_type,
+                    "data": base64_data
+                }
+            })
+        payload = {
+            "contents": [{"parts": parts}]
+        }
+        if force_json:
+            payload["generationConfig"] = {
+                "responseMimeType": "application/json"
+            }
+        res = call_gemini_api(payload)
+        candidate = res["candidates"][0]
+        return candidate["content"]["parts"][0]["text"]
+
 @app.post("/api/ocr")
 async def ocr_document(file: UploadFile = File(...)):
     prompt = "Extract all readable Korean text from this document image. Do not translate, do not add explanation, just return the plain text."
     file_bytes = await file.read()
-    base64_data = base64.b64encode(file_bytes).decode("utf-8")
-    mime_type = file.content_type or "image/jpeg"
-    
-    payload = {
-        "contents": [{
-            "parts": [
-                {"text": prompt},
-                {
-                    "inlineData": {
-                        "mimeType": mime_type,
-                        "data": base64_data
-                    }
-                }
-            ]
-        }]
-    }
+    file_bytes = compress_image(file_bytes)
+    mime_type = "image/jpeg"
     
     try:
-        res = call_gemini_api(payload)
-        candidate = res["candidates"][0]
-        text_response = candidate["content"]["parts"][0]["text"]
+        text_response = call_llm(prompt=prompt, file_bytes=file_bytes, mime_type=mime_type)
         return {"text": text_response.strip()}
     except Exception as e:
         logger.error(f"Failed to perform OCR: {e}")
@@ -237,108 +332,95 @@ async def analyze_document(
     }
     target_lang_name = lang_map.get(lang, "Korean")
     
+    headers_map = {
+        "ko": {
+            "schedule": "📅 주요 일정 및 시간",
+            "materials": "🎒 준비물 안내",
+            "submissions": "✍️ 제출/서명 서류 및 협조사항"
+        },
+        "vi": {
+            "schedule": "📅 Các ngày & giờ quan trọng",
+            "materials": "🎒 Vật dụng cần chuẩn bị",
+            "submissions": "✍️ Tài liệu cần nộp / ký / hợp tác"
+        },
+        "zh": {
+            "schedule": "📅 重要日期与时间",
+            "materials": "🎒 需要准备的物品",
+            "submissions": "✍️ 需提交/签字的材料及协作事项"
+        },
+        "en": {
+            "schedule": "📅 Key Dates & Times",
+            "materials": "🎒 Materials to Prepare",
+            "submissions": "✍️ Documents to Submit / Sign / Cooperation"
+        }
+    }
+    
+    selected_headers = headers_map.get(lang, headers_map["ko"])
+    sch_hdr = selected_headers["schedule"]
+    mat_hdr = selected_headers["materials"]
+    sub_hdr = selected_headers["submissions"]
+    
+    exclusion_rule = ""
+    if lang != "ko":
+        exclusion_rule = "Do NOT include any Korean text or Korean headings in these summaries."
+    else:
+        exclusion_rule = "Since the target language is Korean, all category headings and contents must be written in Korean."
+
     prompt = f"""
     You are a kind and professional elementary school teacher and translator helping multicultural families.
     Analyze the provided primary notice/document.
     
     Tasks:
     1. Extract the original Korean text from the document.
-    2. Translate the content and summarize the core information that parents MUST know into three categories:
-       - 📅 [핵심 일정 및 일시] (Key dates/times)
-       - 🎒 [챙겨야 할 준비물] (Materials to prepare)
-       - ✍️ [부모가 제출하거나 서명해야 할 것] (Documents to submit/sign)
-       Write these summaries in BOTH Korean and the target language ({target_lang_name}). Format them as nice HTML tags (e.g. <h4>, <ul>, <li>, <p>).
+    2. Translate the content and summarize the core information that parents MUST know into three categories.
+       The category headings and all summary contents MUST be written 100% in the target language ({target_lang_name}) only. {exclusion_rule}
+       You MUST use the following exact headers for the categories:
+       - {sch_hdr}
+       - {mat_hdr}
+       - {sub_hdr}
+       Format them as nice HTML tags (e.g. <h4>, <ul>, <li>, <p>).
     3. Generate the full translation of the text in the target language ({target_lang_name}).
     4. If there are any unique Korean school culture terms (e.g. 실내화, 주간학습안내, 늘봄교실, etc.) in the document, explain them in detail in the target language ({target_lang_name}) inside a div with class "culture-note".
     
     You MUST respond with a JSON object conforming exactly to this JSON schema:
     {{
       "extracted_text": "Detailed original Korean text extracted from the document",
-      "schedule": "HTML content for Key Schedule Summary in both languages",
-      "materials": "HTML content for Student Preparation List in both languages",
-      "submissions": "HTML content for Submissions/Signatures required in both languages",
-      "full_translation": "Full translation in the target language",
-      "cultural_notes": "HTML content explaining unique culture terms in target language"
+      "schedule": "HTML content for Key Schedule Summary in the target language ({target_lang_name}) only",
+      "materials": "HTML content for Student Preparation List in the target language ({target_lang_name}) only",
+      "submissions": "HTML content for Submissions/Signatures required in the target language ({target_lang_name}) only",
+      "full_translation": "Full translation in the target language ({target_lang_name})",
+      "cultural_notes": "HTML content explaining unique culture terms in target language ({target_lang_name})"
     }}
+    
+    CRITICAL JSON RULE: You MUST output a strictly valid JSON object. Do not include raw unescaped double quotes inside the JSON string values (especially inside HTML tags). Use single quotes or escape them as \\" for HTML attributes.
     """
     
-    parts = [{"text": prompt}]
+    file_bytes = None
+    mime_type = "image/jpeg"
+    full_prompt = prompt
     
     if file:
         file_bytes = await file.read()
-        base64_data = base64.b64encode(file_bytes).decode("utf-8")
-        mime_type = file.content_type or "image/jpeg"
-        parts.append({
-            "inlineData": {
-                "mimeType": mime_type,
-                "data": base64_data
-            }
-        })
+        file_bytes = compress_image(file_bytes)
+        mime_type = "image/jpeg"
     elif text:
-        parts.append({"text": f"Here is the text to analyze:\n{text}"})
+        full_prompt = f"{prompt}\n\nHere is the text to analyze:\n{text}"
         
-    payload = {
-        "contents": [{"parts": parts}],
-        "generationConfig": {
-            "responseMimeType": "application/json"
-        }
-    }
-    
     try:
-        res = call_gemini_api(payload)
-        candidate = res["candidates"][0]
-        text_response = candidate["content"]["parts"][0]["text"]
-        result = json.loads(text_response)
+        text_response = call_llm(prompt=full_prompt, file_bytes=file_bytes, mime_type=mime_type, force_json=True)
+        
+        # Clean potential markdown or conversational wrappers by slicing to the JSON boundaries
+        cleaned = text_response.strip()
+        start_idx = cleaned.find("{")
+        end_idx = cleaned.rfind("}")
+        if start_idx != -1 and end_idx != -1 and end_idx > start_idx:
+            cleaned = cleaned[start_idx:end_idx+1]
+        
+        result = json.loads(cleaned)
         return result
     except Exception as e:
-        logger.error(f"Failed to generate translation from Gemini: {e}")
-        # Localized fallback structure
-        fallback_msg = {
-            "ko": {
-                "extracted": text or "이미지 텍스트 추출 실패",
-                "schedule": "<h4>📅 일정 요약</h4><p>API 연동 에러가 발생하여 간이 안내 처리합니다.</p>",
-                "materials": "<h4>🎒 준비물</h4><p>안내문을 개별 확인해 주시기 바랍니다.</p>",
-                "submissions": "<h4>✍️ 제출 서류</h4><p>기한 내에 제출 서류가 있는지 확인 바랍니다.</p>",
-                "translation": "Gemini API 호출에 실패하였습니다. 설정 및 네트워크 상태를 확인하세요.",
-                "culture": "<h4>💡 참고 사항</h4><p>한국 학교 문화 설명을 불러올 수 없습니다.</p>"
-            },
-            "vi": {
-                "extracted": text or "Không thể trích xuất văn bản từ ảnh",
-                "schedule": "<h4>📅 Lịch trình chính</h4><p>Đã xảy ra lỗi kết nối API. Vui lòng kiểm tra lại tài liệu gốc.</p>",
-                "materials": "<h4>🎒 Đồ dùng chuẩn bị</h4><p>Vui lòng trực tiếp đối chiếu lại tài liệu hướng dẫn.</p>",
-                "submissions": "<h4>✍️ Hồ sơ cần nộp</h4><p>Vui lòng xác nhận xem có hồ sơ nào cần nộp đúng hạn không.</p>",
-                "translation": "Không thể kết nối đến Gemini API. Vui lòng kiểm tra thiết lập hoặc kết nối mạng.",
-                "culture": "<h4>💡 Tham khảo văn hóa</h4><p>Không thể tải giải thích văn hóa học đường Hàn Quốc.</p>"
-            },
-            "zh": {
-                "extracted": text or "图片文本提取失败",
-                "schedule": "<h4>📅 日程摘要</h4><p>API 连通发生错误，请以原通知为准进行核对。</p>",
-                "materials": "<h4>🎒 准备物品</h4><p>请单独确认通知内容以准备所需物品。</p>",
-                "submissions": "<h4>✍️ 提交材料</h4><p>请确认是否有需要在期限内提交的材料。</p>",
-                "translation": "调用 Gemini API 失败。请检查设置和网络状态。",
-                "culture": "<h4>💡 文化小贴士</h4><p>无法载入韩国学校文化相关说明。</p>"
-            },
-            "en": {
-                "extracted": text or "Failed to extract text from image",
-                "schedule": "<h4>📅 Schedule Summary</h4><p>An API integration error occurred. Please verify with the original document.</p>",
-                "materials": "<h4>🎒 Materials</h4><p>Please check the notices individually to prepare necessary materials.</p>",
-                "submissions": "<h4>✍️ Submissions</h4><p>Please check if there are any documents to submit by the deadline.</p>",
-                "translation": "Failed to call Gemini API. Please check settings and network status.",
-                "culture": "<h4>💡 Cultural Notes</h4><p>Could not load explanations of Korean school culture.</p>"
-            }
-        }
-        
-        l_key = lang if lang in fallback_msg else "ko"
-        f_data = fallback_msg[l_key]
-        
-        return {
-            "extracted_text": f_data["extracted"],
-            "schedule": f_data["schedule"],
-            "materials": f_data["materials"],
-            "submissions": f_data["submissions"],
-            "full_translation": f_data["translation"],
-            "cultural_notes": f_data["culture"]
-        }
+        logger.error(f"Failed to generate translation from LLM: {e}")
+        raise HTTPException(status_code=500, detail="AI 분석 및 번역 중 오류가 발생하였습니다. API 설정 및 네트워크를 확인하세요.")
 
 import hashlib
 
@@ -408,9 +490,95 @@ def google_auth(data: GoogleAuthRequest):
         logger.error(f"Google OAuth error: {e}")
         raise HTTPException(status_code=500, detail="Google authentication failed.")
 
+class UserRegister(BaseModel):
+    username: str
+    password: str
+    email: str
+    full_name: str
+
 class UserLogin(BaseModel):
     username: str
     password: str
+
+@app.get("/api/auth/check-username")
+def check_username(username: str):
+    if not re.match(r"^[a-zA-Z0-9_-]{3,20}$", username):
+        return {"available": False}
+        
+    conn = get_db_connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("SELECT username FROM user_account WHERE username = %s;", (username,))
+        exists = cur.fetchone() is not None
+        return {"available": not exists}
+    except Exception as e:
+        logger.error(f"Error checking username availability: {e}")
+        raise HTTPException(status_code=500, detail="아이디 중복 확인에 실패했습니다.")
+    finally:
+        cur.close()
+        conn.close()
+
+@app.post("/api/auth/register")
+def register_user(data: UserRegister):
+    if not re.match(r"^[a-zA-Z0-9_-]{3,20}$", data.username):
+        raise HTTPException(status_code=400, detail="아이디는 3~20자의 영문, 숫자, 밑줄(_), 붙임표(-)만 사용할 수 있습니다.")
+        
+    conn = get_db_connection()
+    cur = conn.cursor()
+    try:
+        # Check if username or email already exists
+        cur.execute("SELECT username FROM user_account WHERE username = %s OR email = %s;", (data.username, data.email))
+        if cur.fetchone():
+            raise HTTPException(status_code=400, detail="이미 가입된 아이디 또는 이메일입니다.")
+            
+        pw_hash = hashlib.sha256(data.password.encode('utf-8')).hexdigest()
+        cur.execute(
+            "INSERT INTO user_account (username, password_hash, role, email, full_name) VALUES (%s, %s, %s, %s, %s);",
+            (data.username, pw_hash, 'user', data.email, data.full_name)
+        )
+        conn.commit()
+        return {"status": "success", "message": "User registered successfully."}
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        logger.error(f"User registration error: {e}")
+        raise HTTPException(status_code=500, detail="회원가입에 실패했습니다.")
+    finally:
+        cur.close()
+        conn.close()
+
+@app.post("/api/auth/login")
+def login_user(data: UserLogin):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    try:
+        pw_hash = hashlib.sha256(data.password.encode('utf-8')).hexdigest()
+        cur.execute(
+            "SELECT username, role, full_name, email, profile_pic FROM user_account WHERE username = %s AND password_hash = %s;",
+            (data.username, pw_hash)
+        )
+        row = cur.fetchone()
+        if not row:
+            raise HTTPException(status_code=401, detail="아이디 또는 비밀번호가 잘못되었습니다.")
+            
+        username, role, full_name, email, profile_pic = row[0], row[1], row[2], row[3], row[4]
+        return {
+            "status": "success",
+            "username": username,
+            "role": role,
+            "name": full_name or username,
+            "email": email,
+            "picture": profile_pic,
+            "token": f"local-session-token-{username}"
+        }
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        logger.error(f"User login error: {e}")
+        raise HTTPException(status_code=500, detail="로그인에 실패했습니다.")
+    finally:
+        cur.close()
+        conn.close()
 
 @app.post("/api/admin/login")
 def admin_login(data: UserLogin):
