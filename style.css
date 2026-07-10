@@ -1945,3 +1945,112 @@ body {
     font-weight: 600;
 }
 
+/* --- Coach Marks Walkthrough --- */
+.coachmark-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10000;
+    pointer-events: auto;
+    display: none;
+    overflow: hidden;
+}
+
+.coachmark-spotlight {
+    position: absolute;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: 10001;
+}
+
+.coachmark-tooltip {
+    position: absolute;
+    z-index: 10002;
+    background: var(--bg-card);
+    color: var(--text-main);
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg), 0 10px 30px rgba(0,0,0,0.15);
+    width: 280px;
+    max-width: 90vw;
+    font-size: 0.9rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid var(--border-color);
+}
+
+.coachmark-tooltip::after {
+    content: '';
+    position: absolute;
+    border: 8px solid transparent;
+}
+
+/* Arrow placements */
+.coachmark-tooltip.arrow-top::after {
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-color: var(--bg-card);
+}
+.coachmark-tooltip.arrow-bottom::after {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top-color: var(--bg-card);
+}
+.coachmark-tooltip.arrow-left::after {
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-right-color: var(--bg-card);
+}
+.coachmark-tooltip.arrow-right::after {
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left-color: var(--bg-card);
+}
+
+.coachmark-text {
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--text-main);
+    margin-bottom: 12px;
+}
+
+.coachmark-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.coachmark-btn {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+
+.coachmark-btn-next {
+    background-color: var(--toss-blue);
+    color: #ffffff;
+}
+.coachmark-btn-next:hover {
+    background-color: #0056cc;
+}
+
+.coachmark-btn-skip {
+    background-color: transparent;
+    color: var(--text-sub);
+}
+.coachmark-btn-skip:hover {
+    color: var(--text-main);
+}
+
+
