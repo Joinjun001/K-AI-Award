@@ -2038,19 +2038,22 @@ body {
 }
 
 .coachmark-btn-next {
-    background-color: var(--toss-blue);
+    background-color: #0064FF;
     color: #ffffff;
+    padding: 8px 18px;
 }
 .coachmark-btn-next:hover {
-    background-color: #0056cc;
+    background-color: #0052d6;
 }
 
 .coachmark-btn-skip {
-    background-color: transparent;
-    color: var(--text-sub);
+    background-color: rgba(0, 0, 0, 0.08);
+    color: #555;
+    padding: 8px 14px;
 }
 .coachmark-btn-skip:hover {
-    color: var(--text-main);
+    background-color: rgba(0, 0, 0, 0.14);
+    color: #222;
 }
 
 

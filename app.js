@@ -21,9 +21,9 @@ const translations = {
         welcomeDesc: "복지 신청 서류 번역부터 나에게 딱 맞는 혜택 알림까지, 다온이 한국 생활을 함께합니다.",
         
         // Tab Headers & Buttons
-        helperSubtitle: "어려운 관공서 알림장이나 서류를 촬영하거나 텍스트를 입력해 보세요. 다온 AI가 알기 쉽게 번역하고 요약해 드립니다.",
+        helperSubtitle: "사진을 찍거나 텍스트를 붙여넣으면 바로 번역해드립니다.",
         btnPhoto: "사진 촬영/업로드",
-        btnAnalyze: "다온 AI RAG 분석 실행",
+        btnAnalyze: "번역 시작",
         alertsSubtitle: "가족 구성 정보에 부합하는 새로운 지원 혜택이 복지로에 등록되면 모국어로 실시간 알림을 보냅니다.",
         btnNext: "다음",
         btnStart: "다온 시작하기",
@@ -37,7 +37,7 @@ const translations = {
         modalSourceLabel: "출처: 복지로 및 공식 기관",
         
         // Extra localization
-        helperTitle: "RAG 서류·행정 도우미",
+        helperTitle: "학교 안내장 번역",
         helperInputTitle: "문서 분석 및 번역",
         ocrLoadingDesc: "이미지에서 한글 텍스트를 추출 중입니다 (OCR)...",
         helperLoadingDesc: "다온 AI가 문서를 해독하고 한국 문화적 맥락을 파악하고 있습니다...",
@@ -58,6 +58,7 @@ const translations = {
         myprofileTitle: "마이 페이지 & 계정 정보",
         myprofileUsername: "다온 패밀리",
         settingGuide: "온보딩 가이드 다시 보기",
+        settingCoachmark: "앱 사용 가이드 다시 보기",
         settingSecurity: "보안 및 개인정보 관리",
         settingFeedback: "번역 품질 피드백 및 기여",
         settingApi: "공용 데이터 연동 관리 (보조금24 API)",
@@ -146,9 +147,9 @@ const translations = {
         welcomeDesc: "Từ dịch thuật hồ sơ hành chính đến thông báo trợ cấp phù hợp nhất cho bạn, Daon đồng hành cùng cuộc sống Hàn Quốc.",
         
         // Tab Headers & Buttons
-        helperSubtitle: "Hãy chụp ảnh hoặc nhập văn bản các thông báo, tài liệu khó từ cơ quan công quyền. Daon AI sẽ dịch và tóm tắt một cách dễ hiểu.",
+        helperSubtitle: "Chụp ảnh hoặc dán văn bản vào là xong, chúng tôi dịch ngay cho bạ.",
         btnPhoto: "Chụp ảnh/Tải lên",
-        btnAnalyze: "Chạy phân tích Daon AI RAG",
+        btnAnalyze: "Bắt đầu dịch",
         alertsSubtitle: "Khi chính sách phúc lợi mới phù hợp với thông tin gia đình được đăng ký trên Bokjiro, hệ thống sẽ gửi thông báo đẩy thời gian thực bằng ngôn ngữ mẹ đẻ.",
         btnNext: "Tiếp theo",
         btnStart: "Bắt đầu với Daon",
@@ -162,7 +163,7 @@ const translations = {
         modalSourceLabel: "Nguồn: Bokjiro & Cơ quan chính thức",
         
         // Extra localization
-        helperTitle: "Trợ lý Hành chính & Tài liệu RAG",
+        helperTitle: "Dịch thông báo trường",
         helperInputTitle: "Phân tích và Dịch tài liệu",
         ocrLoadingDesc: "Đang trích xuất văn bản tiếng Hàn từ hình ảnh (OCR)...",
         helperLoadingDesc: "Daon AI đang giải mã tài liệu và tìm hiểu bối cảnh văn hóa Hàn Quốc...",
@@ -183,6 +184,7 @@ const translations = {
         myprofileTitle: "Trang cá nhân & Thông tin tài khoản",
         myprofileUsername: "Gia đình Daon",
         settingGuide: "Xem lại Hướng dẫn bắt đầu",
+        settingCoachmark: "Xem lại hướng dẫn sử dụng ứng dụng",
         settingSecurity: "Quản lý bảo mật & Thông tin cá nhân",
         settingFeedback: "Phản hồi và đóng góp chất lượng dịch",
         settingApi: "Quản lý liên kết dữ liệu công cộng (Bojogum24 API)",
@@ -287,7 +289,7 @@ const translations = {
         modalSourceLabel: "来源: 福利路及官方机构",
         
         // Extra localization
-        helperTitle: "RAG 文档·行政助手",
+        helperTitle: "学校通知翻译",
         helperInputTitle: "文档分析与翻译",
         ocrLoadingDesc: "正在从图像中提取韩文文本 (OCR)...",
         helperLoadingDesc: "多稳 AI 正在解读文档并分析韩国文化背景...",
@@ -308,6 +310,7 @@ const translations = {
         myprofileTitle: "个人主页 & 账号信息",
         myprofileUsername: "多稳家庭",
         settingGuide: "重新查看入门指南",
+        settingCoachmark: "重新查看应用使用指南",
         settingSecurity: "安全与隐私管理",
         settingFeedback: "翻译质量反馈与贡献",
         settingApi: "公共数据关联管理 (补助金24 API)",
@@ -396,9 +399,9 @@ const translations = {
         welcomeDesc: "From translating complex administration documents to matching customized benefits just for you, Daon accompanies your life in Korea.",
         
         // Tab Headers & Buttons
-        helperSubtitle: "Take a picture of or paste text from government/school notices. Daon AI will translate and summarize them in your mother tongue along with cultural contexts.",
+        helperSubtitle: "Take a photo or paste the text — we'll translate it right away.",
         btnPhoto: "Take Photo/Upload",
-        btnAnalyze: "Run Daon AI RAG Analysis",
+        btnAnalyze: "Start Translation",
         alertsSubtitle: "When a new welfare benefit matching your family profile is registered on Bokjiro, a real-time push notification is sent in your native language.",
         btnNext: "Next",
         btnStart: "Start Daon",
@@ -433,6 +436,7 @@ const translations = {
         myprofileTitle: "My Profile & Account Info",
         myprofileUsername: "Daon Family",
         settingGuide: "Restart Onboarding Guide",
+        settingCoachmark: "Replay App Usage Guide",
         settingSecurity: "Security & Privacy Settings",
         settingFeedback: "Translation Quality Feedback & Contribute",
         settingApi: "Public Data Integration (Bojogum24 API)",
@@ -751,6 +755,7 @@ function changeLanguage(langCode) {
             ? JSON.parse(localStorage.getItem("daon_user_session")).name
             : translations[langCode].myprofileUsername,
         'txt-setting-guide': '<i class="fa-solid fa-circle-info"></i> ' + translations[langCode].settingGuide,
+        'txt-setting-coachmark': '<i class="fa-solid fa-hand-pointer"></i> ' + translations[langCode].settingCoachmark,
         'txt-setting-security': '<i class="fa-solid fa-shield-halved"></i> ' + translations[langCode].settingSecurity,
         'txt-setting-feedback': '<i class="fa-solid fa-language"></i> ' + translations[langCode].settingFeedback,
         'txt-setting-api': '<i class="fa-solid fa-circle-nodes"></i> ' + translations[langCode].settingApi,
@@ -2939,10 +2944,10 @@ const coachSteps = [
     {
         targetId: 'history-section-card',
         getText: () => ({
-            ko: '🕐 이전에 분석한 기록을 확인하세요',
-            vi: '🕐 Xem lại các bản dịch trước đây của bạn',
-            zh: '🕐 查看您之前的翻译记录',
-            en: '🕐 Check your previous translation records'
+            ko: '🕐 분석했던 기록을 확인할 수 있습니다',
+            vi: '🕐 Bạn có thể xem lại các bản dịch đã phân tích',
+            zh: '🕐 您可以查看之前分析过的记录',
+            en: '🕐 You can review your previously analyzed records'
         }),
         arrow: 'arrow-bottom',
         position: 'above'
@@ -2950,10 +2955,10 @@ const coachSteps = [
     {
         targetId: 'nav-btn-alerts',
         getText: () => ({
-            ko: '🎁 복지 혜택 소식을 확인해보세요',
-            vi: '🎁 Khám phá các tin tức phúc lợi dành cho bạn',
-            zh: '🎁 查看为您准备的福利资讯',
-            en: '🎁 Explore welfare benefits for your family'
+            ko: '🎁 다양한 복지 혜택을 확인해보세요',
+            vi: '🎁 Khám phá các phúc lợi đa dạng dành cho bạn',
+            zh: '🎁 快来查看各种福利优惠吧',
+            en: '🎁 Explore a variety of welfare benefits'
         }),
         arrow: 'arrow-top',
         position: 'above'
@@ -3059,4 +3064,24 @@ function closeCoachGuide() {
         }, 300);
     }
     localStorage.setItem('daon_guide_completed', 'true');
+}
+
+function resetCoachGuide() {
+    localStorage.removeItem('daon_guide_completed');
+    currentCoachStep = 0;
+    
+    const overlay = document.getElementById('coachmark-overlay');
+    if (!overlay) return;
+    
+    // 홈 탭으로 전환 후 가이드 시작 (업로드 카드가 홈 탭에 있으므로)
+    switchTab('tab-home');
+    
+    overlay.style.display = 'block';
+    overlay.style.opacity = '0';
+    overlay.style.transition = 'opacity 0.3s ease';
+    setTimeout(() => {
+        overlay.style.opacity = '';
+        overlay.style.transition = '';
+        showCoachStep(0);
+    }, 150);
 }
