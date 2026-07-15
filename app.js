@@ -688,7 +688,7 @@ function switchTab(tabId, navElement = null) {
     document.getElementById(tabId).classList.add('active');
     
     // Update navigation active state
-    document.querySelectorAll('.nav-item').forEach(item => {
+    document.querySelectorAll('.fab-menu-item').forEach(item => {
         item.classList.remove('active');
     });
     
@@ -701,7 +701,7 @@ function switchTab(tabId, navElement = null) {
         else if (tabId === 'tab-alerts') navIndex = 1;
         else if (tabId === 'tab-profile') navIndex = 2;
         
-        const navItems = document.querySelectorAll('.nav-item');
+        const navItems = document.querySelectorAll('.fab-menu-item');
         if (navItems[navIndex]) {
             navItems[navIndex].classList.add('active');
         }
@@ -709,6 +709,26 @@ function switchTab(tabId, navElement = null) {
     
     // Scroll to top
     document.querySelector('.app-main').scrollTop = 0;
+}
+
+// Floating Action Menu Control Functions
+function toggleFabMenu(isOpen) {
+    const container = document.getElementById('fab-nav-container');
+    if (!container) return;
+    
+    const currentlyOpen = container.classList.contains('open');
+    const shouldOpen = (isOpen !== undefined) ? isOpen : !currentlyOpen;
+    
+    if (shouldOpen) {
+        container.classList.add('open');
+    } else {
+        container.classList.remove('open');
+    }
+}
+
+function handleFabNavigate(tabId, navElement) {
+    switchTab(tabId, navElement);
+    toggleFabMenu(false); // Auto-close menu on click
 }
 
 // ==========================================
@@ -3253,6 +3273,19 @@ function showCoachStep(stepIndex) {
     const step = coachSteps[stepIndex];
     if (!step) { closeCoachGuide(); return; }
 
+    if (step.targetId === 'nav-btn-alerts') {
+        toggleFabMenu(true);
+        // Wait for FAB slide-up animation to finish so getBoundingClientRect is accurate
+        setTimeout(() => {
+            renderCoachStepElements(step);
+        }, 150);
+    } else {
+        toggleFabMenu(false);
+        renderCoachStepElements(step);
+    }
+}
+
+function renderCoachStepElements(step) {
     const targetEl = document.getElementById(step.targetId);
     const spotlight = document.getElementById('coachmark-spotlight');
     const tooltip = document.getElementById('coachmark-tooltip');
@@ -3277,7 +3310,7 @@ function showCoachStep(stepIndex) {
     textEl.textContent = texts[currentLanguage] || texts['ko'];
 
     // 마지막 단계 버튼 텍스트
-    const isLast = stepIndex === coachSteps.length - 1;
+    const isLast = coachSteps.indexOf(step) === coachSteps.length - 1;
     const finishLabel = { ko: '완료', vi: 'Xong', zh: '完成', en: 'Done' };
     const nextLabelText = { ko: '다음', vi: 'Tiếp', zh: '下一步', en: 'Next' };
     const skipLabelText = { ko: '건너뛰기', vi: 'Bỏ qua', zh: '跳过', en: 'Skip' };
@@ -3334,6 +3367,7 @@ function closeCoachGuide() {
         }, 300);
     }
     localStorage.setItem('daon_guide_completed', 'true');
+    toggleFabMenu(false); // Close FAB menu on guide close
 }
 
 function resetCoachGuide() {

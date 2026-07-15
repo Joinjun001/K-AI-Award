@@ -274,21 +274,32 @@
             </section>
         </main>
 
-        <!-- Bottom Navigation Bar (Mobile First design) -->
-        <nav class="app-nav">
-            <button class="nav-item active" onclick="switchTab('tab-home', this)">
-                <i class="fa-solid fa-house"></i>
-                <span id="nav-txt-home">홈</span>
+        <!-- Floating Action Menu (FAB) replacing traditional bottom navigation -->
+        <div class="fab-nav-container" id="fab-nav-container">
+            <!-- Backdrop for blur background when menu is expanded -->
+            <div id="fab-backdrop" class="fab-backdrop" onclick="toggleFabMenu(false)"></div>
+            
+            <!-- Expanded Menu Items (stacked vertically above the button) -->
+            <div id="fab-menu" class="fab-menu-list">
+                <button class="fab-menu-item" onclick="handleFabNavigate('tab-home', this)">
+                    <i class="fa-solid fa-house"></i>
+                    <span id="nav-txt-home">홈</span>
+                </button>
+                <button class="fab-menu-item" id="nav-btn-alerts" onclick="handleFabNavigate('tab-alerts', this)">
+                    <i class="fa-solid fa-square-rss"></i>
+                    <span id="nav-txt-alerts">혜택 피드</span>
+                </button>
+                <button class="fab-menu-item" onclick="handleFabNavigate('tab-profile', this)">
+                    <i class="fa-solid fa-user"></i>
+                    <span id="nav-txt-profile">마이페이지</span>
+                </button>
+            </div>
+
+            <!-- Primary Plus Button -->
+            <button id="fab-trigger" class="fab-trigger" onclick="toggleFabMenu()">
+                <i class="fa-solid fa-plus"></i>
             </button>
-            <button class="nav-item" id="nav-btn-alerts" onclick="switchTab('tab-alerts', this)">
-                <i class="fa-solid fa-square-rss"></i>
-                <span id="nav-txt-alerts">혜택 피드</span>
-            </button>
-            <button class="nav-item" onclick="switchTab('tab-profile', this)">
-                <i class="fa-solid fa-user"></i>
-                <span id="nav-txt-profile">마이페이지</span>
-            </button>
-        </nav>
+        </div>
     </div>
 
     <!-- Premium Benefit Detail Modal (Toss style) -->
