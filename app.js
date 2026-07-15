@@ -2254,6 +2254,10 @@ function finishOnboarding() {
     localStorage.setItem('daon_children', JSON.stringify(onboardData.children)); // Stringify child details
     
     overlay.classList.add('fade-out');
+
+    // 온보딩 완료 시 FAB 다시 노출
+    const fab = document.getElementById('fab-nav-container');
+    if (fab) fab.classList.remove('hidden');
     
     setTimeout(() => {
         overlay.style.display = 'none';
@@ -2275,6 +2279,10 @@ function resetOnboarding() {
     const overlay = document.getElementById('onboarding-overlay');
     const nextBtn = document.getElementById('btn-onboarding-next');
     
+// 온보딩 진입 시 명시적으로 FAB 숨김 처리
+    const fab = document.getElementById('fab-nav-container');
+    if (fab) fab.classList.add('hidden');
+
     onboardStep = 0;
     localStorage.removeItem('daon_onboarded');
     
@@ -2360,12 +2368,15 @@ window.addEventListener('DOMContentLoaded', async () => {
         
         // Onboarding Check
         const overlay = document.getElementById('onboarding-overlay');
+        const fab = document.getElementById('fab-nav-container');
         if (overlay) {
             if (localStorage.getItem('daon_onboarded') === 'true') {
                 overlay.style.display = 'none';
                 overlay.classList.add('fade-out');
+                if (fab) fab.classList.remove('hidden'); // 이미 온보딩을 마쳤다면 표시
             } else {
                 overlay.style.display = 'flex';
+                if (fab) fab.classList.add('hidden'); // 온보딩이 필요하다면 숨김
                 onboardStep = 0;
                 updateOnboardProgress();
                 
@@ -3307,10 +3318,6 @@ function startCoachGuide() {
     const overlay = document.getElementById('coachmark-overlay');
     if (!overlay) return;
 
-    // 온보딩 중 FAB(+버튼) 숨기기
-    const fab = document.getElementById('fab-nav-container');
-    if (fab) fab.classList.add('hidden-during-coach');
-
     overlay.style.display = 'block';
     showCoachStep(currentCoachStep);
 }
@@ -3442,9 +3449,6 @@ function closeCoachGuide() {
     }
     localStorage.setItem('daon_guide_completed', 'true');
 
-    // FAB 버튼 다시 표시
-    const fab = document.getElementById('fab-nav-container');
-    if (fab) fab.classList.remove('hidden-during-coach');
 
     // Clear coachmark-active class and close menu
     const fabContainer = document.getElementById('fab-nav-container');
