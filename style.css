@@ -2346,5 +2346,8 @@ body {
     }
 }
 
-
+.onboarding-overlay:not(.fade-out) ~ .fab-nav-container,
+.onboarding-overlay[style*="display: flex"] ~ .fab-nav-container {
+    display: none !important;
+}
 
