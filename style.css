@@ -1238,6 +1238,10 @@ body {
 .fab-nav-container.coachmark-active .fab-backdrop {
     display: none !important;
 }
+/* 온보딩(튜토리얼) 중 FAB 완전 숨김 */
+.fab-nav-container.hidden-during-coach {
+    display: none !important;
+}
 
 /* ==========================================
    TOSS-STYLE ONBOARDING OVERLAY

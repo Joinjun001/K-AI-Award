@@ -3307,6 +3307,10 @@ function startCoachGuide() {
     const overlay = document.getElementById('coachmark-overlay');
     if (!overlay) return;
 
+    // 온보딩 중 FAB(+버튼) 숨기기
+    const fab = document.getElementById('fab-nav-container');
+    if (fab) fab.classList.add('hidden-during-coach');
+
     overlay.style.display = 'block';
     showCoachStep(currentCoachStep);
 }
@@ -3437,13 +3441,17 @@ function closeCoachGuide() {
         }, 300);
     }
     localStorage.setItem('daon_guide_completed', 'true');
-    
+
+    // FAB 버튼 다시 표시
+    const fab = document.getElementById('fab-nav-container');
+    if (fab) fab.classList.remove('hidden-during-coach');
+
     // Clear coachmark-active class and close menu
     const fabContainer = document.getElementById('fab-nav-container');
     if (fabContainer) {
         fabContainer.classList.remove('coachmark-active');
     }
-    toggleFabMenu(false); // Close FAB menu on guide close
+    toggleFabMenu(false);
 }
 
 function resetCoachGuide() {
