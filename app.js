@@ -2316,6 +2316,12 @@ window.addEventListener('DOMContentLoaded', async () => {
                 selectOnboardLanguage(recommended);
             }
         }
+        
+        // Remove loading flicker overlay now that page and localization are initialized
+        const appContainer = document.querySelector('.app-container');
+        if (appContainer) {
+            appContainer.classList.remove('loading-flicker');
+        }
     } catch (err) {
         console.error("Daon load initialization error:", err);
     }

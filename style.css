@@ -60,6 +60,11 @@ body {
     position: relative;
     box-shadow: var(--shadow-lg);
     overflow: hidden;
+    transition: opacity 0.15s ease-in-out;
+}
+
+.app-container.loading-flicker {
+    opacity: 0 !important;
 }
 
 @media (min-width: 480px) {
