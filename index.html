@@ -251,7 +251,12 @@
                     </div>
                     
                     <div id="google-login-container" style="display: flex; justify-content: center; margin: 15px 0;">
-                        <div id="btn-google-login"></div>
+                        <div id="btn-google-login" style="display: flex; align-items: center; justify-content: center; min-height: 40px; width: 100%;">
+                            <div id="google-login-loading" style="font-size: 0.85rem; color: var(--text-sub); display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-spinner fa-spin"></i>
+                                <span id="txt-google-loading">Google 로그인 준비 중...</span>
+                            </div>
+                        </div>
                     </div>
                     <button id="btn-logout" class="btn btn-outline hidden" onclick="handleLogout()" style="margin: 10px auto; max-width: 150px; font-size: 13px; font-weight: 500; padding: 8px 16px; border-radius: 10px;">로그아웃</button>
                     <hr class="divider">

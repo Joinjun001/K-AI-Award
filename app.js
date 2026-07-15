@@ -137,6 +137,7 @@ const translations = {
         haveAccount: "이미 계정이 있으신가요?",
         goLogin: "로그인",
         orLabel: "또는",
+        googleLoading: "Google 로그인 준비 중...",
         loginRequiredAlert: "사진 번역 기능을 이용하시려면 먼저 로그인해주세요.",
         privacyAgree: "개인정보 수집 및 이용 동의 [필수]",
         privacyPolicyNotice: "* 서비스 품질 개선 및 성능 측정을 위해 개인을 식별할 수 없는 익명화된 성능 데이터(분석 시간, 파일 크기 등)가 수집될 수 있습니다.",
@@ -276,6 +277,7 @@ const translations = {
         haveAccount: "Bạn đã có tài khoản?",
         goLogin: "Đăng nhập",
         orLabel: "Hoặc",
+        googleLoading: "Đang tải đăng nhập Google...",
         loginRequiredAlert: "Vui lòng đăng nhập trước để sử dụng tính năng dịch ảnh thông báo.",
         privacyAgree: "Đồng ý thu thập và sử dụng thông tin cá nhân [Bắt buộc]",
         privacyPolicyNotice: "* Để cải thiện chất lượng dịch vụ và đo lường hiệu suất, dữ liệu ẩn danh không thể nhận dạng cá nhân (thời gian phân tích, kích thước tệp, v.v.) có thể được thu thập.",
@@ -415,6 +417,7 @@ const translations = {
         haveAccount: "已经有账号吗？",
         goLogin: "登录",
         orLabel: "或者",
+        googleLoading: "Google 登录载入中...",
         loginRequiredAlert: "请先登录以使用通知照片翻译功能。",
         privacyAgree: "同意收集及使用个人信息 [必填]",
         privacyPolicyNotice: "* 为了提高服务质量和测量性能，可能会收集无法识别个人身份的匿名数据（分析时间、文件大小等）。",
@@ -554,6 +557,7 @@ const translations = {
         haveAccount: "Already have an account?",
         goLogin: "Log In",
         orLabel: "Or",
+        googleLoading: "Loading Google Sign-in...",
         loginRequiredAlert: "Please log in first to use the notice photo translation feature.",
         privacyAgree: "Consent to Collection and Use of Personal Information [Required]",
         privacyPolicyNotice: "* To improve service quality and measure performance, anonymized performance data (analysis time, file size, etc.) that cannot identify individuals may be collected.",
@@ -853,6 +857,7 @@ function changeLanguage(langCode) {
         'txt-have-account': translations[langCode].haveAccount,
         'txt-go-login': translations[langCode].goLogin,
         'txt-or-label': translations[langCode].orLabel,
+        'txt-google-loading': translations[langCode].googleLoading,
         'txt-privacy-policy-notice': translations[langCode].privacyPolicyNotice,
         'btn-logout': translations[langCode].btnLogout,
         'btn-login-submit': translations[langCode].btnLoginSubmit,
@@ -939,6 +944,7 @@ function changeLanguage(langCode) {
     }
     
     renderWelfareFeed();
+    renderTranslationHistory();
 }
 
 let currentUploadMethod = "photo"; // "photo" or "text"
@@ -1561,28 +1567,10 @@ function getFallbackData(lang) {
                     <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">An error occurred during AI analysis and translation. Could not retrieve data.</p>
                 </div>
             `,
-            materials: `
-                <div style="padding: 16px; background: rgba(245, 158, 11, 0.05); border-left: 4px solid #f59e0b; border-radius: 12px; margin-bottom: 12px;">
-                    <h4 style="margin: 0 0 8px 0; color: #f59e0b; font-weight: 700;">🎒 아이가 챙겨야 할 준비물</h4>
-                    <ul style="margin: 0; padding-left: 20px; font-size: 0.95rem; line-height: 1.5;">
-                        <li>개인 물통</li>
-                        <li>매일 신을 깨끗한 실내화</li>
-                    </ul>
-                </div>
-            `,
-            schedule: `
-                <div style="padding: 16px; background: rgba(16, 185, 129, 0.05); border-left: 4px solid #10b981; border-radius: 12px; margin-bottom: 12px;">
-                    <h4 style="margin: 0 0 8px 0; color: #10b981; font-weight: 700;">📅 핵심 일정 및 안내 사항</h4>
-                    <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">방학 돌봄교실 신청서 안내 및 배부 관련 공지입니다.</p>
-                </div>
-            `,
-            full_translation: "[알림장 - 마포초등학교 1학년]\n제목: 방학 돌봄교실 안내 및 신청서 배부\n- 급식 신청: 동의서 체크 후 5월 14일까지 행정실 제출.\n- 준비물: 개인 물통 및 매일 신을 깨끗한 실내화 지참.",
-            cultural_notes: `
-                <div class="culture-note" style="padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; margin-top: 12px;">
-                    <h5 style="margin: 0 0 8px 0; color: #15803d; font-weight: 700;"><i class="fa-solid fa-lightbulb"></i> 한국 학교 문화 팁</h5>
-                    <p style="margin: 0; font-size: 0.9rem; line-height: 1.5;"><strong>실내화:</strong> ${mockKnowledgeBase[0].content}</p>
-                </div>
-            `
+            materials: "",
+            schedule: "",
+            full_translation: "An error occurred during AI analysis and translation. Please check the API configuration and network status.",
+            cultural_notes: ""
         }
     };
     
@@ -2681,6 +2669,19 @@ function toggleAuthForm(mode, event) {
     const loginForm = document.getElementById("local-login-form");
     const registerForm = document.getElementById("local-register-form");
     
+    // Clear inputs and messages when toggling
+    const inputs = document.querySelectorAll("#local-auth-container input");
+    inputs.forEach(input => input.value = "");
+    
+    const messages = ["reg-username-message", "reg-email-message", "reg-password-message"];
+    messages.forEach(id => {
+        const msgEl = document.getElementById(id);
+        if (msgEl) {
+            msgEl.style.display = "none";
+            msgEl.textContent = "";
+        }
+    });
+    
     if (mode === "register") {
         if (loginForm) loginForm.classList.add("hidden");
         if (registerForm) registerForm.classList.remove("hidden");
@@ -2921,7 +2922,8 @@ function renderTranslationHistory() {
         }
         
         let html = "";
-        history.forEach((record, index) => {
+        const displayedHistory = history.slice(0, 5);
+        displayedHistory.forEach((record, index) => {
             const date = new Date(record.timestamp);
             const dateStr = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
             
@@ -2951,6 +2953,22 @@ function renderTranslationHistory() {
         });
         
         listContainer.innerHTML = html;
+        
+        // Show indicator if there are more history items
+        if (history.length > 5) {
+            const moreText = currentLanguage === "ko" 
+                ? `외 ${history.length - 5}개의 기록이 더 있습니다.` 
+                : (currentLanguage === "vi" 
+                    ? `và ${history.length - 5} lịch sử khác.` 
+                    : (currentLanguage === "zh" 
+                        ? `外 还有${history.length - 5}个记录。` 
+                        : `and ${history.length - 5} more records.`));
+            listContainer.insertAdjacentHTML('beforeend', `
+                <div style="text-align: center; font-size: 0.8rem; color: var(--text-sub); margin-top: 8px;" id="txt-history-more-indicator">
+                    ${moreText}
+                </div>
+            `);
+        }
     } catch (e) {
         console.error("Failed to render translation history:", e);
     }
