@@ -1477,16 +1477,20 @@ function renderReportModalResult(data, isHistoryLoad = false) {
         // Check if translation text needs a more button
         checkTranslationMoreButton();
     } else {
-        // Run sequential typewriter rendering (Submissions -> Materials -> Schedule -> Translation -> Culture)
+        // Typewriter animation only for the 3 key summary sections
+        // Full translation & cultural notes render instantly (no animation)
         typewriteHTML("sec-submissions", submissionsHTML, 3, () => {
             typewriteHTML("sec-materials", materialsHTML, 3, () => {
                 typewriteHTML("sec-schedule", scheduleHTML, 3, () => {
-                    typewriteHTML("sec-translation", translationHTML, 2, () => {
-                        typewriteHTML("sec-culture", cultureHTML, 3, () => {
-                            // Check if translation text needs a more button after animation completes
-                            checkTranslationMoreButton();
-                        });
-                    });
+                    // Render translation & culture instantly (no typewriter)
+                    const secTrans = document.getElementById("sec-translation");
+                    if (secTrans) secTrans.innerHTML = translationHTML;
+
+                    const secCult = document.getElementById("sec-culture");
+                    if (secCult) secCult.innerHTML = cultureHTML;
+
+                    // Check more button after instant render
+                    checkTranslationMoreButton();
                 });
             });
         });
