@@ -3250,7 +3250,7 @@ const coachSteps = [
             zh: '🎁 快来查看各种福利优惠吧',
             en: '🎁 Explore a variety of welfare benefits'
         }),
-        arrow: 'arrow-top',
+        arrow: 'arrow-bottom',
         position: 'above'
     }
 ];
@@ -3343,6 +3343,13 @@ function renderCoachStepElements(step) {
     // 수평 중앙 정렬 (화면 밖 넘침 방지)
     tipLeft = rect.left + rect.width / 2 - tooltipWidth / 2;
     tipLeft = Math.max(10, Math.min(tipLeft, viewportW - tooltipWidth - 10));
+
+    // Dynamic arrow positioning based on target element's actual position relative to tooltip
+    const targetCenterX = rect.left + rect.width / 2;
+    let relativeX = targetCenterX - tipLeft;
+    // Clamp arrow offset between 20px and (tooltipWidth - 20px) to prevent pointing off the balloon corners
+    relativeX = Math.max(20, Math.min(relativeX, tooltipWidth - 20));
+    tooltip.style.setProperty('--arrow-left', `${relativeX}px`);
 
     tooltip.style.top  = `${tipTop}px`;
     tooltip.style.left = `${tipLeft}px`;

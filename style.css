@@ -2122,13 +2122,13 @@ body {
 /* Arrow placements */
 .coachmark-tooltip.arrow-top::after {
     bottom: 100%;
-    left: 50%;
+    left: var(--arrow-left, 50%);
     transform: translateX(-50%);
     border-bottom-color: var(--bg-card);
 }
 .coachmark-tooltip.arrow-bottom::after {
     top: 100%;
-    left: 50%;
+    left: var(--arrow-left, 50%);
     transform: translateX(-50%);
     border-top-color: var(--bg-card);
 }
