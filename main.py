@@ -59,26 +59,6 @@ def compress_image(image_bytes: bytes, max_size=(1024, 1024), quality=75) -> byt
         logger.warning(f"Image compression failed, using original bytes: {e}")
         return image_bytes
 
-def mask_personal_info(text: str) -> str:
-    if not text:
-        return text
-    
-    # 1. RRN / ARC (주민등록번호/외국인등록번호) masking: 6 digits - 7 digits
-    rrn_pattern = re.compile(r'\b\d{6}[-/\s]\d{7}\b')
-    text = rrn_pattern.sub("[주민등록번호 마스킹]", text)
-    
-    # 2. Phone number masking (matches common Korean phone formats)
-    phone_pattern = re.compile(
-        r'\b(?:0\d{1,2}[-.\s]?\d{3,4}[-.\s]?\d{4})|(?:\+?82[-.\s]?\d{1,2}[-.\s]?\d{3,4}[-.\s]?\d{4})\b'
-    )
-    text = phone_pattern.sub("[전화번호 마스킹]", text)
-    
-    # 3. Email masking
-    email_pattern = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
-    text = email_pattern.sub("[이메일 마스킹]", text)
-    
-    return text
-
 LLM_PROVIDER = os.getenv("LLM_PROVIDER", "gemini").lower()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 OCI_API_KEY = os.getenv("OCI_API_KEY")
@@ -138,10 +118,7 @@ def startup_db_migration():
                 );
             """)
             
-            # Drop old table if exists to migrate to non-PII performance logging structure
-            cur.execute("DROP TABLE IF EXISTS translation_logs CASCADE;")
-            
-            # Recreate with PII-free schema
+            # Create/ensure table exists with PII-free schema
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS translation_logs (
                     id SERIAL PRIMARY KEY,
