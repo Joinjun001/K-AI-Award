@@ -1156,6 +1156,14 @@ body {
     pointer-events: none !important;
 }
 
+/* Coachmark active layout elevations */
+.fab-nav-container.coachmark-active {
+    z-index: 10005 !important;
+}
+.fab-nav-container.coachmark-active .fab-backdrop {
+    display: none !important;
+}
+
 /* ==========================================
    TOSS-STYLE ONBOARDING OVERLAY
    ========================================== */
@@ -2087,12 +2095,12 @@ body {
     border-radius: 16px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
-    z-index: 10001;
+    z-index: 10009;
 }
 
 .coachmark-tooltip {
     position: absolute;
-    z-index: 10002;
+    z-index: 10010;
     background: var(--bg-card);
     color: var(--text-main);
     padding: 16px;

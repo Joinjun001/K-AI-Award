@@ -3273,13 +3273,16 @@ function showCoachStep(stepIndex) {
     const step = coachSteps[stepIndex];
     if (!step) { closeCoachGuide(); return; }
 
+    const fabContainer = document.getElementById('fab-nav-container');
     if (step.targetId === 'nav-btn-alerts') {
+        if (fabContainer) fabContainer.classList.add('coachmark-active');
         toggleFabMenu(true);
-        // Wait for FAB slide-up animation to finish so getBoundingClientRect is accurate
+        // Wait for FAB slide-up animation (350ms) to completely finish so getBoundingClientRect is accurate
         setTimeout(() => {
             renderCoachStepElements(step);
-        }, 150);
+        }, 400);
     } else {
+        if (fabContainer) fabContainer.classList.remove('coachmark-active');
         toggleFabMenu(false);
         renderCoachStepElements(step);
     }
@@ -3367,6 +3370,12 @@ function closeCoachGuide() {
         }, 300);
     }
     localStorage.setItem('daon_guide_completed', 'true');
+    
+    // Clear coachmark-active class and close menu
+    const fabContainer = document.getElementById('fab-nav-container');
+    if (fabContainer) {
+        fabContainer.classList.remove('coachmark-active');
+    }
     toggleFabMenu(false); // Close FAB menu on guide close
 }
 
