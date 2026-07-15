@@ -1,126 +1,232 @@
-# 🏆 다온 (Daon)
+# 🌏 다온 (Daon)
 > **"우리 곁의 착한 AI, 일상을 바꾸는 상상력"**
 >
-> **K-AI Contents Award (Track B. 솔루션 부문) 출품작**  
-> 다문화 가정을 위한 RAG 기반 맞춤형 생활·교육 AI 비서 서비스
+> **K-AI Contents Award — Track B. 솔루션 부문 출품작**
+> 다문화 가정 학부모를 위한 AI 기반 알림장 번역 & 복지 혜택 안내 서비스
 
 ---
 
-## 💡 1. 기획 배경 및 필요성
-다문화 가정의 인구는 매년 빠르게 증가하고 있으나, 여전히 언어적 장벽과 한국 고유의 교육·행정 시스템에 대한 이해 부족으로 복지 소외와 정보 격차를 겪고 있습니다.
-* **교육 정보 격차**: 초·중·고교의 가정통신문이나 알림장에는 한자어나 행정적 표현(예: '지참', '제출', '구비')이 많아 단순 번역기로는 학부모가 준비물이나 일정을 놓치기 쉽습니다.
-* **복지 혜택 소외**: 소득 수준이나 거주지, 자녀 나이에 따라 받을 수 있는 수많은 정부 혜택이 존재하지만, 신청 절차가 까다롭고 관련 공고를 제때 확인하지 못해 수혜를 받지 못하는 경우가 빈번합니다.
+## 💡 1. 기획 배경 및 해결하는 문제
 
-**"다온 (Daon)"**은 AI 기술을 통해 정보 격차를 없애고 다문화 가정이 한국 사회에 따뜻하게 온보딩될 수 있도록 돕는 착한 AI 솔루션입니다.
+한국의 다문화 가정 수는 매년 빠르게 증가하고 있지만, 언어 장벽과 한국 교육·행정 시스템에 대한 낯섦으로 인해 심각한 **정보 격차**를 겪고 있습니다.
 
----
+| 문제 | 구체적 상황 |
+|---|---|
+| 📄 **교육 정보 격차** | 가정통신문·알림장에는 행정·한자어 표현(예: '지참', '구비', '협조사항')이 많아 단순 번역기로는 준비물·일정을 놓치기 쉬움 |
+| 🏛️ **복지 혜택 소외** | 다양한 정부 지원이 존재하지만, 정보 접근성 부족으로 수혜를 놓치는 경우 빈번 |
+| 🌐 **문화적 맥락 부재** | '실내화', '주간학습안내', '늘봄교실' 등 한국 학교 고유 문화는 직역으로는 이해 불가 |
 
-## ✨ 2. 핵심 기능 (Core Features)
-
-### 📸 ① RAG 기반 서류/행정 도우미
-* **OCR 연동 텍스트 추출**: 가정통신문이나 알림장의 사진을 업로드하거나 텍스트를 입력합니다.
-* **한국 교육/행정 백과사전 RAG 검색**: 추출한 텍스트에서 키워드를 도출하고, 한국의 독특한 문화(예: 실내화 보관함, 주간학습안내 서명제도 등)가 담긴 지식 DB에서 검색(Retrieval)합니다.
-* **다국어 맞춤 해설 생성**: 단순 어휘 번역을 넘어 **[1. 핵심 일정, 2. 챙겨야 할 준비물, 3. 제출해야 할 서류]**를 번역 요약해주고, 한국 문화에 대한 상세한 추가 해설을 함께 제공합니다.
-
-### 🔔 ② 프로필 기반 복지 혜택 매칭 & 알림
-* **온보딩 개인화 프로필**: 다문화 학부모의 주 사용 언어, 자녀 나이, 소득 분위, 거주 지역 정보를 설정합니다.
-* **실시간 복지 매칭**: 수집된 보조금24 및 지자체 복지 API 정보와 사용자 프로필을 비교하여 수혜 대상 혜택을 필터링합니다.
-* **다국어 모바일 푸시 알림**: 조건에 맞는 신규 혜택이 신설되면 사용자의 선호 언어로 번역된 브라우저 백그라운드 푸시 알림(Web Push)을 발송합니다.
+**다온(Daon)**은 AI가 알림장을 '선생님처럼' 읽고, 학부모의 언어로 핵심 내용을 정리해주며, 받을 수 있는 정부 지원도 함께 안내하는 **착한 AI 솔루션**입니다.
 
 ---
 
-## 🏗️ 3. 서비스 아키텍처 (System Architecture)
+## ✨ 2. 핵심 기능
+
+### 📸 ① AI 알림장 번역 & 분석 (메인 기능)
+- **사진 업로드 또는 텍스트 직접 입력** 지원
+- **OCR**: Google Gemini Vision API로 이미지에서 한국어 텍스트 추출
+- **구조화된 3단 요약**: 단순 번역을 넘어 아래 3가지 카테고리로 핵심만 분리
+  - ✍️ 부모가 제출하거나 서명해야 할 서류
+  - 🎒 아이가 챙겨야 할 준비물
+  - 📅 놓치면 안 되는 주요 일정
+- **전체 번역본**: 더보기 방식으로 원문 전체 번역 제공
+- **한국 문화 해설**: '실내화', '늘봄교실' 등 외국인이 이해하기 어려운 개념을 모국어로 친절하게 설명
+- **지원 언어**: 한국어 🇰🇷 · 베트남어 🇻🇳 · 중국어 🇨🇳 · 영어 🇺🇸
+
+### 🏛️ ② 복지 혜택 안내 피드
+- **복지로 국가복지정보 API** 연동으로 최신 정부 지원 혜택 실시간 제공
+- 다문화 가정·아동·가족 관련 혜택만 필터링하여 표시
+- 카드형 UI로 제목, 지원 내용, 신청 방법, 출처 링크 제공
+- 4개 언어로 자동 번역 제공
+
+### 👤 ③ 개인화 & 번역 이력
+- **구글 소셜 로그인** 지원
+- **번역 이력 저장**: 과거에 분석한 알림장을 언제든 다시 확인 가능
+- **애니메이션 제어**: 처음 생성 시에는 타자기 애니메이션, 이력 조회 시에는 즉시 표시
+
+### 🎓 ④ 인터랙티브 온보딩 튜토리얼
+- 첫 방문자를 위한 단계별 Coachmark 가이드
+- 앱의 주요 기능을 직접 안내하며 학습 장벽 최소화
+
+---
+
+## 🏗️ 3. 시스템 아키텍처
 
 ```mermaid
 graph TD
-    %% Frontend
-    subgraph Client [Client Side - Static App]
-        FE[Vanilla HTML / CSS / JS]
+    subgraph Client["클라이언트 (정적 웹앱)"]
+        FE["Vanilla HTML / CSS / JS\n(SPA 구조)"]
     end
 
-    %% Backend Service
-    subgraph Backend [Backend API Service]
-        PROXY[Nginx Reverse Proxy]
-        API[FastAPI Server]
+    subgraph Backend["백엔드 API 서버"]
+        NGINX["Nginx 리버스 프록시"]
+        API["FastAPI 서버 (Python)"]
     end
 
-    %% Storage & Daemon
-    subgraph Storage [Storage & Daemon]
-        DB[(PostgreSQL Relational DB)]
-        DAEMON[Welfare Sync Daemon]
+    subgraph Storage["저장소 & 데이터 동기화"]
+        DB[("PostgreSQL DB\n(복지 혜택 캐시\n번역 이력 저장)")]
+        DAEMON["복지 데이터 동기화\n스크립트"]
     end
 
-    %% External Services
-    subgraph External [External APIs]
-        GEMINI[Google Gemini 2.5 API]
-        GOV[공공데이터포털 - 보조금24 API]
+    subgraph External["외부 API"]
+        GEMINI["Google Gemini 2.5 Flash\n(OCR · 번역 · 문화 해설)"]
+        BOKJIRO["공공데이터포털\n복지로 국가복지정보 API\n(apis.data.go.kr/B554287)"]
+        GOOGLE_AUTH["Google OAuth 2.0\n(소셜 로그인)"]
     end
 
-    %% Connections
-    FE -->|HTTP Requests| PROXY
-    PROXY -->|/| FE
-    PROXY -->|/api/| API
-    API -->|Read| DB
-    API -->|Analyze Request| GEMINI
-    DAEMON -->|Fetch| GOV
-    DAEMON -->|Translate| GEMINI
-    DAEMON -->|Write/Update| DB
+    FE -->|HTTP 요청| NGINX
+    NGINX -->|정적 파일 서빙| FE
+    NGINX -->|/api/*| API
+    API -->|OCR · 번역 · 요약 요청| GEMINI
+    API -->|번역 이력 저장/조회| DB
+    API -->|복지 혜택 조회| DB
+    API -->|토큰 검증| GOOGLE_AUTH
+    DAEMON -->|30분마다 자동 수집| BOKJIRO
+    DAEMON -->|다국어 번역| GEMINI
+    DAEMON -->|혜택 데이터 Upsert| DB
 ```
 
-* **Client**: Vanilla HTML5 + CSS3 + Vanilla JS (SPA 구조로 Nginx로 정적 서빙)
-* **Server**: FastAPI (Nginx 리버스 프록시 연동 및 Gemini API 텍스트/이미지 통합 분석 엔드포인트 구현)
-* **Database**: PostgreSQL (RDB - 다국어 복지 혜택 데이터를 테이블에 캐싱하여 조회 속도 극대화)
-* **Daemon**: Background Python Sync Daemon (Systemd 서비스로 등록되어 주기적으로 공공데이터를 갱신 및 DB에 Upsert)
-* **External AI API**: Google Gemini 2.5 API (OCR 텍스트 추출, 다국어 번역, RAG 요약 및 한국 문화 해설을 원스톱 일괄 처리)
+| 레이어 | 기술 스택 | 역할 |
+|---|---|---|
+| **프론트엔드** | Vanilla HTML5 / CSS3 / JavaScript | SPA 구조, 단일 파일로 관리. Nginx로 정적 서빙 |
+| **백엔드** | FastAPI (Python) | OCR, 번역·분석 API 엔드포인트, 인증, 이력 관리 |
+| **데이터베이스** | PostgreSQL | 복지 혜택 캐싱, 사용자 번역 이력 저장 |
+| **AI 엔진** | Google Gemini 2.5 Flash | 이미지 OCR, 다국어 번역, 3단 요약, 문화 해설 생성 |
+| **복지 데이터** | 공공데이터포털 복지로 API | 국가·지자체 복지 혜택 정보 수집 및 DB 동기화 |
+| **인증** | Google OAuth 2.0 | 소셜 로그인 및 사용자 세션 관리 |
+| **인프라** | Docker Compose + Nginx | 컨테이너 기반 배포, 리버스 프록시 |
 
 ---
 
 ## 💡 4. 핵심 AI 프롬프트 (Prompt Design)
-본 솔루션의 고도화된 RAG 및 매칭 기능을 수행하기 위해 적용된 핵심 프롬프트 예시입니다.
 
-### 📝 RAG 기반 통신문 요약 및 해설 프롬프트
-```markdown
-너는 사회생활 및 학교 생활에 서툰 다문화 가정 학부모를 돕는 다정하고 전문적인 초등학교 교사이자 통역사야.
+### 📝 알림장 번역 · 요약 · 문화 해설 프롬프트
 
-[입력 데이터]
-- 추출된 가정통신문 텍스트: {통신문 텍스트}
-- 사용자가 선택한 모국어: {선택 언어 (예: 베트남어)}
+서비스 핵심인 알림장 분석에 사용되는 실제 프롬프트 구조입니다.
 
-[수행 태스크]
-1. 입력된 통신문에서 학부모가 반드시 알아야 하는 핵심 내용을 아래의 3가지 항목으로 요약해 줘.
-   - 📅 [핵심 일정 및 일시]
-   - 🎒 [챙겨야 할 준비물]
-   - ✍️ [부모가 제출하거나 서명해야 할 것]
-2. 요약된 내용을 한국어와 지정된 {선택 언어}로 병행 표기해 줘.
-3. 통신문에 언급된 한국 학교 특유의 문화(예: 실내화, 주간학습안내, 급식 신청 등)가 있다면, 다문화 학부모가 오해하지 않도록 모국어로 친절한 추가 설명을 덧붙여 줘.
+```
+You are a kind and professional elementary school teacher and translator
+helping multicultural families.
+
+Analyze the provided primary notice/document.
+
+Tasks:
+1. Extract the original Korean text from the document.
+2. Translate the content and summarize the core information that parents MUST
+   know into three categories (written 100% in the target language):
+   - 📅 Key Dates & Times
+   - 🎒 Materials to Prepare
+   - ✍️ Documents to Submit / Sign / Cooperation
+   Format them as HTML tags (h4, ul, li, p).
+3. Generate the full translation in the target language.
+4. If there are unique Korean school culture terms (e.g. 실내화, 주간학습안내,
+   늘봄교실), explain them in detail in the target language inside a div with
+   class "culture-note".
+
+Respond with a strictly valid JSON object:
+{
+  "extracted_text": "...",
+  "schedule": "HTML content...",
+  "materials": "HTML content...",
+  "submissions": "HTML content...",
+  "full_translation": "...",
+  "cultural_notes": "HTML content..."
+}
 ```
 
-### 🔔 복지 혜택 대상자 판정 및 번역 프롬프트
-```markdown
-[입력 데이터]
-1. 사용자 프로필: { 자녀: 7세 1명, 소득분위: 중위 70%, 거주지: 서울시 마포구, 선호 언어: 베트남어 }
-2. 신규 복지 서비스 정보: { 서비스명: "다문화가정 자녀 입학 준비금 지원", 대상자 요건: "소득 중위 100% 이하의 다문화 가정 중 올해 초등학교 입학(8세) 예정 아동을 둔 가구", 지원 내용: "도서 및 가방 구입비 10만 원 지급" }
+**설계 의도:**
+- `Kind teacher` 페르소나: 기계적 번역이 아닌 교사가 설명하듯 따뜻한 어조
+- 3단 구조화: 학부모가 '무엇을 해야 하는지'를 바로 파악할 수 있도록 카테고리 분리
+- 문화 해설 필드 분리: 일반 요약과 문화 설명을 구분하여 UI에서 별도 렌더링
 
-[수행 태스크]
-1. 사용자 프로필과 복지 서비스 요건을 분석하여 대상자 여부를 판단해 줘. (판단 근거도 간략히 작성)
-2. 대상자가 맞다면, 선호 언어({선호 언어})로 다음 내용을 포함한 모바일 푸시 알림용 문구를 100자 내외로 작성해 줘.
-   - 혜택의 핵심 요약 (무엇을 주는지)
-   - 신청 방법 또는 기한 안내
+---
+
+## 📦 5. 오픈소스 및 공공데이터 라이선스
+
+본 서비스는 아래 공공데이터 및 오픈소스를 활용하며, 관련 라이선스를 준수합니다.
+
+### 공공데이터
+| 데이터 | 출처 | 라이선스 |
+|---|---|---|
+| **국가복지서비스 목록 정보** | [공공데이터포털 — 복지로 국가복지정보시스템 (B554287)](https://www.data.go.kr/data/15113841/openapi.do) | 공공누리 제1유형 (출처 표시) |
+
+> **출처 표기**: 본 서비스에서 제공하는 복지 혜택 정보는 **복지로(www.bokjiro.go.kr) 국가복지정보시스템**의 공공데이터를 활용하며, 공공누리 제1유형 라이선스에 따라 출처를 표기합니다.
+
+### 주요 오픈소스 라이브러리
+| 라이브러리 | 용도 | 라이선스 |
+|---|---|---|
+| FastAPI | 백엔드 API 프레임워크 | MIT |
+| Pillow | 이미지 압축 처리 | HPND |
+| psycopg2 | PostgreSQL 연결 | LGPL |
+| Font Awesome (Free) | 아이콘 | MIT / CC BY 4.0 |
+| Google Fonts (Noto Sans KR) | 한국어 폰트 | SIL OFL 1.1 |
+
+### 보안 및 개인정보
+- 사용자 개인정보(이름, 이메일)는 Google OAuth를 통해 최소한만 수집하며 DB에 저장 시 비밀번호 해시(SHA-256) 처리
+- 번역 이력에는 업로드 이미지 원본을 저장하지 않으며, 추출된 텍스트만 저장
+- `.env` 파일로 API 키 관리, `.gitignore`에 등록하여 소스코드에 노출 없음
+
+---
+
+## 🛠️ 6. 로컬 실행 방법
+
+### 사전 요구사항
+- Docker & Docker Compose 설치
+- Google Gemini API 키
+- (선택) 공공데이터포털 API 키, Google OAuth Client ID
+
+### 실행
+
+```bash
+# 1. 환경 변수 설정
+cp .env.example .env
+# .env 파일에 GEMINI_API_KEY 등 입력
+
+# 2. 컨테이너 빌드 및 실행
+docker compose up --build -d
+
+# 3. 접속
+# http://localhost:8400
+```
+
+### 환경 변수 목록 (`.env`)
+
+```
+GEMINI_API_KEY=          # Google Gemini API 키 (필수)
+GOOGLE_CLIENT_ID=        # Google OAuth 클라이언트 ID
+DATA_PORTAL_API_KEY=     # 공공데이터포털 API 키 (복지 데이터 수집용)
+DB_HOST=host.docker.internal
+DB_PORT=5432
+DB_USER=daon_user
+DB_PASSWORD=your_strong_password
+DB_NAME=daondb
+LLM_PROVIDER=gemini
 ```
 
 ---
 
-## 🛠️ 5. 개발 환경 및 로컬 실행 방법
+## 📁 7. 프로젝트 구조
 
-### Docker를 활용한 데모 실행 방법
-본 데모는 Docker Compose 환경으로 웹 서버가 컨테이너화되어 있어 손쉽게 구동이 가능합니다.
-
-1. **Docker 컨테이너 빌드 및 백그라운드 실행**
-   ```bash
-   docker compose up --build -d
-   ```
-2. **Nginx 설정 및 역프록시 구성**
-   포트 `8400`번으로 서빙되는 컨테이너를 외부 Nginx 설정을 통해 `/daon/` 주소로 연동합니다.
+```
+K-AI-Award/
+├── index.html           # 프론트엔드 SPA (단일 페이지)
+├── style.css            # 전체 스타일 (다크/라이트 테마, 애니메이션)
+├── app.js               # 프론트엔드 전체 로직 (번역, 이력, 온보딩 등)
+├── main.py              # FastAPI 백엔드 (OCR·번역·인증·이력 API)
+├── fetch_welfare_api.py # 복지로 공공데이터 동기화 스크립트
+├── db_init.py           # PostgreSQL 초기화 스크립트
+├── e2e_test.py          # E2E 통합 테스트
+├── docker-compose.yml   # Docker 서비스 정의
+├── Dockerfile           # 프론트엔드+Nginx 이미지
+├── Dockerfile.backend   # FastAPI 백엔드 이미지
+├── nginx.conf           # Nginx 리버스 프록시 설정
+├── requirements.txt     # Python 의존성
+├── .env.example         # 환경 변수 예시
+├── AI_RULES.md          # AI 개발 규칙 및 컨벤션
+└── DEVELOPER_GUIDE.md   # 개발자 가이드
+```
 
 ---
-*본 프로젝트는 K-AI Contents Award 출품 및 검증을 위해 설계된 다문화 가정 특화형 AI 솔루션 프로토타입입니다.*
+
+*본 프로젝트는 K-AI Contents Award 출품 및 검증을 위해 설계된 다문화 가정 특화형 AI 솔루션입니다.*
+*복지 혜택 정보는 복지로(www.bokjiro.go.kr) 공공데이터를 활용합니다.*
