@@ -198,11 +198,14 @@
                     <h2><i class="fa-solid fa-id-card"></i> <span id="txt-myprofile-title">마이 페이지 & 계정 정보</span></h2>
                 </div>
                 <div class="card text-center pad-lg">
-                    <div class="user-avatar-large" id="user-avatar-container" style="position: relative; margin: 0 auto 16px auto; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: var(--bg-secondary); border-radius: 50%; width: 90px; height: 90px; border: 3px solid var(--toss-blue);">
-                        <img id="user-avatar-img" src="assets/basic_profile.png" style="width: 100%; height: 100%; object-fit: cover;">
+                    <!-- User Profile Info Group (Hidden if logged out) -->
+                    <div id="user-profile-info" class="hidden">
+                        <div class="user-avatar-large" id="user-avatar-container" style="position: relative; margin: 0 auto 16px auto; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: var(--bg-secondary); border-radius: 50%; width: 90px; height: 90px; border: 3px solid var(--toss-blue);">
+                            <img id="user-avatar-img" src="assets/basic_profile.png" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <h3 id="txt-myprofile-username">다온 패밀리</h3>
+                        <p id="txt-myprofile-email" style="color: var(--text-secondary); margin-bottom: 12px;">daon_family@example.com</p>
                     </div>
-                    <h3 id="txt-myprofile-username">다온 패밀리</h3>
-                    <p id="txt-myprofile-email" style="color: var(--text-secondary); margin-bottom: 12px;">daon_family@example.com</p>
                     
                     <!-- ID/Password Local Auth Forms (Toss Style) -->
                     <div id="local-auth-container" style="width: 100%; max-width: 320px; margin: 15px auto 10px auto;">
@@ -212,7 +215,7 @@
                                 <input type="text" id="auth-login-username" placeholder="아이디 (ID)" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 0.9rem; outline: none; background: var(--bg-app); color: var(--text-main);">
                                 <input type="password" id="auth-login-password" placeholder="비밀번호 (Password)" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 0.9rem; outline: none; background: var(--bg-app); color: var(--text-main);">
                             </div>
-                            <button class="btn btn-primary btn-full" onclick="handleLocalLogin()" style="border-radius: 12px; padding: 12px; font-weight: 600; font-size: 0.95rem;">로그인 (Log In)</button>
+                            <button id="btn-login-submit" class="btn btn-primary btn-full" onclick="handleLocalLogin()" style="border-radius: 12px; padding: 12px; font-weight: 600; font-size: 0.95rem;">로그인 (Log In)</button>
                             <div style="margin-top: 10px; font-size: 0.85rem; text-align: center;">
                                 <span style="color: var(--text-sub);" id="txt-no-account">계정이 없으신가요?</span>
                                 <a href="#" onclick="toggleAuthForm('register', event)" style="color: var(--toss-blue); font-weight: 600; margin-left: 4px; text-decoration: underline;" id="txt-go-register">회원가입</a>
@@ -230,15 +233,11 @@
                                 <input type="password" id="auth-reg-password" placeholder="비밀번호 (Password)" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 0.9rem; outline: none; background: var(--bg-app); color: var(--text-main);">
                                 <input type="password" id="auth-reg-password-confirm" placeholder="비밀번호 확인 (Confirm Password)" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 0.9rem; outline: none; background: var(--bg-app); color: var(--text-main);">
                                 <div id="reg-password-message" style="font-size: 0.8rem; margin: -4px 4px 4px 4px; text-align: left; display: none; font-weight: 500;"></div>
-                                
-                                <div style="display: flex; align-items: flex-start; gap: 8px; margin: 4px 4px 12px 4px; font-size: 0.82rem; text-align: left; line-height: 1.3;">
-                                    <input type="checkbox" id="auth-reg-privacy-agree" style="margin-top: 2px; cursor: pointer;">
-                                    <label for="auth-reg-privacy-agree" style="color: var(--text-main); cursor: pointer;" id="txt-privacy-agree">
-                                        개인정보 수집 및 이용 동의 [필수]
-                                    </label>
+                                <div style="margin: 4px 4px 12px 4px; font-size: 0.78rem; text-align: left; line-height: 1.3; color: var(--text-sub);">
+                                    <span id="txt-privacy-policy-notice">* 서비스 품질 개선 및 성능 측정을 위해 개인을 식별할 수 없는 익명화된 성능 데이터(분석 시간, 파일 크기 등)가 수집될 수 있습니다.</span>
                                 </div>
                             </div>
-                            <button class="btn btn-primary btn-full" onclick="handleLocalRegister()" style="border-radius: 12px; padding: 12px; font-weight: 600; font-size: 0.95rem;">회원가입 완료</button>
+                            <button id="btn-register-submit" class="btn btn-primary btn-full" onclick="handleLocalRegister()" style="border-radius: 12px; padding: 12px; font-weight: 600; font-size: 0.95rem;">회원가입 완료</button>
                             <div style="margin-top: 10px; font-size: 0.85rem; text-align: center;">
                                 <span style="color: var(--text-sub);" id="txt-have-account">이미 계정이 있으신가요?</span>
                                 <a href="#" onclick="toggleAuthForm('login', event)" style="color: var(--toss-blue); font-weight: 600; margin-left: 4px; text-decoration: underline;" id="txt-go-login">로그인</a>
@@ -246,7 +245,7 @@
                         </div>
                         
                         <div id="auth-divider" style="margin: 15px 0 10px 0; color: var(--text-sub); font-size: 0.8rem; text-align: center; position: relative;">
-                            <span style="background: var(--bg-card); padding: 0 8px; position: relative; z-index: 1;" id="txt-or-label">또는 (Or)</span>
+                            <span style="background: var(--bg-card); padding: 0 8px; position: relative; z-index: 1;" id="txt-or-label">또는</span>
                             <div style="position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--border-color); z-index: 0;"></div>
                         </div>
                     </div>

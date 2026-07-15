@@ -138,15 +138,16 @@ def startup_db_migration():
                 );
             """)
             
-            # Check if translation_logs table exists
+            # Drop old table if exists to migrate to non-PII performance logging structure
+            cur.execute("DROP TABLE IF EXISTS translation_logs CASCADE;")
+            
+            # Recreate with PII-free schema
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS translation_logs (
                     id SERIAL PRIMARY KEY,
-                    username VARCHAR(50) REFERENCES user_account(username) ON DELETE SET NULL,
                     input_type VARCHAR(10) NOT NULL,
-                    raw_text TEXT,
-                    translated_text TEXT,
                     target_language VARCHAR(5) NOT NULL,
+                    file_size_bytes INTEGER DEFAULT 0,
                     ocr_latency_ms INTEGER,
                     llm_latency_ms INTEGER,
                     total_latency_ms INTEGER,
@@ -473,33 +474,25 @@ async def analyze_document(
         # Calculate total latency
         total_latency_ms = int((time.time() - start_time) * 1000)
         
-        # Extract and de-identify text
-        raw_text_to_save = result.get("extracted_text", "")
-        if input_type == "text" and text:
-            raw_text_to_save = text
-        translated_text_to_save = result.get("full_translation", "")
+        # Calculate input size in bytes
+        file_size_bytes = 0
+        if file_bytes:
+            file_size_bytes = len(file_bytes)
+        elif text:
+            file_size_bytes = len(text.encode('utf-8'))
         
-        masked_raw = mask_personal_info(raw_text_to_save)
-        masked_translated = mask_personal_info(translated_text_to_save)
-        
-        # Database insertion
+        # Database insertion (PII-free)
         try:
             conn = get_db_connection()
             cur = conn.cursor()
             try:
-                valid_username = None
-                if username:
-                    cur.execute("SELECT username FROM user_account WHERE username = %s;", (username,))
-                    if cur.fetchone():
-                        valid_username = username
-                        
                 cur.execute("""
                     INSERT INTO translation_logs 
-                    (username, input_type, raw_text, translated_text, target_language, ocr_latency_ms, llm_latency_ms, total_latency_ms) 
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
-                """, (valid_username, input_type, masked_raw, masked_translated, lang, ocr_latency_ms, llm_latency_ms, total_latency_ms))
+                    (input_type, target_language, file_size_bytes, ocr_latency_ms, llm_latency_ms, total_latency_ms) 
+                    VALUES (%s, %s, %s, %s, %s, %s);
+                """, (input_type, lang, file_size_bytes, ocr_latency_ms, llm_latency_ms, total_latency_ms))
                 conn.commit()
-                logger.info(f"Successfully saved translation log. Latencies (OCR/LLM/Total): {ocr_latency_ms}/{llm_latency_ms}/{total_latency_ms} ms")
+                logger.info(f"Successfully saved PII-free translation log. Size: {file_size_bytes} bytes. Latencies (OCR/LLM/Total): {ocr_latency_ms}/{llm_latency_ms}/{total_latency_ms} ms")
             except Exception as db_err:
                 logger.error(f"Failed to insert translation log to DB: {db_err}")
                 conn.rollback()

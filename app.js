@@ -136,9 +136,18 @@ const translations = {
         goRegister: "회원가입",
         haveAccount: "이미 계정이 있으신가요?",
         goLogin: "로그인",
-        orLabel: "또는 (Or)",
+        orLabel: "또는",
         loginRequiredAlert: "사진 번역 기능을 이용하시려면 먼저 로그인해주세요.",
-        privacyAgree: "개인정보 수집 및 이용 동의 [필수]"
+        privacyAgree: "개인정보 수집 및 이용 동의 [필수]",
+        privacyPolicyNotice: "* 서비스 품질 개선 및 성능 측정을 위해 개인을 식별할 수 없는 익명화된 성능 데이터(분석 시간, 파일 크기 등)가 수집될 수 있습니다.",
+        btnLogout: "로그아웃",
+        btnLoginSubmit: "로그인",
+        btnRegisterSubmit: "회원가입 완료",
+        phUsername: "아이디 (ID)",
+        phPassword: "비밀번호 (Password)",
+        phName: "이름 (Full Name)",
+        phEmail: "이메일 (Email)",
+        phPasswordConfirm: "비밀번호 확인 (Confirm Password)"
     },
     vi: {
         // Navigation
@@ -266,9 +275,18 @@ const translations = {
         goRegister: "Đăng ký",
         haveAccount: "Bạn đã có tài khoản?",
         goLogin: "Đăng nhập",
-        orLabel: "Hoặc (Or)",
+        orLabel: "Hoặc",
         loginRequiredAlert: "Vui lòng đăng nhập trước để sử dụng tính năng dịch ảnh thông báo.",
-        privacyAgree: "Đồng ý thu thập và sử dụng thông tin cá nhân [Bắt buộc]"
+        privacyAgree: "Đồng ý thu thập và sử dụng thông tin cá nhân [Bắt buộc]",
+        privacyPolicyNotice: "* Để cải thiện chất lượng dịch vụ và đo lường hiệu suất, dữ liệu ẩn danh không thể nhận dạng cá nhân (thời gian phân tích, kích thước tệp, v.v.) có thể được thu thập.",
+        btnLogout: "Đăng xuất",
+        btnLoginSubmit: "Đăng nhập",
+        btnRegisterSubmit: "Hoàn tất đăng ký",
+        phUsername: "Tên đăng nhập (ID)",
+        phPassword: "Mật khẩu (Password)",
+        phName: "Họ và tên (Full Name)",
+        phEmail: "Email",
+        phPasswordConfirm: "Xác nhận mật khẩu (Confirm)"
     },
     zh: {
         // Navigation
@@ -396,9 +414,18 @@ const translations = {
         goRegister: "注册",
         haveAccount: "已经有账号吗？",
         goLogin: "登录",
-        orLabel: "或者 (Or)",
+        orLabel: "或者",
         loginRequiredAlert: "请先登录以使用通知照片翻译功能。",
-        privacyAgree: "同意收集及使用个人信息 [必填]"
+        privacyAgree: "同意收集及使用个人信息 [必填]",
+        privacyPolicyNotice: "* 为了提高服务质量和测量性能，可能会收集无法识别个人身份的匿名数据（分析时间、文件大小等）。",
+        btnLogout: "登出",
+        btnLoginSubmit: "登录",
+        btnRegisterSubmit: "完成注册",
+        phUsername: "账号 (ID)",
+        phPassword: "密码 (Password)",
+        phName: "姓名 (Full Name)",
+        phEmail: "电子邮件 (Email)",
+        phPasswordConfirm: "确认密码 (Confirm)"
     },
     en: {
         // Navigation
@@ -528,7 +555,16 @@ const translations = {
         goLogin: "Log In",
         orLabel: "Or",
         loginRequiredAlert: "Please log in first to use the notice photo translation feature.",
-        privacyAgree: "Consent to Collection and Use of Personal Information [Required]"
+        privacyAgree: "Consent to Collection and Use of Personal Information [Required]",
+        privacyPolicyNotice: "* To improve service quality and measure performance, anonymized performance data (analysis time, file size, etc.) that cannot identify individuals may be collected.",
+        btnLogout: "Log Out",
+        btnLoginSubmit: "Log In",
+        btnRegisterSubmit: "Complete Sign Up",
+        phUsername: "ID",
+        phPassword: "Password",
+        phName: "Full Name",
+        phEmail: "Email",
+        phPasswordConfirm: "Confirm Password"
     }};// Mock RAG Knowledge Base (Vector Database emulation)
 const mockKnowledgeBase = [
     {
@@ -817,7 +853,10 @@ function changeLanguage(langCode) {
         'txt-have-account': translations[langCode].haveAccount,
         'txt-go-login': translations[langCode].goLogin,
         'txt-or-label': translations[langCode].orLabel,
-        'txt-privacy-agree': translations[langCode].privacyAgree
+        'txt-privacy-policy-notice': translations[langCode].privacyPolicyNotice,
+        'btn-logout': translations[langCode].btnLogout,
+        'btn-login-submit': translations[langCode].btnLoginSubmit,
+        'btn-register-submit': translations[langCode].btnRegisterSubmit
     };
     
     for (const [id, text] of Object.entries(elements)) {
@@ -852,6 +891,28 @@ function changeLanguage(langCode) {
         regionSelect.options[3].text = translations[langCode].optRegHaeundae;
     }
     
+    // Update local auth input placeholders
+    const loginUserEl = document.getElementById('auth-login-username');
+    if (loginUserEl) loginUserEl.placeholder = translations[langCode].phUsername;
+    
+    const loginPassEl = document.getElementById('auth-login-password');
+    if (loginPassEl) loginPassEl.placeholder = translations[langCode].phPassword;
+    
+    const regUserEl = document.getElementById('auth-reg-username');
+    if (regUserEl) regUserEl.placeholder = translations[langCode].phUsername;
+    
+    const regNameEl = document.getElementById('auth-reg-name');
+    if (regNameEl) regNameEl.placeholder = translations[langCode].phName;
+    
+    const regEmailEl = document.getElementById('auth-reg-email');
+    if (regEmailEl) regEmailEl.placeholder = translations[langCode].phEmail;
+    
+    const regPassEl = document.getElementById('auth-reg-password');
+    if (regPassEl) regPassEl.placeholder = translations[langCode].phPassword;
+    
+    const regPassConfirmEl = document.getElementById('auth-reg-password-confirm');
+    if (regPassConfirmEl) regPassConfirmEl.placeholder = translations[langCode].phPasswordConfirm;
+
     // Update textarea placeholder
     const textInput = document.getElementById('doc-text-input');
     if (textInput) {
@@ -2547,6 +2608,9 @@ function applyUserSession(userData) {
     const logoutBtn = document.getElementById("btn-logout");
     if (logoutBtn) logoutBtn.classList.remove("hidden");
 
+    const profileInfo = document.getElementById("user-profile-info");
+    if (profileInfo) profileInfo.classList.remove("hidden");
+
     // Dynamically update UI translations and states (e.g. photo upload zone)
     changeLanguage(currentLanguage);
 }
@@ -2576,6 +2640,9 @@ function resetUserSessionUI() {
     
     const logoutBtn = document.getElementById("btn-logout");
     if (logoutBtn) logoutBtn.classList.add("hidden");
+
+    const profileInfo = document.getElementById("user-profile-info");
+    if (profileInfo) profileInfo.classList.add("hidden");
 
     // Dynamically update UI translations and states (e.g. photo upload zone)
     changeLanguage(currentLanguage);
@@ -2657,9 +2724,8 @@ async function handleLocalRegister() {
     const emailInput = document.getElementById("auth-reg-email");
     const passwordInput = document.getElementById("auth-reg-password");
     const passwordConfirmInput = document.getElementById("auth-reg-password-confirm");
-    const privacyAgreeInput = document.getElementById("auth-reg-privacy-agree");
     
-    if (!usernameInput || !nameInput || !emailInput || !passwordInput || !passwordConfirmInput || !privacyAgreeInput) return;
+    if (!usernameInput || !nameInput || !emailInput || !passwordInput || !passwordConfirmInput) return;
     
     const username = usernameInput.value.trim();
     const fullName = nameInput.value.trim();
@@ -2678,6 +2744,7 @@ async function handleLocalRegister() {
         return;
     }
     
+    const fullNameRegex = /^[a-zA-Z0-9가-힣\s]{2,40}$/;
     if (fullName.length < 2) {
         triggerToast("입력 오류", "이름은 2글자 이상 입력해 주세요.", "error");
         return;
@@ -2696,17 +2763,6 @@ async function handleLocalRegister() {
     
     if (password !== passwordConfirm) {
         triggerToast("입력 오류", "비밀번호가 일치하지 않습니다.", "error");
-        return;
-    }
-    
-    if (!privacyAgreeInput.checked) {
-        const agreeMsg = {
-            ko: "개인정보 수집 및 이용에 동의해야 회원가입이 가능합니다.",
-            vi: "Bạn phải đồng ý với việc thu thập và sử dụng thông tin cá nhân để đăng ký.",
-            zh: "您必须同意收集及使用个人信息才能注册。",
-            en: "You must consent to the collection and use of personal information to register."
-        };
-        triggerToast("동의 필요", agreeMsg[currentLanguage] || agreeMsg['ko'], "error");
         return;
     }
     
@@ -2735,7 +2791,6 @@ async function handleLocalRegister() {
         emailInput.value = "";
         passwordInput.value = "";
         passwordConfirmInput.value = "";
-        privacyAgreeInput.checked = false;
         
         // Hide messages
         const msgUsername = document.getElementById("reg-username-message");
