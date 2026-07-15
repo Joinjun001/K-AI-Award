@@ -2098,4 +2098,19 @@ body {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
+/* Mobile bottom navigation visibility fix */
+@media (max-width: 479px) {
+    .app-nav {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+    }
+    .app-main {
+        padding-bottom: 94px !important;
+    }
+}
+
+
 
