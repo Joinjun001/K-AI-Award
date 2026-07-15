@@ -1439,7 +1439,7 @@ function typewriteHTML(elementId, htmlString, speed = 8, callback = null) {
     step();
 }
 
-function renderReportModalResult(data) {
+function renderReportModalResult(data, isHistoryLoad = false) {
     const contentBox = document.getElementById('report-modal-content-container');
     if (!contentBox) return;
     
@@ -1475,18 +1475,36 @@ function renderReportModalResult(data) {
     
     const cultureHTML = data.cultural_notes || "";
     
-    // Run sequential typewriter rendering (Submissions -> Materials -> Schedule -> Translation -> Culture)
-    typewriteHTML("sec-submissions", submissionsHTML, 3, () => {
-        typewriteHTML("sec-materials", materialsHTML, 3, () => {
-            typewriteHTML("sec-schedule", scheduleHTML, 3, () => {
-                typewriteHTML("sec-translation", translationHTML, 2, () => {
-                    typewriteHTML("sec-culture", cultureHTML, 3, () => {
-                        // All sections typed out!
+    if (isHistoryLoad) {
+        // Render instantly without typewriter animation
+        const secSub = document.getElementById("sec-submissions");
+        if (secSub) secSub.innerHTML = submissionsHTML;
+        
+        const secMat = document.getElementById("sec-materials");
+        if (secMat) secMat.innerHTML = materialsHTML;
+        
+        const secSch = document.getElementById("sec-schedule");
+        if (secSch) secSch.innerHTML = scheduleHTML;
+        
+        const secTrans = document.getElementById("sec-translation");
+        if (secTrans) secTrans.innerHTML = translationHTML;
+        
+        const secCult = document.getElementById("sec-culture");
+        if (secCult) secCult.innerHTML = cultureHTML;
+    } else {
+        // Run sequential typewriter rendering (Submissions -> Materials -> Schedule -> Translation -> Culture)
+        typewriteHTML("sec-submissions", submissionsHTML, 3, () => {
+            typewriteHTML("sec-materials", materialsHTML, 3, () => {
+                typewriteHTML("sec-schedule", scheduleHTML, 3, () => {
+                    typewriteHTML("sec-translation", translationHTML, 2, () => {
+                        typewriteHTML("sec-culture", cultureHTML, 3, () => {
+                            // All sections typed out!
+                        });
                     });
                 });
             });
         });
-    });
+    }
 }
 
 function closeTranslationReportModal() {
@@ -1535,10 +1553,10 @@ function stripHtml(html) {
 
 function updateRAGOutputText() {
     if (latestAnalysisResult) {
-        renderReportModalResult(latestAnalysisResult);
+        renderReportModalResult(latestAnalysisResult, true);
     } else {
         const fallbackData = getFallbackData(currentLanguage);
-        renderReportModalResult(fallbackData);
+        renderReportModalResult(fallbackData, true);
     }
 }
 
@@ -3074,7 +3092,7 @@ function loadHistoryItem(index) {
         if (langTag) langTag.textContent = langLabels[record.lang];
         
         document.getElementById('doc-text-input').value = record.sourceText;
-        renderReportModalResult(record.result);
+        renderReportModalResult(record.result, true);
         triggerToast("기록 로드", "이전 분석 데이터를 불러왔습니다.", "success");
     } catch (e) {
         console.error("Failed to load history item:", e);
