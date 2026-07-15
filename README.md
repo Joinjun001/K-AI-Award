@@ -4,6 +4,7 @@
 > **K-AI Contents Award — Track B. 솔루션 부문 출품작**
 > 다문화 가정 학부모를 위한 AI 기반 알림장 번역 & 복지 혜택 안내 서비스
 
+[다온(Daon) 서비스 바로가기](https://daon-k-ai.duckdns.org/)
 ---
 
 | 온보딩 1 | 온보딩 2 |
