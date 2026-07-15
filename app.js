@@ -3250,8 +3250,8 @@ const coachSteps = [
             zh: '🎁 快来查看各种福利优惠吧',
             en: '🎁 Explore a variety of welfare benefits'
         }),
-        arrow: 'arrow-bottom',
-        position: 'above'
+        arrow: 'arrow-right',
+        position: 'left'
     }
 ];
 
@@ -3326,30 +3326,48 @@ function renderCoachStepElements(step) {
     // 툴팁 화살표 방향 초기화 후 재설정
     tooltip.className = `coachmark-tooltip ${step.arrow}`;
 
-    // 툴팁 위치: 타겟 위 or 아래
-    const tooltipWidth = 280;
-    const tooltipHeight = 90;
+    // 툴팁 위치 및 크기 설정
+    let tooltipWidth = 280;
+    let tooltipHeight = 90;
+    
+    if (step.position === 'left') {
+        tooltipWidth = 200;
+        tooltipHeight = 80;
+    }
+    
     let tipTop, tipLeft;
-
     const viewportW = window.innerWidth;
 
     if (step.position === 'above') {
         tipTop = rect.top - padding - tooltipHeight - 16;
         if (tipTop < 8) tipTop = rect.bottom + padding + 8; // 화면 위가 잘리면 아래로
+    } else if (step.position === 'left') {
+        // Center vertically with the target element
+        tipTop = rect.top + rect.height / 2 - tooltipHeight / 2;
     } else {
         tipTop = rect.bottom + padding + 16;
     }
 
-    // 수평 중앙 정렬 (화면 밖 넘침 방지)
-    tipLeft = rect.left + rect.width / 2 - tooltipWidth / 2;
-    tipLeft = Math.max(10, Math.min(tipLeft, viewportW - tooltipWidth - 10));
+    if (step.position === 'left') {
+        tipLeft = rect.left - tooltipWidth - 12;
+        // Prevent overflowing the left side of the screen
+        tipLeft = Math.max(10, tipLeft);
+    } else {
+        // 수평 중앙 정렬 (화면 밖 넘침 방지)
+        tipLeft = rect.left + rect.width / 2 - tooltipWidth / 2;
+        tipLeft = Math.max(10, Math.min(tipLeft, viewportW - tooltipWidth - 10));
+    }
 
     // Dynamic arrow positioning based on target element's actual position relative to tooltip
-    const targetCenterX = rect.left + rect.width / 2;
-    let relativeX = targetCenterX - tipLeft;
-    // Clamp arrow offset between 20px and (tooltipWidth - 20px) to prevent pointing off the balloon corners
-    relativeX = Math.max(20, Math.min(relativeX, tooltipWidth - 20));
-    tooltip.style.setProperty('--arrow-left', `${relativeX}px`);
+    if (step.arrow === 'arrow-top' || step.arrow === 'arrow-bottom') {
+        const targetCenterX = rect.left + rect.width / 2;
+        let relativeX = targetCenterX - tipLeft;
+        // Clamp arrow offset between 20px and (tooltipWidth - 20px) to prevent pointing off the balloon corners
+        relativeX = Math.max(20, Math.min(relativeX, tooltipWidth - 20));
+        tooltip.style.setProperty('--arrow-left', `${relativeX}px`);
+    } else {
+        tooltip.style.removeProperty('--arrow-left');
+    }
 
     tooltip.style.top  = `${tipTop}px`;
     tooltip.style.left = `${tipLeft}px`;
