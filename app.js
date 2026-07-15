@@ -2512,7 +2512,7 @@ async function initGoogleLogin() {
         const session = localStorage.getItem("daon_user_session");
         if (session) {
             const userData = JSON.parse(session);
-            applyUserSession(userData);
+            applyUserSession(userData, false);
         } else {
             renderGoogleLoginButton();
         }
@@ -2569,8 +2569,8 @@ async function handleCredentialResponse(response) {
             // Cache user data in localStorage
             localStorage.setItem("daon_user_session", JSON.stringify(userData));
             
-            // Apply session data to profile card
-            applyUserSession(userData);
+            // Apply session data to profile card and redirect to home screen
+            applyUserSession(userData, true);
             
             triggerToast("로그인 성공", `${userData.name || '사용자'}님, 반갑습니다!`, "success");
         } else {
@@ -2582,7 +2582,7 @@ async function handleCredentialResponse(response) {
     }
 }
 
-function applyUserSession(userData) {
+function applyUserSession(userData, redirectToHome = false) {
     userSessionToken = userData.token;
     
     // Update Name & Email
@@ -2616,6 +2616,11 @@ function applyUserSession(userData) {
     
     // Sync translation history from server and render
     syncTranslationHistoryFromServer();
+    
+    // Redirect to home if requested
+    if (redirectToHome) {
+        switchTab('tab-home');
+    }
 }
 
 function resetUserSessionUI() {
@@ -2711,7 +2716,7 @@ async function handleLocalLogin() {
         const userData = await res.json();
         if (userData.status === "success") {
             localStorage.setItem("daon_user_session", JSON.stringify(userData));
-            applyUserSession(userData);
+            applyUserSession(userData, true);
             triggerToast("로그인 성공", `${userData.name || username}님, 반갑습니다!`, "success");
             
             // Clear inputs
