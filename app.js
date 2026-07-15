@@ -2514,6 +2514,7 @@ async function initGoogleLogin() {
             const userData = JSON.parse(session);
             applyUserSession(userData, false);
         } else {
+            resetUserSessionUI();
             renderGoogleLoginButton();
         }
     } catch (err) {
@@ -2527,9 +2528,6 @@ function renderGoogleLoginButton() {
         setTimeout(renderGoogleLoginButton, 500);
         return;
     }
-    
-    // Reset avatar UI to guest state
-    resetUserSessionUI();
     
     google.accounts.id.initialize({
         client_id: googleClientId,
@@ -2596,6 +2594,10 @@ function applyUserSession(userData, redirectToHome = false) {
     const avatarImg = document.getElementById("user-avatar-img");
     if (avatarImg) {
         avatarImg.src = userData.picture || "assets/basic_profile.png";
+        avatarImg.onerror = function() {
+            this.src = "assets/basic_profile.png";
+            this.onerror = null;
+        };
     }
     
     // Hide auth forms and Google login, show logout
@@ -2637,6 +2639,7 @@ function resetUserSessionUI() {
     const avatarImg = document.getElementById("user-avatar-img");
     if (avatarImg) {
         avatarImg.src = "assets/basic_profile.png";
+        avatarImg.onerror = null;
     }
     
     // Show auth forms and Google login, hide logout

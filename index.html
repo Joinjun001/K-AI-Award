@@ -201,7 +201,7 @@
                     <!-- User Profile Info Group (Hidden if logged out) -->
                     <div id="user-profile-info" class="hidden">
                         <div class="user-avatar-large" id="user-avatar-container" style="position: relative; margin: 0 auto 16px auto; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: var(--bg-secondary); border-radius: 50%; width: 90px; height: 90px; border: 3px solid var(--toss-blue);">
-                            <img id="user-avatar-img" src="assets/basic_profile.png" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img id="user-avatar-img" src="assets/basic_profile.png" onerror="this.onerror=null; this.src='assets/basic_profile.png';" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                         <h3 id="txt-myprofile-username">다온 패밀리</h3>
                         <p id="txt-myprofile-email" style="color: var(--text-secondary); margin-bottom: 12px;">daon_family@example.com</p>
