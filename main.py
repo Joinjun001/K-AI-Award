@@ -155,6 +155,19 @@ def startup_db_migration():
                 );
             """)
             
+            # Create user_translation_history schema
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS user_translation_history (
+                    id SERIAL PRIMARY KEY,
+                    username VARCHAR(50) NOT NULL,
+                    source_text TEXT NOT NULL,
+                    lang VARCHAR(10) NOT NULL,
+                    result_data JSONB NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+            """)
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_user_translation_history_username ON user_translation_history(username);")
+            
             # Apply schema migrations
             cur.execute("ALTER TABLE user_account ADD COLUMN IF NOT EXISTS email VARCHAR(100) UNIQUE;")
             cur.execute("ALTER TABLE user_account ADD COLUMN IF NOT EXISTS full_name VARCHAR(100);")
@@ -481,26 +494,43 @@ async def analyze_document(
         elif text:
             file_size_bytes = len(text.encode('utf-8'))
         
-        # Database insertion (PII-free)
+        # Database insertion (PII-free) & User History insertion
         try:
             conn = get_db_connection()
             cur = conn.cursor()
             try:
+                db_id = None
+                if username:
+                    source_text = text if text else result.get("extracted_text", "")
+                    cur.execute("""
+                        INSERT INTO user_translation_history 
+                        (username, source_text, lang, result_data) 
+                        VALUES (%s, %s, %s, %s)
+                        RETURNING id;
+                    """, (username, source_text, lang, json.dumps(result)))
+                    row = cur.fetchone()
+                    if row:
+                        db_id = row[0]
+
                 cur.execute("""
                     INSERT INTO translation_logs 
                     (input_type, target_language, file_size_bytes, ocr_latency_ms, llm_latency_ms, total_latency_ms) 
                     VALUES (%s, %s, %s, %s, %s, %s);
                 """, (input_type, lang, file_size_bytes, ocr_latency_ms, llm_latency_ms, total_latency_ms))
                 conn.commit()
-                logger.info(f"Successfully saved PII-free translation log. Size: {file_size_bytes} bytes. Latencies (OCR/LLM/Total): {ocr_latency_ms}/{llm_latency_ms}/{total_latency_ms} ms")
+                
+                if db_id:
+                    result["db_id"] = db_id
+                    
+                logger.info(f"Successfully saved PII-free translation log and user history (ID: {db_id}). Size: {file_size_bytes} bytes. Latencies (OCR/LLM/Total): {ocr_latency_ms}/{llm_latency_ms}/{total_latency_ms} ms")
             except Exception as db_err:
-                logger.error(f"Failed to insert translation log to DB: {db_err}")
+                logger.error(f"Failed to insert translation log or history to DB: {db_err}")
                 conn.rollback()
             finally:
                 cur.close()
                 conn.close()
         except Exception as conn_err:
-            logger.error(f"Failed to connect to database for logging: {conn_err}")
+            logger.error(f"Failed to connect to database for logging/history: {conn_err}")
             
         return result
     except Exception as e:
@@ -764,4 +794,75 @@ def get_admin_welfare_benefits(token: str = None):
     finally:
         cur.close()
         conn.close()
+
+
+@app.get("/api/history")
+def get_user_history(username: str):
+    if not username:
+        raise HTTPException(status_code=400, detail="Username is required.")
+    
+    conn = get_db_connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT id, created_at, source_text, lang, result_data 
+            FROM user_translation_history 
+            WHERE username = %s 
+            ORDER BY created_at DESC 
+            LIMIT 20;
+        """, (username,))
+        rows = cur.fetchall()
+        
+        history = []
+        for r in rows:
+            res_data = r[4]
+            if isinstance(res_data, str):
+                try:
+                    res_data = json.loads(res_data)
+                except Exception:
+                    pass
+            
+            history.append({
+                "db_id": r[0],
+                "timestamp": r[1].isoformat(),
+                "sourceText": r[2],
+                "lang": r[3],
+                "result": res_data
+            })
+        return history
+    except Exception as e:
+        logger.error(f"Error fetching user history: {e}")
+        raise HTTPException(status_code=500, detail="기록 조회에 실패했습니다.")
+    finally:
+        cur.close()
+        conn.close()
+
+
+@app.delete("/api/history")
+def delete_user_history(username: str, db_id: int = None):
+    if not username:
+        raise HTTPException(status_code=400, detail="Username is required.")
+    
+    conn = get_db_connection()
+    cur = conn.cursor()
+    try:
+        if db_id is not None:
+            cur.execute("""
+                DELETE FROM user_translation_history 
+                WHERE username = %s AND id = %s;
+            """, (username, db_id))
+        else:
+            cur.execute("""
+                DELETE FROM user_translation_history 
+                WHERE username = %s;
+            """, (username,))
+        conn.commit()
+        return {"status": "success", "message": "History deleted successfully."}
+    except Exception as e:
+        logger.error(f"Error deleting user history: {e}")
+        raise HTTPException(status_code=500, detail="기록 삭제에 실패했습니다.")
+    finally:
+        cur.close()
+        conn.close()
+
 

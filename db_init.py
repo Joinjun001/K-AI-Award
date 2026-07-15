@@ -89,6 +89,20 @@ def init_db():
         )
         print("Default admin user created successfully.")
     
+    # Create table user_translation_history
+    create_history_table_query = """
+    CREATE TABLE IF NOT EXISTS user_translation_history (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(50) NOT NULL,
+        source_text TEXT NOT NULL,
+        lang VARCHAR(10) NOT NULL,
+        result_data JSONB NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_user_translation_history_username ON user_translation_history(username);
+    """
+    cur.execute(create_history_table_query)
+    
     conn.commit()
     print("Database initialization complete.")
     

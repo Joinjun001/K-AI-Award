@@ -2613,6 +2613,9 @@ function applyUserSession(userData) {
 
     // Dynamically update UI translations and states (e.g. photo upload zone)
     changeLanguage(currentLanguage);
+    
+    // Sync translation history from server and render
+    syncTranslationHistoryFromServer();
 }
 
 function resetUserSessionUI() {
@@ -2646,6 +2649,9 @@ function resetUserSessionUI() {
 
     // Dynamically update UI translations and states (e.g. photo upload zone)
     changeLanguage(currentLanguage);
+    
+    // Re-render guest translation history
+    renderTranslationHistory();
 }
 
 function handleLogout() {
@@ -2808,13 +2814,69 @@ async function handleLocalRegister() {
     }
 }
 
-// Local Translation History (localStorage)
+// Helper to get user-specific translation history key
+function getTranslationHistoryKey() {
+    try {
+        const session = localStorage.getItem("daon_user_session");
+        if (session) {
+            const userData = JSON.parse(session);
+            if (userData && (userData.username || userData.email)) {
+                return `daon_translation_history_${userData.username || userData.email}`;
+            }
+        }
+    } catch (e) {
+        console.error("Error parsing user session for history key:", e);
+    }
+    return "daon_translation_history"; // Default guest key
+}
+
+// Helper to get current username/email if logged in
+function getCurrentLoggedInUsername() {
+    try {
+        const session = localStorage.getItem("daon_user_session");
+        if (session) {
+            const userData = JSON.parse(session);
+            if (userData && (userData.username || userData.email)) {
+                return userData.username || userData.email;
+            }
+        }
+    } catch (e) {
+        console.error("Error parsing user session for username:", e);
+    }
+    return null;
+}
+
+// Sync translation history from server DB to local storage cache
+async function syncTranslationHistoryFromServer() {
+    const username = getCurrentLoggedInUsername();
+    if (!username) return;
+    
+    try {
+        const res = await fetch(`/api/history?username=${encodeURIComponent(username)}`);
+        if (!res.ok) throw new Error("Failed to fetch history from server");
+        
+        const serverHistory = await res.json();
+        
+        // Overwrite the local user history
+        const key = getTranslationHistoryKey();
+        localStorage.setItem(key, JSON.stringify(serverHistory));
+        
+        // Re-render history UI
+        renderTranslationHistory();
+    } catch (err) {
+        console.error("Failed to sync history from server:", err);
+    }
+}
+
+// Local Translation History (localStorage & DB synced)
 function saveTranslationToHistory(sourceText, resultData, langCode) {
     try {
-        let history = JSON.parse(localStorage.getItem("daon_translation_history") || "[]");
+        const key = getTranslationHistoryKey();
+        let history = JSON.parse(localStorage.getItem(key) || "[]");
         
         // Create new record
         const newRecord = {
+            db_id: resultData.db_id || null,
             timestamp: new Date().toISOString(),
             sourceText: sourceText,
             lang: langCode,
@@ -2827,7 +2889,7 @@ function saveTranslationToHistory(sourceText, resultData, langCode) {
             history = history.slice(0, 20);
         }
         
-        localStorage.setItem("daon_translation_history", JSON.stringify(history));
+        localStorage.setItem(key, JSON.stringify(history));
         renderTranslationHistory();
     } catch (e) {
         console.error("Failed to save translation to history:", e);
@@ -2839,7 +2901,8 @@ function renderTranslationHistory() {
     if (!listContainer) return;
     
     try {
-        const history = JSON.parse(localStorage.getItem("daon_translation_history") || "[]");
+        const key = getTranslationHistoryKey();
+        const history = JSON.parse(localStorage.getItem(key) || "[]");
         
         if (history.length === 0) {
             const emptyText = (translations[currentLanguage] && translations[currentLanguage].historyEmpty) 
@@ -2859,7 +2922,7 @@ function renderTranslationHistory() {
                 title = title.substring(0, 28) + "...";
             }
             
-            const langLabels = { ko: 'KO', vi: 'VI', zh: 'ZH', en: 'EN' };
+            const langLabels = { ko: 'KO', vi: 'VI', zh: 'ZH', e: 'EN' };
             const langLabel = langLabels[record.lang] || 'KO';
             
             html += `
@@ -2885,21 +2948,53 @@ function renderTranslationHistory() {
     }
 }
 
-function clearTranslationHistory() {
+async function clearTranslationHistory() {
     if (confirm("번역 기록을 모두 삭제하시겠습니까?")) {
-        localStorage.removeItem("daon_translation_history");
+        const username = getCurrentLoggedInUsername();
+        if (username) {
+            try {
+                const res = await fetch(`/api/history?username=${encodeURIComponent(username)}`, {
+                    method: "DELETE"
+                });
+                if (!res.ok) throw new Error("Failed to delete history from server");
+            } catch (err) {
+                console.error("Failed to delete history on server:", err);
+                triggerToast("오류", "서버 기록 삭제 중 오류가 발생했습니다.", "error");
+                return;
+            }
+        }
+        
+        const key = getTranslationHistoryKey();
+        localStorage.removeItem(key);
         renderTranslationHistory();
         triggerToast("기록 삭제", "모든 번역 분석 기록이 삭제되었습니다.", "info");
     }
 }
 
-function deleteHistoryItem(index, event) {
+async function deleteHistoryItem(index, event) {
     if (event) event.stopPropagation();
     
     try {
-        let history = JSON.parse(localStorage.getItem("daon_translation_history") || "[]");
+        const key = getTranslationHistoryKey();
+        let history = JSON.parse(localStorage.getItem(key) || "[]");
+        const record = history[index];
+        
+        const username = getCurrentLoggedInUsername();
+        if (username && record && record.db_id) {
+            try {
+                const res = await fetch(`/api/history?username=${encodeURIComponent(username)}&db_id=${record.db_id}`, {
+                    method: "DELETE"
+                });
+                if (!res.ok) throw new Error("Failed to delete record on server");
+            } catch (err) {
+                console.error("Failed to delete record on server:", err);
+                triggerToast("오류", "서버 기록 삭제 중 오류가 발생했습니다.", "error");
+                return;
+            }
+        }
+        
         history.splice(index, 1);
-        localStorage.setItem("daon_translation_history", JSON.stringify(history));
+        localStorage.setItem(key, JSON.stringify(history));
         renderTranslationHistory();
         triggerToast("기록 삭제", "해당 번역 기록이 삭제되었습니다.", "info");
     } catch (e) {
@@ -2909,7 +3004,8 @@ function deleteHistoryItem(index, event) {
 
 function loadHistoryItem(index) {
     try {
-        const history = JSON.parse(localStorage.getItem("daon_translation_history") || "[]");
+        const key = getTranslationHistoryKey();
+        const history = JSON.parse(localStorage.getItem(key) || "[]");
         const record = history[index];
         if (!record) return;
         
