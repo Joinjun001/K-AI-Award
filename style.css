@@ -1052,9 +1052,9 @@ body {
     left: -600px;
     width: 1200px;
     height: 2400px;
-    background-color: rgba(15, 23, 42, 0.35); /* Elegant Slate-900 transparent tone */
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    background-color: transparent; /* Transparent click catcher to prevent visual overlay */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     opacity: 0;
     pointer-events: none;
     z-index: 9991;
