@@ -2238,6 +2238,9 @@ body {
         z-index: 9998 !important;
         border-radius: 0 !important;
     }
+    .fab-menu-list {
+        z-index: 9999 !important;
+    }
     .app-main {
         padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important;
     }
