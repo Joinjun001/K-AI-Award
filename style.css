@@ -2113,6 +2113,22 @@ body {
     border: 1px solid var(--border-color);
 }
 
+/* Translation report modal - Read More fade overlay */
+.translation-fade-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 45px;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
+}
+
+[data-theme="dark"] .translation-fade-overlay {
+    background: linear-gradient(to bottom, rgba(30, 41, 59, 0), #1E293B);
+}
+
 .coachmark-tooltip::after {
     content: '';
     position: absolute;

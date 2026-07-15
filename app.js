@@ -138,6 +138,7 @@ const translations = {
         goLogin: "로그인",
         orLabel: "또는",
         googleLoading: "Google 로그인 준비 중...",
+        btnMore: "더보기",
         loginRequiredAlert: "사진 번역 기능을 이용하시려면 먼저 로그인해주세요.",
         privacyAgree: "개인정보 수집 및 이용 동의 [필수]",
         privacyPolicyNotice: "* 서비스 품질 개선 및 성능 측정을 위해 개인을 식별할 수 없는 익명화된 성능 데이터(분석 시간, 파일 크기 등)가 수집될 수 있습니다.",
@@ -278,6 +279,7 @@ const translations = {
         goLogin: "Đăng nhập",
         orLabel: "Hoặc",
         googleLoading: "Đang tải đăng nhập Google...",
+        btnMore: "Xem thêm",
         loginRequiredAlert: "Vui lòng đăng nhập trước để sử dụng tính năng dịch ảnh thông báo.",
         privacyAgree: "Đồng ý thu thập và sử dụng thông tin cá nhân [Bắt buộc]",
         privacyPolicyNotice: "* Để cải thiện chất lượng dịch vụ và đo lường hiệu suất, dữ liệu ẩn danh không thể nhận dạng cá nhân (thời gian phân tích, kích thước tệp, v.v.) có thể được thu thập.",
@@ -418,6 +420,7 @@ const translations = {
         goLogin: "登录",
         orLabel: "或者",
         googleLoading: "Google 登录载入中...",
+        btnMore: "展开更多",
         loginRequiredAlert: "请先登录以使用通知照片翻译功能。",
         privacyAgree: "同意收集及使用个人信息 [必填]",
         privacyPolicyNotice: "* 为了提高服务质量和测量性能，可能会收集无法识别个人身份的匿名数据（分析时间、文件大小等）。",
@@ -558,6 +561,7 @@ const translations = {
         goLogin: "Log In",
         orLabel: "Or",
         googleLoading: "Loading Google Sign-in...",
+        btnMore: "Read More",
         loginRequiredAlert: "Please log in first to use the notice photo translation feature.",
         privacyAgree: "Consent to Collection and Use of Personal Information [Required]",
         privacyPolicyNotice: "* To improve service quality and measure performance, anonymized performance data (analysis time, file size, etc.) that cannot identify individuals may be collected.",
@@ -1465,10 +1469,20 @@ function renderReportModalResult(data, isHistoryLoad = false) {
             en: "Full Translation"
         };
         const titleText = titles[currentLanguage] || titles['ko'];
+        const btnMoreText = (translations[currentLanguage] && translations[currentLanguage].btnMore) 
+            ? translations[currentLanguage].btnMore 
+            : "더보기";
+            
         translationHTML = `
-            <div style="margin-top: 10px; padding: 15px; background: rgba(0, 0, 0, 0.03); border-left: 4px solid var(--secondary); border-radius: 12px; margin-bottom: 12px;">
-                <h4 style="margin-top: 0; color: var(--text-main); font-weight: 700;"><i class="fa-solid fa-language"></i> ${titleText}</h4>
-                <p style="white-space: pre-wrap; line-height: 1.6; font-size: 0.95rem; margin: 0; color: var(--text-main);">${data.full_translation}</p>
+            <div style="margin-top: 10px; padding: 15px; background: rgba(0, 0, 0, 0.03); border-left: 4px solid var(--secondary); border-radius: 12px; margin-bottom: 12px; position: relative;">
+                <h4 style="margin-top: 0; color: var(--text-main); font-weight: 700; margin-bottom: 10px;"><i class="fa-solid fa-language"></i> ${titleText}</h4>
+                <div class="translation-wrapper collapsed" id="trans-wrapper" style="position: relative; max-height: 95px; overflow: hidden; transition: max-height 0.4s ease;">
+                    <p style="white-space: pre-wrap; line-height: 1.6; font-size: 0.95rem; margin: 0; color: var(--text-main);">${data.full_translation}</p>
+                    <div class="translation-fade-overlay" id="trans-fade" style="opacity: 0;"></div>
+                </div>
+                <button id="btn-trans-more" onclick="expandTranslationText()" style="display: none; width: 100%; background: none; border: none; color: var(--toss-blue); font-weight: 600; font-size: 0.85rem; padding: 8px 0; margin-top: 4px; cursor: pointer; text-align: center; outline: none; gap: 4px; align-items: center; justify-content: center;">
+                    <span>${btnMoreText}</span> <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
+                </button>
             </div>
         `;
     }
@@ -1491,6 +1505,9 @@ function renderReportModalResult(data, isHistoryLoad = false) {
         
         const secCult = document.getElementById("sec-culture");
         if (secCult) secCult.innerHTML = cultureHTML;
+        
+        // Check if translation text needs a more button
+        checkTranslationMoreButton();
     } else {
         // Run sequential typewriter rendering (Submissions -> Materials -> Schedule -> Translation -> Culture)
         typewriteHTML("sec-submissions", submissionsHTML, 3, () => {
@@ -1498,13 +1515,48 @@ function renderReportModalResult(data, isHistoryLoad = false) {
                 typewriteHTML("sec-schedule", scheduleHTML, 3, () => {
                     typewriteHTML("sec-translation", translationHTML, 2, () => {
                         typewriteHTML("sec-culture", cultureHTML, 3, () => {
-                            // All sections typed out!
+                            // Check if translation text needs a more button after animation completes
+                            checkTranslationMoreButton();
                         });
                     });
                 });
             });
         });
     }
+}
+
+function checkTranslationMoreButton() {
+    const wrapper = document.getElementById('trans-wrapper');
+    const btnMore = document.getElementById('btn-trans-more');
+    const fade = document.getElementById('trans-fade');
+    if (!wrapper || !btnMore || !fade) return;
+    
+    // Temporarily remove max-height limit to measure actual content height
+    wrapper.style.maxHeight = 'none';
+    const actualHeight = wrapper.scrollHeight;
+    
+    // Restore max-height limit
+    wrapper.style.maxHeight = '95px';
+    
+    if (actualHeight > 105) { // If content height is taller than 4 lines (95px + small buffer)
+        btnMore.style.display = 'flex';
+        fade.style.opacity = '1';
+    } else {
+        btnMore.style.display = 'none';
+        fade.style.opacity = '0';
+        wrapper.style.maxHeight = 'none'; // No restriction needed
+    }
+}
+
+function expandTranslationText() {
+    const wrapper = document.getElementById('trans-wrapper');
+    const btnMore = document.getElementById('btn-trans-more');
+    const fade = document.getElementById('trans-fade');
+    if (!wrapper || !btnMore || !fade) return;
+    
+    wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+    fade.style.opacity = '0';
+    btnMore.style.display = 'none';
 }
 
 function closeTranslationReportModal() {
