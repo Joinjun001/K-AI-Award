@@ -458,10 +458,25 @@
             <div class="modal-body" style="flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column;">
                 
                 <!-- Loading State inside Modal -->
-                <div id="report-modal-loading" class="hidden" style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 40px 20px; text-align: center;">
-                    <div class="spinner" style="margin-bottom: 24px; width: 40px; height: 40px;"></div>
-                    <h4 style="font-weight: 700; margin-bottom: 8px; color: var(--text-main);" id="txt-report-loading-title">문서를 분석하는 중입니다</h4>
-                    <p style="font-size: 0.9rem; color: var(--text-sub); line-height: 1.5; margin: 0;" id="txt-report-loading-desc">다온 AI가 글자를 해독하고 준비물과 맥락을 파악하고 있습니다...</p>
+                <div id="report-modal-loading" class="hidden" style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 40px 20px; text-align: center; position: relative; overflow: hidden;">
+                    <!-- Animated gradient background orbs -->
+                    <div class="loading-orb loading-orb-1"></div>
+                    <div class="loading-orb loading-orb-2"></div>
+                    <div class="loading-orb loading-orb-3"></div>
+                    <!-- Icon -->
+                    <div class="loading-icon-wrap">
+                        <i class="fa-solid fa-language loading-lang-icon"></i>
+                    </div>
+                    <!-- Title -->
+                    <h4 style="font-weight: 700; margin: 20px 0 10px; color: var(--text-main); font-size: 1.05rem;" id="txt-report-loading-title">문서를 분석하는 중입니다</h4>
+                    <!-- Single fixed desc -->
+                    <p style="font-size: 0.88rem; color: var(--text-sub); line-height: 1.5; margin: 0 0 24px;" id="txt-report-loading-desc">AI가 알림장 내용을 번역하고 있어요. 잠시만 기다려 주세요!</p>
+                    <!-- Wave dots -->
+                    <div class="loading-wave-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
                 
                 <!-- Content State inside Modal -->

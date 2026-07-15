@@ -460,6 +460,78 @@ body {
     100% { transform: rotate(360deg); }
 }
 
+/* === Premium Loading Screen (Wave Dots + Gradient Orbs) === */
+.loading-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(48px);
+    opacity: 0.18;
+    pointer-events: none;
+}
+.loading-orb-1 {
+    width: 200px; height: 200px;
+    background: var(--primary);
+    top: -40px; left: -40px;
+    animation: orb-float 5s ease-in-out infinite;
+}
+.loading-orb-2 {
+    width: 160px; height: 160px;
+    background: var(--secondary);
+    bottom: -30px; right: -30px;
+    animation: orb-float 6s ease-in-out infinite reverse;
+}
+.loading-orb-3 {
+    width: 120px; height: 120px;
+    background: var(--toss-blue, #4E7CF6);
+    top: 50%; right: 10%;
+    animation: orb-float 4s ease-in-out infinite 1s;
+}
+
+@keyframes orb-float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(12px, -18px) scale(1.08); }
+}
+
+.loading-icon-wrap {
+    position: relative;
+    z-index: 1;
+    width: 72px; height: 72px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 28px rgba(var(--primary-rgb, 79, 119, 246), 0.35);
+    animation: icon-pulse 2.2s ease-in-out infinite;
+}
+.loading-lang-icon {
+    font-size: 2rem;
+    color: #fff;
+}
+@keyframes icon-pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 8px 28px rgba(79, 119, 246, 0.35); }
+    50% { transform: scale(1.07); box-shadow: 0 12px 36px rgba(79, 119, 246, 0.5); }
+}
+
+/* Wave dots */
+.loading-wave-dots {
+    display: flex; gap: 9px; align-items: center; justify-content: center;
+    position: relative; z-index: 1;
+}
+.loading-wave-dots span {
+    display: block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--primary);
+    animation: wave-bounce 1.2s ease-in-out infinite;
+}
+.loading-wave-dots span:nth-child(1) { animation-delay: 0s; }
+.loading-wave-dots span:nth-child(2) { animation-delay: 0.18s; }
+.loading-wave-dots span:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes wave-bounce {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+    40% { transform: translateY(-10px); opacity: 1; }
+}
+
 /* RAG Visualizer Panel */
 .visualizer-card h4 {
     font-size: 0.9rem;

@@ -1291,58 +1291,26 @@ async function runDocumentRAG() {
     }
 }
 
-// Loading progress state dynamic messages
+// Loading progress state - single warm message per language
 let loadingInterval = null;
 function startLoadingProgress(lang) {
     const descEl = document.getElementById('txt-report-loading-desc');
     if (!descEl) return;
     
     const messages = {
-        ko: [
-            "다온 AI가 이미지 글자를 판독하는 중입니다...",
-            "문서의 핵심 단어와 강조 사항을 추출하는 중입니다...",
-            "RAG 데이터베이스에서 한국 학교/공공기관 문화 배경을 매칭하는 중입니다...",
-            "아동 준비물과 부모 제출용 서류를 분류하고 있습니다...",
-            "선택한 언어로 요약 리포트를 번역하고 있습니다...",
-            "최종 RAG 분석 번역 결과를 조립하는 중입니다..."
-        ],
-        vi: [
-            "Daon AI đang nhận dạng và giải mã văn bản...",
-            "Đang trích xuất từ khóa chính và nội dung cần lưu ý...",
-            "Đang đối chiếu bối cảnh văn hóa giáo dục Hàn Quốc từ RAG database...",
-            "Đang phân loại đồ chuẩn bị của trẻ và hồ sơ nộp của phụ huynh...",
-            "Đang dịch báo cáo tóm tắt sang tiếng Việt...",
-            "Đang hoàn thiện kết quả phân tích RAG cuối cùng..."
-        ],
-        zh: [
-            "多稳 AI 正在识别并解读文档中的文字...",
-            "正在提取文档中的核心关键词及注意事项...",
-            "正在从 RAG 知识库检索匹配韩国学校及行政文化背景...",
-            "正在分类整理学生的准备物品和家长的提交材料...",
-            "正在将总结报告翻译成中文...",
-            "正在合成最终的 RAG 定制分析报告..."
-        ],
-        en: [
-            "Daon AI is recognizing and decoding the document characters...",
-            "Extracting core keywords and key highlights from the notice...",
-            "Matching Korean school/administrative cultural contexts from RAG database...",
-            "Sorting out student preparations and parent submission documents...",
-            "Translating the summary report into English...",
-            "Assembling the final RAG customized analysis results..."
-        ]
+        ko: "AI가 알림장 내용을 번역하고 있어요. 잠시만 기다려 주세요!",
+        vi: "AI đang dịch nội dung thông báo. Vui lòng chờ một chút!",
+        zh: "AI 正在翻译通知内容，请稍候！",
+        en: "AI is translating the notice. Please wait a moment!"
     };
     
-    const langMsgs = messages[lang] || messages['ko'];
-    let idx = 0;
+    descEl.textContent = messages[lang] || messages['ko'];
     
-    descEl.textContent = langMsgs[0];
-    
+    // No interval needed — animation is handled by CSS wave dots & orbs
     clearInterval(loadingInterval);
-    loadingInterval = setInterval(() => {
-        idx = (idx + 1) % langMsgs.length;
-        descEl.textContent = langMsgs[idx];
-    }, 2500);
+    loadingInterval = null;
 }
+
 
 function stopLoadingProgress() {
     clearInterval(loadingInterval);
